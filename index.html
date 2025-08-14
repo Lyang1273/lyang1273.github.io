@@ -16,7 +16,6 @@
         
         .navbar {
             display: flex;
-            flex-wrap: wrap;
             align-items: center;
             padding: 10px 20px;
             background-color: #222;
@@ -30,7 +29,8 @@
         }
         
         .navbar .music-player {
-            flex: 1 0 100%; /* 确保音乐播放器在小屏幕上占据整行 */
+            display: none; /* 默认情况下隐藏音乐播放器 */
+            flex: 1 0 100%;
             text-align: center;
             margin-top: 10px;
         }
@@ -50,7 +50,8 @@
         
         @media (min-width: 600px) {
             .navbar .music-player {
-                flex: 0 0 auto; /* 在大屏幕上让音乐播放器和其他链接在同一行 */
+                display: block; /* 在大屏幕上显示音乐播放器 */
+                flex: 0 0 auto;
                 text-align: left;
                 margin-top: 0;
             }
