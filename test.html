@@ -7,12 +7,13 @@
     <style>
         :root {
             --bg-body: #f5f5f5;           /* 整体背景：浅灰 */
-            --bg-content: #e0e0e0;        /* 主要内容区背景：灰色 */
-            --tile-bg: #1a2b4c;          /* 磁贴背景：深蓝 */
+            --bg-content: #e0e0e0;        /* 内容区背景：灰色（已修复） */
+            --tile-bg: #1a2b4c;          /* 磁贴：深蓝 */
             --tile-text: #e0f2ff;        /* 磁贴文字：浅蓝白 */
-            --accent: #4fc3f7;           /* 高亮色：明亮青蓝 */
+            --accent: #4fc3f7;           /* 高亮 */
             --text-muted: #a0c4ff;       /* 副文字 */
-            --header-bg: #1e1e1e;        /* 标题栏：黑 */
+            --header-bg: #1e1e1e;        /* 标题栏 */
+            --ripple: rgba(79, 195, 247, 0.3); /* 水波纹颜色 */
         }
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
@@ -37,9 +38,9 @@
             font-weight: 600;
         }
 
-        /* === 内容区：灰色背景 + 紧凑磁贴网格 === */
+        /* === 灰色内容区（强制覆盖） === */
         .content-area {
-            background: var(--bg-content);
+            background: var(--bg-content) !important;
             padding: 2rem 1rem;
             min-height: calc(100vh - 70px);
         }
@@ -48,23 +49,46 @@
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 0.8rem;                 /* 间距更近 */
+            gap: 0.8rem;
+            position: relative;
         }
 
-        /* === 深蓝直角磁贴 === */
+        /* === 深蓝直角磁贴 + 倾斜 + 水波纹 === */
         .tile {
             background: var(--tile-bg);
             padding: 1.4rem;
-            border-radius: 0;            /* 直角 */
+            border-radius: 0;
             box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-            transition: all 0.25s ease;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
             display: flex;
             flex-direction: column;
             height: fit-content;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            perspective: 1000px;
         }
-        .tile:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+
+        /* 点击倾斜效果（JS 控制） */
+        .tile.tilt {
+            transition: transform 0.15s ease;
+        }
+
+        /* 水波纹动画 */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--ripple);
+            transform: scale(0);
+            animation: ripple-animation 0.6s ease-out;
+            pointer-events: none;
+        }
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
         }
 
         .tile h3 {
@@ -138,7 +162,7 @@
         <div class="site-title">Lyang1273 - 测试页</div>
     </header>
 
-    <!-- 灰色内容区 + 深蓝直角磁贴 -->
+    <!-- 灰色内容区 -->
     <div class="content-area">
         <div class="container">
 
@@ -192,6 +216,49 @@
 
         </div>
     </div>
+
+    <script>
+        // 点击磁贴：朝点击位置倾斜 + 水波纹
+        document.querySelectorAll('.tile').forEach(tile => {
+            let isTilting = false;
+
+            tile.addEventListener('click', function(e) {
+                if (isTilting) return;
+                isTilting = true;
+
+                // 获取点击位置（相对于磁贴）
+                const rect = tile.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                // 计算倾斜角度（最大 ±15°）
+                const tiltX = ((y - centerY) / centerY) * -15;
+                const tiltY = ((x - centerX) / centerX) * 15;
+
+                // 应用倾斜
+                tile.classList.add('tilt');
+                tile.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateZ(10px)`;
+
+                // 水波纹
+                const ripple = document.createElement('div');
+                ripple.classList.add('ripple');
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                ripple.style.width = ripple.style.height = `${Math.max(rect.width, rect.height)}px`;
+                tile.appendChild(ripple);
+
+                // 恢复
+                setTimeout(() => {
+                    tile.style.transform = '';
+                    tile.classList.remove('tilt');
+                    ripple.remove();
+                    isTilting = false;
+                }, 400);
+            });
+        });
+    </script>
 
 </body>
 </html>
