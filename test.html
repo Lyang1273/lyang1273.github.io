@@ -1,30 +1,46 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <!-- 页面元信息 -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lyang1273 - 测试页</title>
+
+    <!-- 样式定义 -->
     <style>
+        /* ====================== 全局颜色变量 ====================== */
         :root {
-            --bg-body: #000000;                     /* 全黑 */
-            --bg-content: #111111;                  /* 内容区 */
-            --tile-bg: #0f1e3a;                     /* 更深的磁贴背景 */
-            --tile-text: #e0f2ff;
-            --accent: #4fc3f7;
-            --text-muted: #a0c4ff;
-            --header-bg: #000000;
-            --ripple: rgba(220, 220, 220, 0.35);    /* 灰白色水波纹 */
+            --bg-body: #0a0e17;                     /* 整体背景：极深蓝黑（用户指定） */
+            --bg-content: #111827;                  /* 内容区背景：深灰蓝 */
+            --tile-bg: #0f1e3a;                     /* 磁贴背景：更深的海军蓝 */
+            --tile-text: #ffffff;                   /* 磁贴文字：纯白（用户指定） */
+            --accent: #4fc3f7;                      /* 高亮/强调色：明亮青蓝 */
+            --text-muted: #cbd5e1;                  /* 次要文字：浅灰白（适配白色主色） */
+            --header-bg: #000000;                   /* 顶部栏：纯黑 */
+            --ripple: rgba(220, 220, 220, 0.35);    /* 水波纹：灰白色 */
         }
-        * { margin:0; padding:0; box-sizing:border-box; }
+
+        /* ====================== 基础重置 ====================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            /* 消除移动端点击高亮 */
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            user-select: none;
+        }
+
+        /* ====================== 页面主体 ====================== */
         body {
             font-family: 'Segoe UI', 'PingFang SC', system-ui, sans-serif;
-            background: var(--bg-body) !important;
+            background: var(--bg-body) !important;   /* 强制极深蓝黑背景 */
             color: var(--tile-text);
             min-height: 100vh;
-            -webkit-tap-highlight-color: transparent;
+            line-height: 1.6;
         }
-        * { -webkit-tap-highlight-color: transparent; }
 
+        /* ====================== 顶部标题栏 ====================== */
         header {
             background: var(--header-bg);
             color: #fff;
@@ -32,11 +48,15 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,.3);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
             border-bottom: 1px solid #222;
         }
-        .site-title { font-size:1.5rem; font-weight:600; }
+        .site-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
 
+        /* ====================== 内容区域 ====================== */
         .content-area {
             background: var(--bg-content) !important;
             padding: 2rem 1rem;
@@ -47,15 +67,16 @@
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: .8rem;
+            gap: 0.8rem;
         }
 
+        /* ====================== 磁贴卡片 ====================== */
         .tile {
             background: var(--tile-bg);
             padding: 1.4rem;
-            border-radius: 0;
-            box-shadow: 0 3px 8px rgba(0,0,0,.2);
-            transition: transform .3s cubic-bezier(.4,0,.2,1), box-shadow .3s ease;
+            border-radius: 0;                       /* 直角矩形 */
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s ease;
             display: flex;
             flex-direction: column;
             height: fit-content;
@@ -66,111 +87,207 @@
             perspective: 1000px;
             outline: none;
         }
+
+        /* 按下时缩小的动画类 */
         .tile.shrink {
-            transform: scale(.96);
-            box-shadow: 0 6px 16px rgba(0,0,0,.3);
+            transform: scale(0.96);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
         }
 
+        /* 水波纹动画（0.5秒） */
         .ripple {
             position: absolute;
             border-radius: 50%;
             background: var(--ripple);
             transform: scale(0);
-            animation: ripple .5s ease-out;
+            animation: ripple 0.5s ease-out;
             pointer-events: none;
             z-index: 1;
         }
         @keyframes ripple {
-            to { transform: scale(4.5); opacity:0; }
+            to {
+                transform: scale(4.5);
+                opacity: 0;
+            }
         }
 
+        /* 标题样式 */
         .tile h3 {
-            font-size:1.25rem; margin-bottom:.7rem; color:var(--accent);
-            display:flex; align-items:center; gap:.5rem; font-weight:600;
+            font-size: 1.25rem;
+            margin-bottom: 0.7rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
         }
         .tile h3::before {
-            content:''; width:7px; height:7px; background:var(--accent); border-radius:50%;
+            content: '';
+            width: 7px;
+            height: 7px;
+            background: var(--accent);
+            border-radius: 50%;
         }
-        .tile p,.tile li { font-size:.92rem; color:var(--text-muted); line-height:1.55; }
-        .tile ul { list-style:none; margin-top:.4rem; }
-        .tile li { padding-left:1.1rem; position:relative; margin:.3rem 0; }
-        .tile li::before { content:'▪'; color:var(--accent); position:absolute; left:0; font-size:.75rem; }
-        .tile a {
-            color:var(--accent); text-decoration:none; font-weight:500;
-            margin-top:auto; padding-top:.8rem; font-size:.9rem;
-        }
-        .tile a:hover { text-decoration:underline; }
 
-        @media (max-width:768px){
-            .container{grid-template-columns:1fr; gap:.6rem; padding:0 .5rem;}
-            .content-area{padding:1.5rem .8rem;}
-            header{padding:.8rem 1rem;}
-            .site-title{font-size:1.3rem;}
+        /* 正文与列表 */
+        .tile p,
+        .tile li {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            line-height: 1.55;
+        }
+        .tile ul {
+            list-style: none;
+            margin-top: 0.4rem;
+        }
+        .tile li {
+            padding-left: 1.1rem;
+            position: relative;
+            margin: 0.3rem 0;
+        }
+        .tile li::before {
+            content: '▪';
+            color: var(--accent);
+            position: absolute;
+            left: 0;
+            font-size: 0.75rem;
+        }
+
+        /* 链接样式 */
+        .tile a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: auto;
+            padding-top: 0.8rem;
+            font-size: 0.9rem;
+        }
+        .tile a:hover {
+            text-decoration: underline;
+        }
+
+        /* ====================== 响应式布局 ====================== */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 0.6rem;
+                padding: 0 0.5rem;
+            }
+            .content-area {
+                padding: 1.5rem 0.8rem;
+            }
+            header {
+                padding: 0.8rem 1rem;
+            }
+            .site-title {
+                font-size: 1.3rem;
+            }
         }
     </style>
 </head>
 <body>
 
-<header><div class="site-title">Lyang1273 - 测试页</div></header>
+    <!-- 顶部标题栏 -->
+    <header>
+        <div class="site-title">Lyang1273 - 测试页</div>
+    </header>
 
-<div class="content-area">
-    <div class="container">
+    <!-- 主要内容区 -->
+    <div class="content-area">
+        <div class="container">
 
-        <div class="tile" tabindex="0"><h3>关于我</h3><p>教育科技开发者，专注于 AI 驱动的智能教学系统。目前在日本从事数字化教育平台研发，致力于让学习更高效、公平。</p></div>
+            <!-- 关于我 -->
+            <div class="tile" tabindex="0">
+                <h3>关于我</h3>
+                <p>教育科技开发者，专注于 AI 驱动的智能教学系统。目前在日本从事数字化教育平台研发，致力于让学习更高效、公平。</p>
+            </div>
 
-        <div class="tile" tabindex="0"><h3>技能栈</h3><ul><li>React / Vue / Three.js</li><li>Node.js / Python / TensorFlow</li><li>Figma / UI/UX 原型设计</li><li>中 / 英 / 日语</li></ul></div>
+            <!-- 技能栈 -->
+            <div class="tile" tabindex="0">
+                <h3>技能栈</h3>
+                <ul>
+                    <li>React / Vue / Three.js</li>
+                    <li>Node.js / Python / TensorFlow</li>
+                    <li>Figma / UI/UX 原型设计</li>
+                    <li>中 / 英 / 日语</li>
+                </ul>
+            </div>
 
-        <div class="tile" tabindex="0"><h3>智能课堂系统</h3><p>AI 实时互动教学平台，支持个性化学习路径与自动评估。</p><a href="#" target="_blank">查看 Demo →</a></div>
+            <!-- 项目：智能课堂系统 -->
+            <div class="tile" tabindex="0">
+                <h3>智能课堂系统</h3>
+                <p>AI 实时互动教学平台，支持个性化学习路径与自动评估。</p>
+                <a href="#" target="_blank">查看 Demo →</a>
+            </div>
 
-        <div class="tile" tabindex="0"><h3>教育数据仪表盘</h3><p>可视化学习行为分析，帮助教师快速洞察学生进步。</p><a href="#" target="_blank">GitHub →</a></div>
+            <!-- 项目：教育数据仪表盘 -->
+            <div class="tile" tabindex="0">
+                <h3>教育数据仪表盘</h3>
+                <p>可视化学习行为分析，帮助教师快速洞察学生进步。</p>
+                <a href="#" target="_blank">GitHub →</a>
+            </div>
 
-        <div class="tile" tabindex="0"><h3>AR 学习 App</h3><p>移动端增强现实教育工具，提升学生参与度与记忆力。</p><a href="#" target="_blank">下载 APK →</a></div>
+            <!-- 项目：AR 学习 App -->
+            <div class="tile" tabindex="0">
+                <h3>AR 学习 App</h3>
+                <p>移动端增强现实教育工具，提升学生参与度与记忆力。</p>
+                <a href="#" target="_blank">下载 APK →</a>
+            </div>
 
-        <div class="tile" tabindex="0"><h3>联系我</h3><p>Email: <a href="mailto:hi@lyang.dev">hi@lyang.dev</a><br>X: <a href="https://x.com/Lyang1273" target="_blank">@Lyang1273</a><br>WeChat: lyang1273</p></div>
+            <!-- 联系方式 -->
+            <div class="tile" tabindex="0">
+                <h3>联系我</h3>
+                <p>
+                    Email: <a href="mailto:hi@lyang.dev">hi@lyang.dev</a><br>
+                    X: <a href="https://x.com/Lyang1273" target="_blank">@Lyang1273</a><br>
+                    WeChat: lyang1273
+                </p>
+            </div>
 
+        </div>
     </div>
-</div>
 
-<script>
-    // 0.5 s 按下效果 + 滑动页面不受阻
-    document.querySelectorAll('.tile').forEach(tile => {
-        let animating = false;
+    <!-- 交互脚本 -->
+    <script>
+        // 为每个磁贴绑定点击/触摸效果
+        document.querySelectorAll('.tile').forEach(tile => {
+            let isAnimating = false;
 
-        const start = e => {
-            if (animating) return;
-            animating = true;
+            const triggerEffect = (e) => {
+                if (isAnimating) return;
+                isAnimating = true;
 
-            // 只在短按时触发动画，滑动时不阻止页面滚动
-            const touch = e.touches ? e.touches[0] : null;
-            const clientX = touch ? touch.clientX : e.clientX;
-            const clientY = touch ? touch.clientY : e.clientY;
-            const rect = tile.getBoundingClientRect();
-            const x = clientX - rect.left;
-            const y = clientY - rect.top;
+                // 获取点击或触摸位置
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                const rect = tile.getBoundingClientRect();
+                const x = clientX - rect.left;
+                const y = clientY - rect.top;
 
-            tile.classList.add('shrink');
+                // 应用缩小效果
+                tile.classList.add('shrink');
 
-            const ripple = document.createElement('div');
-            ripple.className = 'ripple';
-            ripple.style.left = x + 'px';
-            ripple.style.top  = y + 'px';
-            ripple.style.width = ripple.style.height = Math.max(rect.width, rect.height) * 1.4 + 'px';
-            tile.appendChild(ripple);
+                // 创建灰白色水波纹
+                const ripple = document.createElement('div');
+                ripple.className = 'ripple';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.style.width = ripple.style.height = Math.max(rect.width, rect.height) * 1.4 + 'px';
+                tile.appendChild(ripple);
 
-            // 0.5 s 后恢复
-            setTimeout(() => {
-                tile.classList.remove('shrink');
-                ripple.remove();
-                animating = false;
-            }, 500);
-        };
+                // 0.5 秒后恢复原状
+                setTimeout(() => {
+                    tile.classList.remove('shrink');
+                    ripple.remove();
+                    isAnimating = false;
+                }, 500);
+            };
 
-        // 鼠标
-        tile.addEventListener('mousedown', start);
-        // 触摸（不阻止滚动）
-        tile.addEventListener('touchstart', start, { passive: true });
-    });
-</script>
+            // 绑定鼠标和触摸事件（触摸使用 passive 允许页面滚动）
+            tile.addEventListener('mousedown', triggerEffect);
+            tile.addEventListener('touchstart', triggerEffect, { passive: true });
+        });
+    </script>
 
 </body>
 </html>
