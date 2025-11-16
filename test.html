@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>纯 HTML 漂亮网页 - 必应每日壁纸背景</title>
+
+  <!-- 引入 Google Fonts（纯 HTML 支持） -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- 所有样式写在 <style> 中（内联 CSS） -->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans SC', sans-serif;
+      /* 默认渐变背景，回退用 */
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      /* 叠加层，确保文字可读 */
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4); /* 半透明黑色叠加 */
+      z-index: -1;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 16px;
+      background: linear-gradient(to right, #fff, #ff9a9e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin-bottom: 30px;
+      opacity: 0.9;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 32px;
+      background: #fff;
+      color: #764ba2;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+      background: #f0f0f0;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+
+    /* 响应式 */
+    @media (max-width: 480px) {
+      h1 { font-size: 2.2rem; }
+      .container { padding: 30px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 隐藏的 img 标签，用于预加载必应壁纸 -->
+  <img id="bg-img" src="" style="display: none;" onload="setBackground(this.src)" onerror="console.log('加载壁纸失败，回退到渐变')">
+
+  <div class="container">
+    <h1>欢迎体验</h1>
+    <p>这是一个使用 <strong>纯 HTML</strong> 实现的现代卡片式登陆页。<br>背景自动使用<strong>必应每日壁纸</strong>，毛玻璃效果 + 响应式布局，全靠内联 CSS 和少量 JS。</p>
+    <a href="#" class="btn">立即开始</a>
+    <footer>© 2025 纯 HTML 演示 • Made with ❤️ • 背景：Bing Wallpaper</footer>
+  </div>
+
+  <!-- 内联 JavaScript：获取并设置必应每日壁纸 -->
+  <script>
+    // 动态设置 img src 为必应 API（今日壁纸）
+    const bingApiUrl = 'https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=zh-CN';
+    fetch(bingApiUrl)
+      .then(response => response.json())
+      .then(data => {
+        const imgUrl = 'https://www.bing.com' + data.images[0].url;
+        document.getElementById('bg-img').src = imgUrl;
+      })
+      .catch(error => {
+        console.log('API 请求失败，使用默认背景');
+      });
+
+    // 当图片加载完成时，设置 body 背景
+    function setBackground(imgSrc) {
+      document.body.style.backgroundImage = `url(${imgSrc})`;
+    }
+  </script>
+
+</body>
+  </html>
