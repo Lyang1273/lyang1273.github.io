@@ -6,19 +6,19 @@
     <title>Lyang1273 - 测试页</title>
     <style>
         :root {
-            --bg-body: #f5f5f5;           /* 整体背景：浅灰 */
-            --bg-content: #e0e0e0;        /* 内容区背景：灰色（已修复） */
-            --tile-bg: #1a2b4c;          /* 磁贴：深蓝 */
-            --tile-text: #e0f2ff;        /* 磁贴文字：浅蓝白 */
-            --accent: #4fc3f7;           /* 高亮 */
-            --text-muted: #a0c4ff;       /* 副文字 */
-            --header-bg: #1e1e1e;        /* 标题栏 */
-            --ripple: rgba(79, 195, 247, 0.3); /* 水波纹颜色 */
+            --bg-body: #000000;           /* 全黑背景（已修改） */
+            --bg-content: #111111;        /* 内容区：深黑灰 */
+            --tile-bg: #1a2b4c;           /* 磁贴：深蓝 */
+            --tile-text: #e0f2ff;         /* 磁贴文字 */
+            --accent: #4fc3f7;            /* 高亮青蓝 */
+            --text-muted: #a0c4ff;        /* 副文字 */
+            --header-bg: #000000;         /* 标题栏：黑 */
+            --ripple: rgba(79, 195, 247, 0.25); /* 水波纹 */
         }
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
             font-family: 'Segoe UI', 'PingFang SC', system-ui, sans-serif;
-            background: var(--bg-body);
+            background: var(--bg-body) !important;
             color: var(--tile-text);
             min-height: 100vh;
         }
@@ -31,14 +31,15 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            border-bottom: 1px solid #222;
         }
         .site-title {
             font-size: 1.5rem;
             font-weight: 600;
         }
 
-        /* === 灰色内容区（强制覆盖） === */
+        /* === 深黑内容区 === */
         .content-area {
             background: var(--bg-content) !important;
             padding: 2rem 1rem;
@@ -50,16 +51,15 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 0.8rem;
-            position: relative;
         }
 
-        /* === 深蓝直角磁贴 + 倾斜 + 水波纹 === */
+        /* === 深蓝直角磁贴 === */
         .tile {
             background: var(--tile-bg);
             padding: 1.4rem;
             border-radius: 0;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             flex-direction: column;
             height: fit-content;
@@ -70,19 +70,15 @@
             perspective: 1000px;
         }
 
-        /* 点击倾斜效果（JS 控制） */
-        .tile.tilt {
-            transition: transform 0.15s ease;
-        }
-
-        /* 水波纹动画 */
+        /* 水波纹 */
         .ripple {
             position: absolute;
             border-radius: 50%;
             background: var(--ripple);
             transform: scale(0);
-            animation: ripple-animation 0.6s ease-out;
+            animation: ripple-animation 0.65s ease-out;
             pointer-events: none;
+            z-index: 1;
         }
         @keyframes ripple-animation {
             to {
@@ -162,7 +158,7 @@
         <div class="site-title">Lyang1273 - 测试页</div>
     </header>
 
-    <!-- 灰色内容区 -->
+    <!-- 深黑内容区 -->
     <div class="content-area">
         <div class="container">
 
@@ -218,45 +214,65 @@
     </div>
 
     <script>
-        // 点击磁贴：朝点击位置倾斜 + 水波纹
+        // 修复触摸倾斜 + 减小幅度（最大 ±8°） + 兼容 touchstart
         document.querySelectorAll('.tile').forEach(tile => {
-            let isTilting = false;
+            let isInteracting = false;
 
-            tile.addEventListener('click', function(e) {
-                if (isTilting) return;
-                isTilting = true;
+            const handleInteraction = (e) => {
+                if (isInteracting) return;
+                isInteracting = true;
 
-                // 获取点击位置（相对于磁贴）
+                // 兼容 touch 和 mouse
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
                 const rect = tile.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
+                const x = clientX - rect.left;
+                const y = clientY - rect.top;
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
 
-                // 计算倾斜角度（最大 ±15°）
-                const tiltX = ((y - centerY) / centerY) * -15;
-                const tiltY = ((x - centerX) / centerX) * 15;
+                // 减小倾斜幅度：最大 ±8°
+                const maxTilt = 8;
+                const tiltX = ((y - centerY) / centerY) * -maxTilt;
+                const tiltY = ((x - centerX) / centerX) * maxTilt;
 
-                // 应用倾斜
-                tile.classList.add('tilt');
-                tile.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateZ(10px)`;
+                // 应用 3D 倾斜
+                tile.style.transition = 'transform 0.15s ease';
+                tile.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateZ(8px)`;
 
                 // 水波纹
                 const ripple = document.createElement('div');
                 ripple.classList.add('ripple');
                 ripple.style.left = `${x}px`;
                 ripple.style.top = `${y}px`;
-                ripple.style.width = ripple.style.height = `${Math.max(rect.width, rect.height)}px`;
+                ripple.style.width = ripple.style.height = `${Math.max(rect.width, rect.height) * 1.2}px`;
                 tile.appendChild(ripple);
 
                 // 恢复
-                setTimeout(() => {
+                const reset = () => {
+                    tile.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
                     tile.style.transform = '';
-                    tile.classList.remove('tilt');
-                    ripple.remove();
-                    isTilting = false;
-                }, 400);
-            });
+                    if (ripple.parentNode) ripple.remove();
+                    isInteracting = false;
+                };
+
+                // 点击/触摸结束恢复
+                const upHandler = () => {
+                    reset();
+                    document.removeEventListener('mouseup', upHandler);
+                    document.removeEventActingListener('touchend', upHandler);
+                };
+                document.addEventListener('mouseup', upHandler);
+                document.addEventListener('touchend', upHandler);
+
+                // 自动恢复（防卡住）
+                setTimeout(reset, 500);
+            };
+
+            // 绑定 mouse 和 touch
+            tile.addEventListener('mousedown', handleInteraction);
+            tile.addEventListener('touchstart', handleInteraction, { passive: true });
         });
     </script>
 
