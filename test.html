@@ -3,352 +3,337 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>液态玻璃 · 个人网站</title>
+    <title>Smart Personal · 个人网站</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
         /* === 全局变量 === */
         :root {
-            --glass: rgba(255, 255, 255, 0.15);
-            --glass-border: rgba(255, 255, 255, 0.25);
-            --text: #f0f0f0;
-            --accent: #00ddeb;
-            --bg-gradient: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-            --blob-size: 400px;
+            --bg-primary: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 212, 255, 0.2);
+            --accent: #00d4ff;
+            --text: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
         }
         @media (prefers-color-scheme: light) {
             :root {
-                --glass: rgba(255, 255, 255, 0.35);
-                --glass-border: rgba(255, 255, 255, 0.5);
-                --text: #222;
-                --accent: #00aaff;
-                --bg-gradient: linear-gradient(135deg, #e0f7fa, #b2ebf2, #80deea);
+                --bg-primary: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 50%, #c7d2fe 100%);
+                --glass: rgba(255, 255, 255, 0.8);
+                --glass-border: rgba(0, 212, 255, 0.3);
+                --accent: #0066cc;
+                --text: #1e293b;
+                --text-secondary: rgba(30, 41, 59, 0.8);
             }
         }
 
         /* === 基础重置 === */
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
-            font-family: 'Segoe UI', 'SF Pro Display', system-ui, sans-serif;
+            font-family: 'Inter', 'PingFang SC', system-ui, sans-serif;
             color: var(--text);
-            background: var(--bg-gradient);
-            min-height: 100vh;
+            background: var(--bg-primary);
             overflow-x: hidden;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 1rem;
+            line-height: 1.6;
         }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
 
-        /* === 流动背景 Blob === */
-        .blob {
-            position: absolute;
-            width: var(--blob-size);
-            height: var(--blob-size);
-            background: radial-gradient(circle, rgba(0,221,235,0.3), transparent);
-            border-radius: 50%;
-            filter: blur(80px);
-            animation: float 20s infinite ease-in-out;
+        /* === 粒子背景 === */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
             z-index: -1;
         }
-        .blob:nth-child(1) { top:10%; left:10%; animation-delay:0s; }
-        .blob:nth-child(2) { bottom:15%; right:15%; animation-delay:7s; background: radial-gradient(circle, rgba(255,100,200,0.25), transparent); }
-        .blob:nth-child(3) { top:50%; left:60%; animation-delay:14s; background: radial-gradient(circle, rgba(150,255,100,0.2), transparent); }
 
-        @keyframes float {
-            0%,100% { transform:translate(0,0) rotate(0deg); }
-            33% { transform:translate(80px,-100px) rotate(120deg); }
-            66% { transform:translate(-60px,80px) rotate(240deg); }
+        /* === 英雄区 Hero === */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 2rem;
+            position: relative;
+        }
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), #ffffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out;
+        }
+        .hero p {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+        .cta-btn {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            color: var(--text);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+        .cta-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+            border-color: var(--accent);
         }
 
-        /* === 容器 === */
+        /* === 卡片容器 === */
         .container {
-            max-width: 900px;
-            width: 100%;
-            display: grid;
-            gap: 2rem;
-            grid-template-columns: 1fr;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
         }
-        @media (min-width: 768px) {
-            .container { grid-template-columns: 1fr 1fr; }
+        .section {
+            margin-bottom: 4rem;
+        }
+        .section h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, var(--accent), #ffffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        /* === 毛玻璃卡片 === */
+        /* === 毛玻璃卡片网格 === */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
         .card {
             background: var(--glass);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 1.5rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
             border: 1px solid var(--glass-border);
             padding: 2rem;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-            transition: all 0.4s cubic-bezier(0.25,0.8,0.25,1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             position: relative;
             overflow: hidden;
         }
         .card::before {
-            content:'';
-            position:absolute;
-            inset:0;
-            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1));
-            opacity:0;
-            transition: opacity 0.4s;
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
         }
         .card:hover {
-            transform: translateY(-12px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,212,255,0.2);
         }
-        .card:hover::before { opacity:1; }
-
-        /* === 头像卡 === */
-        .avatar-card {
-            grid-row: span 2;
-            text-align:center;
-            display:flex;
-            flex-direction:column;
-            justify-content:center;
-            align-items:center;
-            gap:1.5rem;
+        .card:hover::before { left: 100%; }
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
         }
-        .avatar {
-            width:180px;
-            height:180px;
-            border-radius:50%;
-            object-fit:cover;
-            border:4px solid var(--accent);
-            box-shadow: 0 0 30px rgba(0,221,235,0.4);
-            transition: all 0.4s;
+        .card ul {
+            list-style: none;
         }
-        .avatar:hover { transform:scale(1.08); box-shadow:0 0 40px rgba(0,221,235,0.6); }
-        .name {
-            font-size:2rem;
-            font-weight:700;
-            background: linear-gradient(90deg, #fff, var(--accent));
-            -webkit-background-clip:text;
-            background-clip:text;
-            -webkit-text-fill-color:transparent;
+        .card li {
+            margin: 0.5rem 0;
+            padding-left: 1rem;
+            position: relative;
         }
-        .title { font-size:1.1rem; opacity:0.9; }
-
-        /* === 内容卡 === */
-        .section-title {
-            font-size:1.4rem;
-            margin-bottom:1rem;
-            display:flex;
-            align-items:center;
-            gap:0.5rem;
-            color:var(--accent);
-        }
-        .section-title::before {
-            content:'';
-            width:8px;
-            height:8px;
-            background:var(--accent);
-            border-radius:50%;
-            box-shadow:0 0 12px var(--accent);
+        .card li::before {
+            content: '→';
+            color: var(--accent);
+            position: absolute;
+            left: 0;
         }
 
-        ul { list-style:none; }
-        li {
-            margin:0.6rem 0;
-            padding-left:1.2rem;
-            position:relative;
+        /* === 联系区 === */
+        .contact {
+            text-align: center;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-top: 2rem;
         }
-        li::before {
-            content:'▹';
-            color:var(--accent);
-            position:absolute;
-            left:0;
-        }
-
-        a {
-            color:var(--accent);
-            text-decoration:none;
-            position:relative;
-        }
-        a::after {
-            content:'';
-            position:absolute;
-            bottom:-2px;
-            left:0;
-            width:0;
-            height:2px;
-            background:var(--accent);
-            transition:width 0.3s;
-        }
-        a:hover::after { width:100%; }
-
-        /* === 社交图标 === */
-        .social {
-            display:flex;
-            gap:1rem;
-            margin-top:1.5rem;
-            justify-content:center;
-        }
-        .social a {
-            width:44px;
-            height:44px;
-            border-radius:50%;
-            background:var(--glass);
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            font-size:1.3rem;
-            transition:0.3s;
-            border:1px solid var(--glass-border);
-        }
-        .social a:hover {
-            background:var(--accent);
-            color:#000;
-            transform:translateY(-4px);
+        .contact a {
+            font-size: 1.2rem;
+            margin: 0 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        /* === 响应式调整 === */
-        @media (max-width: 767px) {
-            .container { grid-template-columns:1fr; }
-            .avatar-card { grid-row:auto; }
-            .avatar { width:140px; height:140px; }
+        /* === 动画 === */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* === 响应式 === */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3rem; }
+            .hero p { font-size: 1.2rem; }
+            .container { padding: 2rem 1rem; }
+            .cards-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 流动背景 -->
-    <div class="blob"></div>
-    <div class="blob"></div>
-    <div class="blob"></div>
+    <!-- 粒子背景 -->
+    <div id="particles-js"></div>
 
+    <!-- 英雄区 -->
+    <section class="hero">
+        <h1>你的名字</h1>
+        <p>教育科技开发者 / 智能教学创新者</p>
+        <button class="cta-btn" onclick="smoothScroll('#about')">探索更多</button>
+    </section>
+
+    <!-- 容器 -->
     <div class="container">
-
-        <!-- 头像卡 -->
-        <div class="card avatar-card">
-            <img src="https://via.placeholder.com/180/00ddeb/fff?text=头像" alt="头像" class="avatar">
-            <h1 class="name">你的名字</h1>
-            <p class="title">前端设计师 / 独立开发者</p>
-            <div class="social">
-                <a href="#" aria-label="Twitter">🐦</a>
-                <a href="#" aria-label="GitHub">🐙</a>
-                <a href="#" aria-label="LinkedIn">💼</a>
-                <a href="#" aria-label="Email">✉️</a>
+        <!-- 关于 -->
+        <section id="about" class="section">
+            <h2>关于我</h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>我的故事</h3>
+                    <p>专注于智能教育工具开发，结合 AI 与交互设计，创造高效的学习体验。参与多个教育平台项目，推动数字化教学变革。</p>
+                </div>
+                <div class="card">
+                    <h3>我的愿景</h3>
+                    <p>让科技赋能教育，让每位学习者都能享受到个性化、智能化的教学服务。</p>
+                </div>
             </div>
-        </div>
-
-        <!-- 关于我 -->
-        <div class="card">
-            <h2 class="section-title">关于我</h2>
-            <p>
-                热爱用代码与设计创造流畅、沉浸式的数字体验。  
-                专注于液态玻璃、Neumorphism、3D 交互等前沿 UI 风格。
-            </p>
-        </div>
+        </section>
 
         <!-- 技能 -->
-        <div class="card">
-            <h2 class="section-title">技能</h2>
-            <ul>
-                <li>HTML / CSS / JavaScript (ES6+)</li>
-                <li>React / Vue / Three.js</li>
-                <li>Figma / Adobe XD</li>
-                <li>Node.js / Python</li>
-            </ul>
-        </div>
+        <section class="section">
+            <h2>技能栈</h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>前端开发</h3>
+                    <ul>
+                        <li>HTML5 / CSS3 / JavaScript (ES6+)</li>
+                        <li>React / Vue.js</li>
+                        <li>Three.js / Particles.js</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>后端 & AI</h3>
+                    <ul>
+                        <li>Node.js / Python</li>
+                        <li>Machine Learning (TensorFlow)</li>
+                        <li>API 集成 & 数据可视化</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>设计工具</h3>
+                    <ul>
+                        <li>Figma / Adobe XD</li>
+                        <li>交互原型 & UI/UX</li>
+                        <li>教育内容创作</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
 
         <!-- 项目 -->
-        <div class="card">
-            <h2 class="section-title">精选项目</h2>
-            <ul>
-                <li><a href="#">液态时钟</a> – WebGL 驱动的流动时钟</li>
-                <li><a href="#">玻璃仪表盘</a> – 实时数据可视化</li>
-                <li><a href="#">Neumorphic UI Kit</a> – 开源组件库</li>
-            </ul>
-        </div>
+        <section class="section">
+            <h2>精选项目</h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>智能课堂系统</h3>
+                    <p>AI 驱动的在线教学平台，支持实时互动与个性化推荐。</p>
+                    <a href="#">查看 Demo →</a>
+                </div>
+                <div class="card">
+                    <h3>教育数据仪表盘</h3>
+                    <p>可视化学习分析工具，帮助教师洞察学生进步。</p>
+                    <a href="#">GitHub →</a>
+                </div>
+                <div class="card">
+                    <h3>互动学习 App</h3>
+                    <p>移动端教育 App，集成 AR 元素提升 engagement。</p>
+                    <a href="#">下载 APK →</a>
+                </div>
+            </div>
+        </section>
 
-        <!-- 联系方式 -->
-        <div class="card">
-            <h2 class="section-title">联系我</h2>
-            <p>Email: <a href="mailto:hi@yourdomain.com">hi@yourdomain.com</a></p>
-            <p>WeChat: your-wechat-id</p>
-        </div>
-
+        <!-- 联系 -->
+        <section class="contact">
+            <h2>联系我</h2>
+            <p>让我们一起探索教育科技的未来！</p>
+            <div>
+                <a href="mailto:hi@yourdomain.com">📧 Email: hi@yourdomain.com</a>
+                <a href="#">🐦 Twitter: @yourhandle</a>
+                <a href="#">💼 LinkedIn</a>
+                <a href="#">📱 WeChat: your-id</a>
+            </div>
+        </section>
     </div>
 
     <script>
-        // 简单暗/亮模式同步（可选）
-        const updateTheme = () => {
-            document.body.style.background = getComputedStyle(document.documentElement).getPropertyValue('--bg-gradient');
-        };
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateTheme);
-        updateTheme();
+        // 粒子效果 (仿 smart-teach.cn 科技感)
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: ['#00d4ff', '#ffffff', '#4facfe'] },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: '#00d4ff', opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+                modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
+            },
+            retina_detect: true
+        });
+
+        // GSAP 平滑滚动 & 动画
+        gsap.registerPlugin();
+        function smoothScroll(target) {
+            gsap.to(window, { duration: 1, y: target, ease: 'power2.inOut' });
+        }
+        gsap.from('.card', { duration: 1, y: 50, opacity: 0, stagger: 0.2, ease: 'back.out(1.7)' });
+
+        // 鼠标跟随光晕 (可选增强)
+        document.addEventListener('mousemove', (e) => {
+            const cursor = document.createElement('div');
+            cursor.style.position = 'fixed';
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            cursor.style.width = '20px';
+            cursor.style.height = '20px';
+            cursor.style.background = 'radial-gradient(circle, var(--accent), transparent)';
+            cursor.style.borderRadius = '50%';
+            cursor.style.pointerEvents = 'none';
+            cursor.style.zIndex = '9999';
+            cursor.style.opacity = '0.5';
+            document.body.appendChild(cursor);
+            setTimeout(() => cursor.remove(), 500);
+        });
     </script>
-</body>
-</html>      background: rgba(255, 255, 255, 0.18);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-radius: 20px;
-      padding: 40px;
-      width: 100%;
-      max-width: 520px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-      text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      position: relative;
-      z-index: 1;
-    }
-
-    h1 {
-      font-size: 2.8rem;
-      margin-bottom: 16px;
-      background: linear-gradient(to right, #e0bbff, #a0d8ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    p {
-      font-size: 1.1rem;
-      line-height: 1.8;
-      margin-bottom: 30px;
-      opacity: 0.92;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 14px 34px;
-      background: #ffffff;
-      color: #6a4c93;
-      font-weight: 600;
-      text-decoration: none;
-      border-radius: 50px;
-      transition: all 0.3s ease;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    }
-
-    .btn:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
-      background: #f8f9fa;
-    }
-
-    footer {
-      margin-top: 40px;
-      font-size: 0.9rem;
-      opacity: 0.7;
-    }
-
-    /* 响应式 */
-    @media (max-width: 480px) {
-      h1 { font-size: 2.2rem; }
-      .container { padding: 30px 20px; }
-    }
-  </style>
-</head>
-<body>
-
-  <div class="container">
-    <h1>Lyang1273 - 测试</h1>
-    <p>欢迎来到我的测试页面！<br>背景为 <strong>末地城宝箱</strong>（Minecraft Wiki），纯 HTML + CSS 实现，毛玻璃卡片 + 响应式布局。</p>
-    <a href="#" class="btn">开始探索</a>
-    <footer>© 2025 Lyang1273 • 日本 • 纯 HTML 演示</footer>
-  </div>
-
 </body>
 </html>
