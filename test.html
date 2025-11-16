@@ -3,173 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>杨力 · 教育科技开发者</title>
+    <title>Lyang1273 - 测试页</title>
     <style>
         :root {
-            --bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            --text: #f8fafc;
+            --bg-body: #f5f5f5;
+            --bg-header: #1e1e1e;
+            --tile-bg: #ffffff;
+            --tile-shadow: rgba(0, 0, 0, 0.1);
             --accent: #38bdf8;
-            --muted: #94a3b8;
+            --text: #1e1e1e;
+            --text-muted: #666;
         }
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
-            font-family: 'Inter', 'PingFang SC', system-ui, sans-serif;
-            background: var(--bg);
+            font-family: 'Segoe UI', 'PingFang SC', system-ui, sans-serif;
+            background: var(--bg-body);
             color: var(--text);
-            line-height: 1.7;
             min-height: 100vh;
+        }
+
+        /* === 黑色标题栏 === */
+        header {
+            background: var(--bg-header);
+            color: #fff;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .site-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* === 内容区（Win10 磁贴布局） === */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* === 磁贴卡片 === */
+        .tile {
+            background: var(--tile-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px var(--tile-shadow);
+            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
-            padding: 4rem 1.5rem;
+            height: fit-content;
+            overflow: hidden;
         }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            flex: 1;
+        .tile:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
         }
-        header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-        h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffffff, var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
-        }
-        .tagline {
-            font-size: 1.25rem;
-            color: var(--muted);
-        }
-        main { flex: 1; }
-        section {
-            margin-bottom: 3rem;
-        }
-        h2 {
-            font-size: 1.5rem;
+
+        .tile h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
             color: var(--accent);
-            margin-bottom: 1rem;
-            position: relative;
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        h2::after {
+        .tile h3::before {
             content: '';
-            position: absolute;
-            bottom: -6px;
-            left: 0;
-            width: 40px;
-            height: 3px;
+            width: 8px;
+            height: 8px;
             background: var(--accent);
-            border-radius: 2px;
+            border-radius: 50%;
         }
-        p, li {
-            color: var(--muted);
-            font-size: 1.1rem;
+
+        .tile p, .tile li {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
         }
-        ul {
+        .tile ul {
             list-style: none;
-            padding-left: 0;
+            margin-top: 0.5rem;
         }
-        li {
+        .tile li {
             padding-left: 1.2rem;
             position: relative;
-            margin: 0.5rem 0;
+            margin: 0.4rem 0;
         }
-        li::before {
-            content: '→';
+        .tile li::before {
+            content: '▪';
             color: var(--accent);
             position: absolute;
             left: 0;
+            font-size: 0.8rem;
         }
-        a {
+
+        .tile a {
             color: var(--accent);
             text-decoration: none;
-            border-bottom: 1px solid transparent;
-            transition: border 0.3s;
+            font-weight: 500;
+            margin-top: auto;
+            padding-top: 1rem;
+            display: inline-block;
         }
-        a:hover {
-            border-bottom: 1px solid var(--accent);
+        .tile a:hover {
+            text-decoration: underline;
         }
-        .social {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            margin: 3rem 0;
-            font-size: 1.5rem;
-        }
-        .social a { color: var(--muted); transition: color 0.3s; }
-        .social a:hover { color: var(--accent); }
-        footer {
-            text-align: center;
-            color: var(--muted);
-            font-size: 0.9rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-        @media (max-width: 640px) {
-            h1 { font-size: 2.5rem; }
-            body { padding: 2rem 1rem; }
+
+        /* === 响应式 === */
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; padding: 0 1rem; }
+            header { padding: 1rem; }
+            .site-title { font-size: 1.3rem; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-
+    <!-- 黑色标题栏 -->
     <header>
-        <h1>杨力</h1>
-        <p class="tagline">教育科技开发者 · AI 教学创新者</p>
+        <div class="site-title">Lyang1273 - 测试页</div>
     </header>
 
-    <main>
+    <!-- Win10 磁贴内容区 -->
+    <div class="container">
 
-        <section>
-            <h2>关于</h2>
-            <p>专注于智能教育工具开发，结合 AI 与交互设计，创造高效、个性化的学习体验。曾在日本参与数字化教学平台建设，推动教育公平。</p>
-        </section>
-
-        <section>
-            <h2>技能</h2>
-            <ul>
-                <li>前端：React / Vue / Three.js</li>
-                <li>后端：Node.js / Python / TensorFlow</li>
-                <li>设计：Figma / UI/UX 原型</li>
-                <li>语言：中 / 英 / 日</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>项目</h2>
-            <ul>
-                <li><a href="#">智能课堂系统</a> – AI 实时互动教学平台</li>
-                <li><a href="#">教育数据仪表盘</a> – 学习行为可视化分析</li>
-                <li><a href="#">AR 学习 App</a> – 移动端增强现实教育工具</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>联系</h2>
-            <p>Email: <a href="mailto:hi@lyang.dev">hi@lyang.dev</a><br>
-            X: <a href="https://x.com/Lyang1273" target="_blank">@Lyang1273</a><br>
-            WeChat: lyang1273</p>
-        </section>
-
-        <div class="social">
-            <a href="https://x.com/Lyang1273" target="_blank" aria-label="X">𝕏</a>
-            <a href="https://github.com/lyang1273" target="_blank" aria-label="GitHub">GitHub</a>
-            <a href="mailto:hi@lyang.dev" aria-label="Email">Email</a>
+        <!-- 关于我 -->
+        <div class="tile">
+            <h3>关于我</h3>
+            <p>教育科技开发者，专注于 AI 驱动的智能教学系统。目前在日本从事数字化教育平台研发，致力于让学习更高效、公平。</p>
         </div>
 
-    </main>
+        <!-- 技能 -->
+        <div class="tile">
+            <h3>技能栈</h3>
+            <ul>
+                <li>React / Vue / Three.js</li>
+                <li>Node.js / Python / TensorFlow</li>
+                <li>Figma / UI/UX 原型设计</li>
+                <li>中 / 英 / 日语</li>
+            </ul>
+        </div>
 
-    <footer>
-        © 2025 杨力 · 日本
-    </footer>
+        <!-- 项目1 -->
+        <div class="tile">
+            <h3>智能课堂系统</h3>
+            <p>AI 实时互动教学平台，支持个性化学习路径与自动评估。</p>
+            <a href="#" target="_blank">查看 Demo →</a>
+        </div>
 
-</div>
+        <!-- 项目2 -->
+        <div class="tile">
+            <h3>教育数据仪表盘</h3>
+            <p>可视化学习行为分析，帮助教师快速洞察学生进步。</p>
+            <a href="#" target="_blank">GitHub →</a>
+        </div>
+
+        <!-- 项目3 -->
+        <div class="tile">
+            <h3>AR 学习 App</h3>
+            <p>移动端增强现实教育工具，提升学生参与度与记忆力。</p>
+            <a href="#" target="_blank">下载 APK →</a>
+        </div>
+
+        <!-- 联系方式 -->
+        <div class="tile">
+            <h3>联系我</h3>
+            <p>
+                Email: <a href="mailto:hi@lyang.dev">hi@lyang.dev</a><br>
+                X: <a href="https://x.com/Lyang1273" target="_blank">@Lyang1273</a><br>
+                WeChat: lyang1273
+            </p>
+        </div>
+
+    </div>
 
 </body>
 </html>
