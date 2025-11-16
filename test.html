@@ -6,25 +6,25 @@
     <title>Lyang1273 - 测试页</title>
     <style>
         :root {
-            --bg-body: #f5f5f5;
-            --bg-header: #1e1e1e;
-            --tile-bg: #ffffff;
-            --tile-shadow: rgba(0, 0, 0, 0.1);
-            --accent: #38bdf8;
-            --text: #1e1e1e;
-            --text-muted: #666;
+            --bg-body: #f5f5f5;           /* 整体背景：浅灰 */
+            --bg-content: #e0e0e0;        /* 主要内容区背景：灰色 */
+            --tile-bg: #1a2b4c;          /* 磁贴背景：深蓝 */
+            --tile-text: #e0f2ff;        /* 磁贴文字：浅蓝白 */
+            --accent: #4fc3f7;           /* 高亮色：明亮青蓝 */
+            --text-muted: #a0c4ff;       /* 副文字 */
+            --header-bg: #1e1e1e;        /* 标题栏：黑 */
         }
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
             font-family: 'Segoe UI', 'PingFang SC', system-ui, sans-serif;
             background: var(--bg-body);
-            color: var(--text);
+            color: var(--tile-text);
             min-height: 100vh;
         }
 
         /* === 黑色标题栏 === */
         header {
-            background: var(--bg-header);
+            background: var(--header-bg);
             color: #fff;
             padding: 1rem 2rem;
             position: sticky;
@@ -37,69 +37,73 @@
             font-weight: 600;
         }
 
-        /* === 内容区（Win10 磁贴布局） === */
+        /* === 内容区：灰色背景 + 紧凑磁贴网格 === */
+        .content-area {
+            background: var(--bg-content);
+            padding: 2rem 1rem;
+            min-height: calc(100vh - 70px);
+        }
         .container {
             max-width: 1400px;
-            margin: 2rem auto;
-            padding: 0 1rem;
+            margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 0.8rem;                 /* 间距更近 */
         }
 
-        /* === 磁贴卡片 === */
+        /* === 深蓝直角磁贴 === */
         .tile {
             background: var(--tile-bg);
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 12px var(--tile-shadow);
-            transition: all 0.3s ease;
+            padding: 1.4rem;
+            border-radius: 0;            /* 直角 */
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            transition: all 0.25s ease;
             display: flex;
             flex-direction: column;
             height: fit-content;
-            overflow: hidden;
         }
         .tile:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.25);
         }
 
         .tile h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.8rem;
+            font-size: 1.25rem;
+            margin-bottom: 0.7rem;
             color: var(--accent);
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-weight: 600;
         }
         .tile h3::before {
             content: '';
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
             background: var(--accent);
             border-radius: 50%;
         }
 
         .tile p, .tile li {
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             color: var(--text-muted);
-            line-height: 1.6;
+            line-height: 1.55;
         }
         .tile ul {
             list-style: none;
-            margin-top: 0.5rem;
+            margin-top: 0.4rem;
         }
         .tile li {
-            padding-left: 1.2rem;
+            padding-left: 1.1rem;
             position: relative;
-            margin: 0.4rem 0;
+            margin: 0.3rem 0;
         }
         .tile li::before {
             content: '▪';
             color: var(--accent);
             position: absolute;
             left: 0;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
         }
 
         .tile a {
@@ -107,8 +111,8 @@
             text-decoration: none;
             font-weight: 500;
             margin-top: auto;
-            padding-top: 1rem;
-            display: inline-block;
+            padding-top: 0.8rem;
+            font-size: 0.9rem;
         }
         .tile a:hover {
             text-decoration: underline;
@@ -116,8 +120,13 @@
 
         /* === 响应式 === */
         @media (max-width: 768px) {
-            .container { grid-template-columns: 1fr; padding: 0 1rem; }
-            header { padding: 1rem; }
+            .container { 
+                grid-template-columns: 1fr; 
+                gap: 0.6rem;
+                padding: 0 0.5rem;
+            }
+            .content-area { padding: 1.5rem 0.8rem; }
+            header { padding: 0.8rem 1rem; }
             .site-title { font-size: 1.3rem; }
         }
     </style>
@@ -129,57 +138,59 @@
         <div class="site-title">Lyang1273 - 测试页</div>
     </header>
 
-    <!-- Win10 磁贴内容区 -->
-    <div class="container">
+    <!-- 灰色内容区 + 深蓝直角磁贴 -->
+    <div class="content-area">
+        <div class="container">
 
-        <!-- 关于我 -->
-        <div class="tile">
-            <h3>关于我</h3>
-            <p>教育科技开发者，专注于 AI 驱动的智能教学系统。目前在日本从事数字化教育平台研发，致力于让学习更高效、公平。</p>
+            <!-- 关于我 -->
+            <div class="tile">
+                <h3>关于我</h3>
+                <p>教育科技开发者，专注于 AI 驱动的智能教学系统。目前在日本从事数字化教育平台研发，致力于让学习更高效、公平。</p>
+            </div>
+
+            <!-- 技能 -->
+            <div class="tile">
+                <h3>技能栈</h3>
+                <ul>
+                    <li>React / Vue / Three.js</li>
+                    <li>Node.js / Python / TensorFlow</li>
+                    <li>Figma / UI/UX 原型设计</li>
+                    <li>中 / 英 / 日语</li>
+                </ul>
+            </div>
+
+            <!-- 项目1 -->
+            <div class="tile">
+                <h3>智能课堂系统</h3>
+                <p>AI 实时互动教学平台，支持个性化学习路径与自动评估。</p>
+                <a href="#" target="_blank">查看 Demo →</a>
+            </div>
+
+            <!-- 项目2 -->
+            <div class="tile">
+                <h3>教育数据仪表盘</h3>
+                <p>可视化学习行为分析，帮助教师快速洞察学生进步。</p>
+                <a href="#" target="_blank">GitHub →</a>
+            </div>
+
+            <!-- 项目3 -->
+            <div class="tile">
+                <h3>AR 学习 App</h3>
+                <p>移动端增强现实教育工具，提升学生参与度与记忆力。</p>
+                <a href="#" target="_blank">下载 APK →</a>
+            </div>
+
+            <!-- 联系方式 -->
+            <div class="tile">
+                <h3>联系我</h3>
+                <p>
+                    Email: <a href="mailto:hi@lyang.dev">hi@lyang.dev</a><br>
+                    X: <a href="https://x.com/Lyang1273" target="_blank">@Lyang1273</a><br>
+                    WeChat: lyang1273
+                </p>
+            </div>
+
         </div>
-
-        <!-- 技能 -->
-        <div class="tile">
-            <h3>技能栈</h3>
-            <ul>
-                <li>React / Vue / Three.js</li>
-                <li>Node.js / Python / TensorFlow</li>
-                <li>Figma / UI/UX 原型设计</li>
-                <li>中 / 英 / 日语</li>
-            </ul>
-        </div>
-
-        <!-- 项目1 -->
-        <div class="tile">
-            <h3>智能课堂系统</h3>
-            <p>AI 实时互动教学平台，支持个性化学习路径与自动评估。</p>
-            <a href="#" target="_blank">查看 Demo →</a>
-        </div>
-
-        <!-- 项目2 -->
-        <div class="tile">
-            <h3>教育数据仪表盘</h3>
-            <p>可视化学习行为分析，帮助教师快速洞察学生进步。</p>
-            <a href="#" target="_blank">GitHub →</a>
-        </div>
-
-        <!-- 项目3 -->
-        <div class="tile">
-            <h3>AR 学习 App</h3>
-            <p>移动端增强现实教育工具，提升学生参与度与记忆力。</p>
-            <a href="#" target="_blank">下载 APK →</a>
-        </div>
-
-        <!-- 联系方式 -->
-        <div class="tile">
-            <h3>联系我</h3>
-            <p>
-                Email: <a href="mailto:hi@lyang.dev">hi@lyang.dev</a><br>
-                X: <a href="https://x.com/Lyang1273" target="_blank">@Lyang1273</a><br>
-                WeChat: lyang1273
-            </p>
-        </div>
-
     </div>
 
 </body>
