@@ -1,40 +1,286 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Lyang1273 - 测试</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>液态玻璃 · 个人网站</title>
+    <style>
+        /* === 全局变量 === */
+        :root {
+            --glass: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --text: #f0f0f0;
+            --accent: #00ddeb;
+            --bg-gradient: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            --blob-size: 400px;
+        }
+        @media (prefers-color-scheme: light) {
+            :root {
+                --glass: rgba(255, 255, 255, 0.35);
+                --glass-border: rgba(255, 255, 255, 0.5);
+                --text: #222;
+                --accent: #00aaff;
+                --bg-gradient: linear-gradient(135deg, #e0f7fa, #b2ebf2, #80deea);
+            }
+        }
 
-  <!-- 引入中文字体 -->
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+        /* === 基础重置 === */
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Segoe UI', 'SF Pro Display', system-ui, sans-serif;
+            color: var(--text);
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+        /* === 流动背景 Blob === */
+        .blob {
+            position: absolute;
+            width: var(--blob-size);
+            height: var(--blob-size);
+            background: radial-gradient(circle, rgba(0,221,235,0.3), transparent);
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: float 20s infinite ease-in-out;
+            z-index: -1;
+        }
+        .blob:nth-child(1) { top:10%; left:10%; animation-delay:0s; }
+        .blob:nth-child(2) { bottom:15%; right:15%; animation-delay:7s; background: radial-gradient(circle, rgba(255,100,200,0.25), transparent); }
+        .blob:nth-child(3) { top:50%; left:60%; animation-delay:14s; background: radial-gradient(circle, rgba(150,255,100,0.2), transparent); }
 
-    body {
-      font-family: 'Noto Sans SC', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      color: #fff;
+        @keyframes float {
+            0%,100% { transform:translate(0,0) rotate(0deg); }
+            33% { transform:translate(80px,-100px) rotate(120deg); }
+            66% { transform:translate(-60px,80px) rotate(240deg); }
+        }
 
-      /* 指定背景图 + 半透明叠加层，确保文字清晰 */
-      background: 
-        linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
-        url('https://zh.minecraft.wiki/w/File:EndCityChests.png') center/cover no-repeat fixed;
+        /* === 容器 === */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: 1fr;
+        }
+        @media (min-width: 768px) {
+            .container { grid-template-columns: 1fr 1fr; }
+        }
 
-      /* 回退背景色 */
-      background-color: #2a1b3d;
-    }
+        /* === 毛玻璃卡片 === */
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 1.5rem;
+            border: 1px solid var(--glass-border);
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            transition: all 0.4s cubic-bezier(0.25,0.8,0.25,1);
+            position: relative;
+            overflow: hidden;
+        }
+        .card::before {
+            content:'';
+            position:absolute;
+            inset:0;
+            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1));
+            opacity:0;
+            transition: opacity 0.4s;
+        }
+        .card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .card:hover::before { opacity:1; }
 
-    .container {
-      background: rgba(255, 255, 255, 0.18);
+        /* === 头像卡 === */
+        .avatar-card {
+            grid-row: span 2;
+            text-align:center;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            gap:1.5rem;
+        }
+        .avatar {
+            width:180px;
+            height:180px;
+            border-radius:50%;
+            object-fit:cover;
+            border:4px solid var(--accent);
+            box-shadow: 0 0 30px rgba(0,221,235,0.4);
+            transition: all 0.4s;
+        }
+        .avatar:hover { transform:scale(1.08); box-shadow:0 0 40px rgba(0,221,235,0.6); }
+        .name {
+            font-size:2rem;
+            font-weight:700;
+            background: linear-gradient(90deg, #fff, var(--accent));
+            -webkit-background-clip:text;
+            background-clip:text;
+            -webkit-text-fill-color:transparent;
+        }
+        .title { font-size:1.1rem; opacity:0.9; }
+
+        /* === 内容卡 === */
+        .section-title {
+            font-size:1.4rem;
+            margin-bottom:1rem;
+            display:flex;
+            align-items:center;
+            gap:0.5rem;
+            color:var(--accent);
+        }
+        .section-title::before {
+            content:'';
+            width:8px;
+            height:8px;
+            background:var(--accent);
+            border-radius:50%;
+            box-shadow:0 0 12px var(--accent);
+        }
+
+        ul { list-style:none; }
+        li {
+            margin:0.6rem 0;
+            padding-left:1.2rem;
+            position:relative;
+        }
+        li::before {
+            content:'▹';
+            color:var(--accent);
+            position:absolute;
+            left:0;
+        }
+
+        a {
+            color:var(--accent);
+            text-decoration:none;
+            position:relative;
+        }
+        a::after {
+            content:'';
+            position:absolute;
+            bottom:-2px;
+            left:0;
+            width:0;
+            height:2px;
+            background:var(--accent);
+            transition:width 0.3s;
+        }
+        a:hover::after { width:100%; }
+
+        /* === 社交图标 === */
+        .social {
+            display:flex;
+            gap:1rem;
+            margin-top:1.5rem;
+            justify-content:center;
+        }
+        .social a {
+            width:44px;
+            height:44px;
+            border-radius:50%;
+            background:var(--glass);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:1.3rem;
+            transition:0.3s;
+            border:1px solid var(--glass-border);
+        }
+        .social a:hover {
+            background:var(--accent);
+            color:#000;
+            transform:translateY(-4px);
+        }
+
+        /* === 响应式调整 === */
+        @media (max-width: 767px) {
+            .container { grid-template-columns:1fr; }
+            .avatar-card { grid-row:auto; }
+            .avatar { width:140px; height:140px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 流动背景 -->
+    <div class="blob"></div>
+    <div class="blob"></div>
+    <div class="blob"></div>
+
+    <div class="container">
+
+        <!-- 头像卡 -->
+        <div class="card avatar-card">
+            <img src="https://via.placeholder.com/180/00ddeb/fff?text=头像" alt="头像" class="avatar">
+            <h1 class="name">你的名字</h1>
+            <p class="title">前端设计师 / 独立开发者</p>
+            <div class="social">
+                <a href="#" aria-label="Twitter">🐦</a>
+                <a href="#" aria-label="GitHub">🐙</a>
+                <a href="#" aria-label="LinkedIn">💼</a>
+                <a href="#" aria-label="Email">✉️</a>
+            </div>
+        </div>
+
+        <!-- 关于我 -->
+        <div class="card">
+            <h2 class="section-title">关于我</h2>
+            <p>
+                热爱用代码与设计创造流畅、沉浸式的数字体验。  
+                专注于液态玻璃、Neumorphism、3D 交互等前沿 UI 风格。
+            </p>
+        </div>
+
+        <!-- 技能 -->
+        <div class="card">
+            <h2 class="section-title">技能</h2>
+            <ul>
+                <li>HTML / CSS / JavaScript (ES6+)</li>
+                <li>React / Vue / Three.js</li>
+                <li>Figma / Adobe XD</li>
+                <li>Node.js / Python</li>
+            </ul>
+        </div>
+
+        <!-- 项目 -->
+        <div class="card">
+            <h2 class="section-title">精选项目</h2>
+            <ul>
+                <li><a href="#">液态时钟</a> – WebGL 驱动的流动时钟</li>
+                <li><a href="#">玻璃仪表盘</a> – 实时数据可视化</li>
+                <li><a href="#">Neumorphic UI Kit</a> – 开源组件库</li>
+            </ul>
+        </div>
+
+        <!-- 联系方式 -->
+        <div class="card">
+            <h2 class="section-title">联系我</h2>
+            <p>Email: <a href="mailto:hi@yourdomain.com">hi@yourdomain.com</a></p>
+            <p>WeChat: your-wechat-id</p>
+        </div>
+
+    </div>
+
+    <script>
+        // 简单暗/亮模式同步（可选）
+        const updateTheme = () => {
+            document.body.style.background = getComputedStyle(document.documentElement).getPropertyValue('--bg-gradient');
+        };
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateTheme);
+        updateTheme();
+    </script>
+</body>
+</html>      background: rgba(255, 255, 255, 0.18);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-radius: 20px;
