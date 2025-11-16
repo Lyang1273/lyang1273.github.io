@@ -3,337 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Personal · 个人网站</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <title>杨力 · 教育科技开发者</title>
     <style>
-        /* === 全局变量 === */
         :root {
-            --bg-primary: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
-            --glass: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 212, 255, 0.2);
-            --accent: #00d4ff;
-            --text: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.8);
+            --bg: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --text: #f8fafc;
+            --accent: #38bdf8;
+            --muted: #94a3b8;
         }
-        @media (prefers-color-scheme: light) {
-            :root {
-                --bg-primary: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 50%, #c7d2fe 100%);
-                --glass: rgba(255, 255, 255, 0.8);
-                --glass-border: rgba(0, 212, 255, 0.3);
-                --accent: #0066cc;
-                --text: #1e293b;
-                --text-secondary: rgba(30, 41, 59, 0.8);
-            }
-        }
-
-        /* === 基础重置 === */
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
             font-family: 'Inter', 'PingFang SC', system-ui, sans-serif;
+            background: var(--bg);
             color: var(--text);
-            background: var(--bg-primary);
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-        a { color: var(--accent); text-decoration: none; }
-        a:hover { text-decoration: underline; }
-
-        /* === 粒子背景 === */
-        #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        /* === 英雄区 Hero === */
-        .hero {
-            height: 100vh;
+            line-height: 1.7;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 0 2rem;
-            position: relative;
+            padding: 4rem 1.5rem;
         }
-        .hero h1 {
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent), #ffffff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
-            animation: fadeInUp 1s ease-out;
-        }
-        .hero p {
-            font-size: 1.5rem;
-            opacity: 0.9;
-            margin-bottom: 2rem;
-            animation: fadeInUp 1s ease-out 0.2s both;
-        }
-        .cta-btn {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            color: var(--text);
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-            animation: fadeInUp 1s ease-out 0.4s both;
-        }
-        .cta-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
-            border-color: var(--accent);
-        }
-
-        /* === 卡片容器 === */
         .container {
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
-            padding: 4rem 2rem;
+            flex: 1;
         }
-        .section {
+        header {
+            text-align: center;
             margin-bottom: 4rem;
         }
-        .section h2 {
-            font-size: 2.5rem;
-            text-align: center;
-            margin-bottom: 3rem;
-            background: linear-gradient(135deg, var(--accent), #ffffff);
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff, var(--accent));
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
         }
-
-        /* === 毛玻璃卡片网格 === */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+        .tagline {
+            font-size: 1.25rem;
+            color: var(--muted);
         }
-        .card {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 20px;
-            border: 1px solid var(--glass-border);
-            padding: 2rem;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        main { flex: 1; }
+        section {
+            margin-bottom: 3rem;
+        }
+        h2 {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
             position: relative;
-            overflow: hidden;
+            display: inline-block;
         }
-        .card::before {
+        h2::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s;
+            bottom: -6px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 2px;
         }
-        .card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0,212,255,0.2);
+        p, li {
+            color: var(--muted);
+            font-size: 1.1rem;
         }
-        .card:hover::before { left: 100%; }
-        .card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--accent);
-        }
-        .card ul {
+        ul {
             list-style: none;
+            padding-left: 0;
         }
-        .card li {
-            margin: 0.5rem 0;
-            padding-left: 1rem;
+        li {
+            padding-left: 1.2rem;
             position: relative;
+            margin: 0.5rem 0;
         }
-        .card li::before {
+        li::before {
             content: '→';
             color: var(--accent);
             position: absolute;
             left: 0;
         }
-
-        /* === 联系区 === */
-        .contact {
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border 0.3s;
+        }
+        a:hover {
+            border-bottom: 1px solid var(--accent);
+        }
+        .social {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin: 3rem 0;
+            font-size: 1.5rem;
+        }
+        .social a { color: var(--muted); transition: color 0.3s; }
+        .social a:hover { color: var(--accent); }
+        footer {
             text-align: center;
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 3rem;
-            margin-top: 2rem;
+            color: var(--muted);
+            font-size: 0.9rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
-        .contact a {
-            font-size: 1.2rem;
-            margin: 0 1rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        /* === 动画 === */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* === 响应式 === */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 3rem; }
-            .hero p { font-size: 1.2rem; }
-            .container { padding: 2rem 1rem; }
-            .cards-grid { grid-template-columns: 1fr; }
+        @media (max-width: 640px) {
+            h1 { font-size: 2.5rem; }
+            body { padding: 2rem 1rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 粒子背景 -->
-    <div id="particles-js"></div>
+<div class="container">
 
-    <!-- 英雄区 -->
-    <section class="hero">
-        <h1>你的名字</h1>
-        <p>教育科技开发者 / 智能教学创新者</p>
-        <button class="cta-btn" onclick="smoothScroll('#about')">探索更多</button>
-    </section>
+    <header>
+        <h1>杨力</h1>
+        <p class="tagline">教育科技开发者 · AI 教学创新者</p>
+    </header>
 
-    <!-- 容器 -->
-    <div class="container">
-        <!-- 关于 -->
-        <section id="about" class="section">
-            <h2>关于我</h2>
-            <div class="cards-grid">
-                <div class="card">
-                    <h3>我的故事</h3>
-                    <p>专注于智能教育工具开发，结合 AI 与交互设计，创造高效的学习体验。参与多个教育平台项目，推动数字化教学变革。</p>
-                </div>
-                <div class="card">
-                    <h3>我的愿景</h3>
-                    <p>让科技赋能教育，让每位学习者都能享受到个性化、智能化的教学服务。</p>
-                </div>
-            </div>
+    <main>
+
+        <section>
+            <h2>关于</h2>
+            <p>专注于智能教育工具开发，结合 AI 与交互设计，创造高效、个性化的学习体验。曾在日本参与数字化教学平台建设，推动教育公平。</p>
         </section>
 
-        <!-- 技能 -->
-        <section class="section">
-            <h2>技能栈</h2>
-            <div class="cards-grid">
-                <div class="card">
-                    <h3>前端开发</h3>
-                    <ul>
-                        <li>HTML5 / CSS3 / JavaScript (ES6+)</li>
-                        <li>React / Vue.js</li>
-                        <li>Three.js / Particles.js</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3>后端 & AI</h3>
-                    <ul>
-                        <li>Node.js / Python</li>
-                        <li>Machine Learning (TensorFlow)</li>
-                        <li>API 集成 & 数据可视化</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3>设计工具</h3>
-                    <ul>
-                        <li>Figma / Adobe XD</li>
-                        <li>交互原型 & UI/UX</li>
-                        <li>教育内容创作</li>
-                    </ul>
-                </div>
-            </div>
+        <section>
+            <h2>技能</h2>
+            <ul>
+                <li>前端：React / Vue / Three.js</li>
+                <li>后端：Node.js / Python / TensorFlow</li>
+                <li>设计：Figma / UI/UX 原型</li>
+                <li>语言：中 / 英 / 日</li>
+            </ul>
         </section>
 
-        <!-- 项目 -->
-        <section class="section">
-            <h2>精选项目</h2>
-            <div class="cards-grid">
-                <div class="card">
-                    <h3>智能课堂系统</h3>
-                    <p>AI 驱动的在线教学平台，支持实时互动与个性化推荐。</p>
-                    <a href="#">查看 Demo →</a>
-                </div>
-                <div class="card">
-                    <h3>教育数据仪表盘</h3>
-                    <p>可视化学习分析工具，帮助教师洞察学生进步。</p>
-                    <a href="#">GitHub →</a>
-                </div>
-                <div class="card">
-                    <h3>互动学习 App</h3>
-                    <p>移动端教育 App，集成 AR 元素提升 engagement。</p>
-                    <a href="#">下载 APK →</a>
-                </div>
-            </div>
+        <section>
+            <h2>项目</h2>
+            <ul>
+                <li><a href="#">智能课堂系统</a> – AI 实时互动教学平台</li>
+                <li><a href="#">教育数据仪表盘</a> – 学习行为可视化分析</li>
+                <li><a href="#">AR 学习 App</a> – 移动端增强现实教育工具</li>
+            </ul>
         </section>
 
-        <!-- 联系 -->
-        <section class="contact">
-            <h2>联系我</h2>
-            <p>让我们一起探索教育科技的未来！</p>
-            <div>
-                <a href="mailto:hi@yourdomain.com">📧 Email: hi@yourdomain.com</a>
-                <a href="#">🐦 Twitter: @yourhandle</a>
-                <a href="#">💼 LinkedIn</a>
-                <a href="#">📱 WeChat: your-id</a>
-            </div>
+        <section>
+            <h2>联系</h2>
+            <p>Email: <a href="mailto:hi@lyang.dev">hi@lyang.dev</a><br>
+            X: <a href="https://x.com/Lyang1273" target="_blank">@Lyang1273</a><br>
+            WeChat: lyang1273</p>
         </section>
-    </div>
 
-    <script>
-        // 粒子效果 (仿 smart-teach.cn 科技感)
-        particlesJS('particles-js', {
-            particles: {
-                number: { value: 80, density: { enable: true, value_area: 800 } },
-                color: { value: ['#00d4ff', '#ffffff', '#4facfe'] },
-                shape: { type: 'circle' },
-                opacity: { value: 0.5, random: true },
-                size: { value: 3, random: true },
-                line_linked: { enable: true, distance: 150, color: '#00d4ff', opacity: 0.4, width: 1 },
-                move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
-            },
-            interactivity: {
-                detect_on: 'canvas',
-                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
-                modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
-            },
-            retina_detect: true
-        });
+        <div class="social">
+            <a href="https://x.com/Lyang1273" target="_blank" aria-label="X">𝕏</a>
+            <a href="https://github.com/lyang1273" target="_blank" aria-label="GitHub">GitHub</a>
+            <a href="mailto:hi@lyang.dev" aria-label="Email">Email</a>
+        </div>
 
-        // GSAP 平滑滚动 & 动画
-        gsap.registerPlugin();
-        function smoothScroll(target) {
-            gsap.to(window, { duration: 1, y: target, ease: 'power2.inOut' });
-        }
-        gsap.from('.card', { duration: 1, y: 50, opacity: 0, stagger: 0.2, ease: 'back.out(1.7)' });
+    </main>
 
-        // 鼠标跟随光晕 (可选增强)
-        document.addEventListener('mousemove', (e) => {
-            const cursor = document.createElement('div');
-            cursor.style.position = 'fixed';
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            cursor.style.width = '20px';
-            cursor.style.height = '20px';
-            cursor.style.background = 'radial-gradient(circle, var(--accent), transparent)';
-            cursor.style.borderRadius = '50%';
-            cursor.style.pointerEvents = 'none';
-            cursor.style.zIndex = '9999';
-            cursor.style.opacity = '0.5';
-            document.body.appendChild(cursor);
-            setTimeout(() => cursor.remove(), 500);
-        });
-    </script>
+    <footer>
+        © 2025 杨力 · 日本
+    </footer>
+
+</div>
+
 </body>
 </html>
