@@ -10,14 +10,13 @@
     <style>
         /* ====================== 全局颜色变量 ====================== */
         :root {
-            --bg-body: #0a0e17;                     /* 整体背景：极深蓝黑（用户指定） */
+            --bg-body: #0a0e17;                     /* 整体背景：极深蓝黑 */
             --bg-content: #111827;                  /* 内容区背景：深灰蓝 */
-            --tile-bg: #0f1e3a;                     /* 磁贴背景：更深的海军蓝 */
-            --tile-text: #ffffff;                   /* 磁贴文字：纯白（用户指定） */
-            --accent: #4fc3f7;                      /* 高亮/强调色：明亮青蓝 */
-            --text-muted: #cbd5e1;                  /* 次要文字：浅灰白（适配白色主色） */
+            --tile-bg: #0f1e3a;                     /* 磁贴背景：海军蓝 */
+            --tile-text: #ffffff;                   /* 磁贴文字：纯白 */
+            --accent: #4fc3f7;                      /* 高亮色：明亮青蓝 */
+            --text-muted: #cbd5e1;                  /* 次要文字：浅灰白 */
             --header-bg: #000000;                   /* 顶部栏：纯黑 */
-            --ripple: rgba(220, 220, 220, 0.35);    /* 水波纹：灰白色 */
         }
 
         /* ====================== 基础重置 ====================== */
@@ -34,7 +33,7 @@
         /* ====================== 页面主体 ====================== */
         body {
             font-family: 'Segoe UI', 'PingFang SC', system-ui, sans-serif;
-            background: var(--bg-body) !important;   /* 强制极深蓝黑背景 */
+            background: var(--bg-body) !important;
             color: var(--tile-text);
             min-height: 100vh;
             line-height: 1.6;
@@ -74,41 +73,23 @@
         .tile {
             background: var(--tile-bg);
             padding: 1.4rem;
-            border-radius: 0;                       /* 直角矩形 */
+            border-radius: 0;
             box-shadow: 0 3px 8px rgba(0,0,0,0.2);
             transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s ease;
             display: flex;
             flex-direction: column;
             height: fit-content;
             position: relative;
-            overflow: hidden;
             cursor: pointer;
             transform-style: preserve-3d;
             perspective: 1000px;
             outline: none;
         }
 
-        /* 按下时缩小的动画类 */
+        /* 按下时轻微缩小（0.5秒恢复） */
         .tile.shrink {
             transform: scale(0.96);
             box-shadow: 0 6px 16px rgba(0,0,0,0.3);
-        }
-
-        /* 水波纹动画（0.5秒） */
-        .ripple {
-            position: absolute;
-            border-radius: 50%;
-            background: var(--ripple);
-            transform: scale(0);
-            animation: ripple 0.5s ease-out;
-            pointer-events: none;
-            z-index: 1;
-        }
-        @keyframes ripple {
-            to {
-                transform: scale(4.5);
-                opacity: 0;
-            }
         }
 
         /* 标题样式 */
@@ -151,6 +132,37 @@
             position: absolute;
             left: 0;
             font-size: 0.75rem;
+        }
+
+        /* 名言专用样式：斜体 + 右对齐 + 小字体 */
+        .quote {
+            font-style: italic;
+            font-size: 0.88rem;
+            color: #94a3b8;
+            text-align: right;
+            margin-top: 1rem;
+            padding-top: 0.8rem;
+            border-top: 1px dashed rgba(255,255,255,0.1);
+            line-height: 1.5;
+        }
+        .quote::before {
+            content: '“';
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-right: 0.3rem;
+        }
+        .quote::after {
+            content: '”';
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-left: 0.3rem;
+        }
+        .quote-author {
+            display: block;
+            font-weight: 500;
+            color: #64748b;
+            font-size: 0.8rem;
+            margin-top: 0.4rem;
         }
 
         /* 链接样式 */
@@ -196,13 +208,17 @@
     <div class="content-area">
         <div class="container">
 
-            <!-- 关于我 -->
+            <!-- 关于我 + 名言 -->
             <div class="tile" tabindex="0">
                 <h3>关于我</h3>
                 <p>教育科技开发者，专注于 AI 驱动的智能教学系统。目前在日本从事数字化教育平台研发，致力于让学习更高效、公平。</p>
+                <div class="quote">
+                    教育是点燃火焰，而不是灌满水桶
+                    <span class="quote-author">— 苏格拉底</span>
+                </div>
             </div>
 
-            <!-- 技能栈 -->
+            <!-- 技能栈 + 名言 -->
             <div class="tile" tabindex="0">
                 <h3>技能栈</h3>
                 <ul>
@@ -211,30 +227,46 @@
                     <li>Figma / UI/UX 原型设计</li>
                     <li>中 / 英 / 日语</li>
                 </ul>
+                <div class="quote">
+                    代码即诗
+                    <span class="quote-author">— Grace Hopper</span>
+                </div>
             </div>
 
-            <!-- 项目：智能课堂系统 -->
+            <!-- 项目：智能课堂系统 + 名言 -->
             <div class="tile" tabindex="0">
                 <h3>智能课堂系统</h3>
                 <p>AI 实时互动教学平台，支持个性化学习路径与自动评估。</p>
                 <a href="#" target="_blank">查看 Demo →</a>
+                <div class="quote">
+                    科技是第一生产力
+                    <span class="quote-author">— 邓小平</span>
+                </div>
             </div>
 
-            <!-- 项目：教育数据仪表盘 -->
+            <!-- 项目：教育数据仪表盘 + 名言 -->
             <div class="tile" tabindex="0">
                 <h3>教育数据仪表盘</h3>
                 <p>可视化学习行为分析，帮助教师快速洞察学生进步。</p>
                 <a href="#" target="_blank">GitHub →</a>
+                <div class="quote">
+                    数据是新的石油
+                    <span class="quote-author">— Clive Humby</span>
+                </div>
             </div>
 
-            <!-- 项目：AR 学习 App -->
+            <!-- 项目：AR 学习 App + 名言 -->
             <div class="tile" tabindex="0">
                 <h3>AR 学习 App</h3>
                 <p>移动端增强现实教育工具，提升学生参与度与记忆力。</p>
                 <a href="#" target="_blank">下载 APK →</a>
+                <div class="quote">
+                    想象力比知识更重要
+                    <span class="quote-author">— 爱因斯坦</span>
+                </div>
             </div>
 
-            <!-- 联系方式 -->
+            <!-- 联系方式 + 名言 -->
             <div class="tile" tabindex="0">
                 <h3>联系我</h3>
                 <p>
@@ -242,50 +274,38 @@
                     X: <a href="https://x.com/Lyang1273" target="_blank">@Lyang1273</a><br>
                     WeChat: lyang1273
                 </p>
+                <div class="quote">
+                    未来属于那些相信梦想之美的人
+                    <span class="quote-author">— Eleanor Roosevelt</span>
+                </div>
             </div>
 
         </div>
     </div>
 
-    <!-- 交互脚本 -->
+    <!-- 交互脚本（仅保留点击缩小效果） -->
     <script>
-        // 为每个磁贴绑定点击/触摸效果
+        // 为每个磁贴绑定点击缩小效果（0.5秒恢复）
         document.querySelectorAll('.tile').forEach(tile => {
             let isAnimating = false;
 
-            const triggerEffect = (e) => {
+            const triggerShrink = (e) => {
                 if (isAnimating) return;
                 isAnimating = true;
-
-                // 获取点击或触摸位置
-                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                const rect = tile.getBoundingClientRect();
-                const x = clientX - rect.left;
-                const y = clientY - rect.top;
 
                 // 应用缩小效果
                 tile.classList.add('shrink');
 
-                // 创建灰白色水波纹
-                const ripple = document.createElement('div');
-                ripple.className = 'ripple';
-                ripple.style.left = x + 'px';
-                ripple.style.top = y + 'px';
-                ripple.style.width = ripple.style.height = Math.max(rect.width, rect.height) * 1.4 + 'px';
-                tile.appendChild(ripple);
-
-                // 0.5 秒后恢复原状
+                // 0.5 秒后恢复
                 setTimeout(() => {
                     tile.classList.remove('shrink');
-                    ripple.remove();
                     isAnimating = false;
                 }, 500);
             };
 
-            // 绑定鼠标和触摸事件（触摸使用 passive 允许页面滚动）
-            tile.addEventListener('mousedown', triggerEffect);
-            tile.addEventListener('touchstart', triggerEffect, { passive: true });
+            // 绑定鼠标和触摸事件（触摸允许页面滚动）
+            tile.addEventListener('mousedown', triggerShrink);
+            tile.addEventListener('touchstart', triggerShrink, { passive: true });
         });
     </script>
 
