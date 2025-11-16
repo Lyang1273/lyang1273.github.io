@@ -4,18 +4,17 @@
     <!-- 页面元信息 -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lyang1273 - 测试页</title>
+    <title>Lyang1273 - 个人博客</title>
 
     <!-- 样式定义 -->
     <style>
         /* ====================== 全局颜色变量 ====================== */
         :root {
-            --bg-body: #0a0e17;                     /* 整体背景：极深蓝黑 */
-            --bg-content: #111827;                  /* 内容区背景：深灰蓝 */
-            --tile-bg: #0f1e3a;                     /* 磁贴背景：海军蓝 */
-            --tile-text: #ffffff;                   /* 磁贴文字：纯白 */
-            --accent: #4fc3f7;                      /* 高亮色：明亮青蓝 */
-            --text-muted: #cbd5e1;                  /* 次要文字：浅灰白 */
+            --bg-body: #000000;                     /* 纯黑背景（用户重申） */
+            --bg-content: #000000;                  /* 内容区：纯黑 */
+            --tile-bg: #00549C;                     /* 磁贴背景：深蓝 #00549C（用户指定） */
+            --tile-text: #ffffff;                   /* 所有文字：纯白（用户指定） */
+            --accent: #4fc3f7;                      /* 高亮色：明亮青蓝（保留用于链接/装饰） */
             --header-bg: #000000;                   /* 顶部栏：纯黑 */
         }
 
@@ -36,7 +35,7 @@
             background: var(--bg-body) !important;
             color: var(--tile-text);
             min-height: 100vh;
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
         /* ====================== 顶部标题栏 ====================== */
@@ -48,11 +47,12 @@
             top: 0;
             z-index: 100;
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            border-bottom: 1px solid #222;
+            border-bottom: 1px solid #111;
         }
         .site-title {
             font-size: 1.5rem;
             font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
         /* ====================== 内容区域 ====================== */
@@ -65,16 +65,16 @@
             max-width: 1400px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 0.8rem;
         }
 
-        /* ====================== 磁贴卡片 ====================== */
+        /* ====================== 磁贴卡片（博客文章卡片） ====================== */
         .tile {
             background: var(--tile-bg);
-            padding: 1.4rem;
+            padding: 1.6rem;
             border-radius: 0;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.25);
             transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s ease;
             display: flex;
             flex-direction: column;
@@ -86,93 +86,74 @@
             outline: none;
         }
 
-        /* 按下时轻微缩小（0.5秒恢复） */
+        /* 点击时轻微缩小 */
         .tile.shrink {
             transform: scale(0.96);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
         }
 
-        /* 标题样式 */
+        /* 博客标题 */
         .tile h3 {
-            font-size: 1.25rem;
-            margin-bottom: 0.7rem;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            color: #ffffff;
             font-weight: 600;
-        }
-        .tile h3::before {
-            content: '';
-            width: 7px;
-            height: 7px;
-            background: var(--accent);
-            border-radius: 50%;
+            line-height: 1.3;
         }
 
-        /* 正文与列表 */
-        .tile p,
-        .tile li {
-            font-size: 0.92rem;
-            color: var(--text-muted);
-            line-height: 1.55;
-        }
-        .tile ul {
-            list-style: none;
-            margin-top: 0.4rem;
-        }
-        .tile li {
-            padding-left: 1.1rem;
-            position: relative;
-            margin: 0.3rem 0;
-        }
-        .tile li::before {
-            content: '▪';
-            color: var(--accent);
-            position: absolute;
-            left: 0;
-            font-size: 0.75rem;
+        /* 博客摘要文字 */
+        .tile p {
+            font-size: 0.95rem;
+            color: #ffffff;
+            line-height: 1.65;
+            margin-bottom: 1rem;
+            opacity: 0.95;
         }
 
-        /* 名言专用样式：斜体 + 右对齐 + 小字体 */
+        /* 名言区块：长段落，斜体，底部对齐 */
         .quote {
             font-style: italic;
-            font-size: 0.88rem;
-            color: #94a3b8;
-            text-align: right;
-            margin-top: 1rem;
-            padding-top: 0.8rem;
-            border-top: 1px dashed rgba(255,255,255,0.1);
-            line-height: 1.5;
+            font-size: 0.92rem;
+            color: #a0c4ff;
+            line-height: 1.7;
+            margin-top: auto;
+            padding-top: 1.2rem;
+            border-top: 1px dashed rgba(255,255,255,0.15);
+            text-align: left;
+            position: relative;
         }
         .quote::before {
             content: '“';
             color: var(--accent);
-            font-size: 1.2rem;
-            margin-right: 0.3rem;
+            font-size: 1.4rem;
+            position: absolute;
+            left: -0.3rem;
+            top: 0.8rem;
         }
         .quote::after {
             content: '”';
             color: var(--accent);
-            font-size: 1.2rem;
-            margin-left: 0.3rem;
+            font-size: 1.4rem;
+            margin-left: 0.2rem;
         }
         .quote-author {
             display: block;
             font-weight: 500;
-            color: #64748b;
-            font-size: 0.8rem;
-            margin-top: 0.4rem;
+            color: #7fbfff;
+            font-size: 0.85rem;
+            margin-top: 0.6rem;
+            text-align: right;
+            font-style: normal;
         }
 
-        /* 链接样式 */
+        /* 链接（阅读更多） */
         .tile a {
             color: var(--accent);
             text-decoration: none;
             font-weight: 500;
-            margin-top: auto;
-            padding-top: 0.8rem;
             font-size: 0.9rem;
+            margin-top: 0.5rem;
+            align-self: flex-start;
         }
         .tile a:hover {
             text-decoration: underline;
@@ -194,6 +175,9 @@
             .site-title {
                 font-size: 1.3rem;
             }
+            .tile {
+                padding: 1.4rem;
+            }
         }
     </style>
 </head>
@@ -201,109 +185,100 @@
 
     <!-- 顶部标题栏 -->
     <header>
-        <div class="site-title">Lyang1273 - 测试页</div>
+        <div class="site-title">Lyang1273 - 个人博客</div>
     </header>
 
-    <!-- 主要内容区 -->
+    <!-- 博客文章卡片区 -->
     <div class="content-area">
         <div class="container">
 
-            <!-- 关于我 + 名言 -->
+            <!-- 博客文章 1 -->
             <div class="tile" tabindex="0">
-                <h3>关于我</h3>
-                <p>教育科技开发者，专注于 AI 驱动的智能教学系统。目前在日本从事数字化教育平台研发，致力于让学习更高效、公平。</p>
+                <h3>AI 教育革命：从课堂到云端</h3>
+                <p>在日本的三年教育科技实践，让我深刻认识到 AI 不再是科幻，而是课堂的日常助手。从个性化学习路径到实时反馈系统，我们正在重塑教育的未来。</p>
+                <a href="#" target="_blank">阅读全文 →</a>
                 <div class="quote">
-                    教育是点燃火焰，而不是灌满水桶
-                    <span class="quote-author">— 苏格拉底</span>
+                    教育的真正目的，是让人不断提出问题、思考问题。真正的教育不是灌输，而是点燃火焰。
+                    <span class="quote-author">— 叶圣陶 / 赫拉克利特</span>
                 </div>
             </div>
 
-            <!-- 技能栈 + 名言 -->
+            <!-- 博客文章 2 -->
             <div class="tile" tabindex="0">
-                <h3>技能栈</h3>
-                <ul>
-                    <li>React / Vue / Three.js</li>
-                    <li>Node.js / Python / TensorFlow</li>
-                    <li>Figma / UI/UX 原型设计</li>
-                    <li>中 / 英 / 日语</li>
-                </ul>
+                <h3>代码中的禅意：写代码如写诗</h3>
+                <p>前端开发不仅是技术，更是一种艺术表达。每一个组件、每一行 CSS 都承载着对用户体验的极致追求。在极简与功能之间寻找平衡，是永恒的修行。</p>
+                <a href="#" target="_blank">阅读全文 →</a>
                 <div class="quote">
-                    代码即诗
-                    <span class="quote-author">— Grace Hopper</span>
+                    优秀的代码是它自己的最佳文档。当你想加注释时，先问问自己能否重构它，让代码更清晰。
+                    <span class="quote-author">— Steve McConnell</span>
                 </div>
             </div>
 
-            <!-- 项目：智能课堂系统 + 名言 -->
+            <!-- 博客文章 3 -->
             <div class="tile" tabindex="0">
-                <h3>智能课堂系统</h3>
-                <p>AI 实时互动教学平台，支持个性化学习路径与自动评估。</p>
-                <a href="#" target="_blank">查看 Demo →</a>
+                <h3>东京夜雨中的技术冥想</h3>
+                <p>在涩谷的霓虹与京都的古刹之间，我思考着技术与人文的交汇。AR 教育是否能让孩子在虚拟中触摸历史？数据可视化能否让教育公平可见？</p>
+                <a href="#" target="_blank">阅读全文 →</a>
                 <div class="quote">
-                    科技是第一生产力
-                    <span class="quote-author">— 邓小平</span>
+                    我们塑造了工具，此后工具塑造了我们。技术不是中立的，它承载着我们的价值观。
+                    <span class="quote-author">— Marshall McLuhan</span>
                 </div>
             </div>
 
-            <!-- 项目：教育数据仪表盘 + 名言 -->
+            <!-- 博客文章 4 -->
             <div class="tile" tabindex="0">
-                <h3>教育数据仪表盘</h3>
-                <p>可视化学习行为分析，帮助教师快速洞察学生进步。</p>
-                <a href="#" target="_blank">GitHub →</a>
+                <h3>从 0 到 1：构建属于自己的学习系统</h3>
+                <p>分享我的个人知识管理系统：Notion + Obsidian + AI 辅助。如何在信息爆炸时代，建立可持续的输入-处理-输出闭环。</p>
+                <a href="#" target="_blank">阅读全文 →</a>
                 <div class="quote">
-                    数据是新的石油
-                    <span class="quote-author">— Clive Humby</span>
+                    学习不是填满桶，而是点燃火炬。真正的学习发生在你开始教别人的那一刻。
+                    <span class="quote-author">— Plutarch / 费曼</span>
                 </div>
             </div>
 
-            <!-- 项目：AR 学习 App + 名言 -->
+            <!-- 博客文章 5 -->
             <div class="tile" tabindex="0">
-                <h3>AR 学习 App</h3>
-                <p>移动端增强现实教育工具，提升学生参与度与记忆力。</p>
-                <a href="#" target="_blank">下载 APK →</a>
+                <h3>跨文化技术传播的挑战与机遇</h3>
+                <p>在中日英三语环境中做技术内容创作，最大的挑战不是语言，而是文化语境的转换。如何让技术概念在不同文化中自然生长？</p>
+                <a href="#" target="_blank">阅读全文 →</a>
                 <div class="quote">
-                    想象力比知识更重要
-                    <span class="quote-author">— 爱因斯坦</span>
+                    真正的智慧不在于知道答案，而在于理解问题。跨文化交流的本质是建立共情，而非说服。
+                    <span class="quote-author">— 老子 / Edward T. Hall</span>
                 </div>
             </div>
 
-            <!-- 联系方式 + 名言 -->
+            <!-- 关于作者（固定卡片） -->
             <div class="tile" tabindex="0">
-                <h3>联系我</h3>
-                <p>
-                    Email: <a href="mailto:hi@lyang.dev">hi@lyang.dev</a><br>
-                    X: <a href="https://x.com/Lyang1273" target="_blank">@Lyang1273</a><br>
-                    WeChat: lyang1273
-                </p>
+                <h3>关于作者</h3>
+                <p>教育科技开发者，技术布道者，终身学习者。目前定居日本东京，热衷于用技术连接教育与未来。</p>
+                <p>Email: <a href="mailto:hi@lyang.dev">hi@lyang.dev</a><br>X: <a href="https://x.com/Lyang1273" target="_blank">@Lyang1273</a></p>
                 <div class="quote">
-                    未来属于那些相信梦想之美的人
-                    <span class="quote-author">— Eleanor Roosevelt</span>
+                    我写作，是因为我无法不写。我分享，是因为我希望你也能看到我眼中的世界。
+                    <span class="quote-author">— Lyang1273</span>
                 </div>
             </div>
 
         </div>
     </div>
 
-    <!-- 交互脚本（仅保留点击缩小效果） -->
+    <!-- 交互脚本：点击缩小效果 -->
     <script>
-        // 为每个磁贴绑定点击缩小效果（0.5秒恢复）
+        // 为每个博客卡片绑定点击缩小动画
         document.querySelectorAll('.tile').forEach(tile => {
             let isAnimating = false;
 
-            const triggerShrink = (e) => {
+            const triggerShrink = () => {
                 if (isAnimating) return;
                 isAnimating = true;
 
-                // 应用缩小效果
                 tile.classList.add('shrink');
 
-                // 0.5 秒后恢复
                 setTimeout(() => {
                     tile.classList.remove('shrink');
                     isAnimating = false;
                 }, 500);
             };
 
-            // 绑定鼠标和触摸事件（触摸允许页面滚动）
             tile.addEventListener('mousedown', triggerShrink);
             tile.addEventListener('touchstart', triggerShrink, { passive: true });
         });
