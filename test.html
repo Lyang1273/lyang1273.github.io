@@ -10,10 +10,12 @@
     <style>
         /* ====================== 全局颜色变量 ====================== */
         :root {
-            --bg-body: #303030;                     /* 深灰背景（用户指定） */
+            --bg-body: #303030;                     /* 深灰背景 */
             --tile-bg: #00549C;                     /* 磁贴背景：深蓝 #00549C */
             --text: #ffffff;                        /* 所有文字：纯白 */
-            --header-bg: #303030;                   /* 顶部栏：深灰 */
+            --header-bg: rgba(48, 48, 48, 0.65);    /* 标题栏半透明深灰 */
+            --header-blur: blur(16px);              /* 亚克力模糊强度 */
+            --header-border: rgba(255, 255, 255, 0.08); /* 边框高光 */
         }
 
         /* ====================== 基础重置 ====================== */
@@ -37,7 +39,7 @@
             flex-direction: column;
         }
 
-        /* ====================== 顶部标题栏 ====================== */
+        /* ====================== 亚克力标题栏 ====================== */
         header {
             background: var(--header-bg);
             color: #fff;
@@ -45,19 +47,31 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            border-bottom: 1px solid #444;
+            backdrop-filter: var(--header-blur);
+            -webkit-backdrop-filter: var(--header-blur);
+            border-bottom: 1px solid var(--header-border);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
         }
         .site-title {
             font-size: 1.5rem;
             font-weight: 600;
             letter-spacing: 0.5px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* 滚动时标题栏更明显（可选增强） */
+        header.scrolled {
+            background: rgba(48, 48, 48, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
         }
 
         /* ====================== 内容区域 ====================== */
         .content-area {
             background: var(--bg-body) !important;
-            padding: 2.5rem 1rem;                   /* 上下内边距增加 */
+            padding: 2.5rem 1rem;
             flex: 1;
         }
         .container {
@@ -65,13 +79,13 @@
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.8rem;                            /* 磁贴间距增加（原 1rem → 1.8rem） */
+            gap: 1.8rem;
         }
 
         /* ====================== 名言磁贴 ====================== */
         .tile {
             background: var(--tile-bg);
-            padding: 2rem;                          /* 内边距增加 */
+            padding: 2rem;
             border-radius: 0;
             box-shadow: 0 4px 14px rgba(0,0,0,0.35);
             transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s ease;
@@ -88,7 +102,6 @@
             box-shadow: 0 10px 24px rgba(0,0,0,0.55);
         }
 
-        /* 名言文字（已去掉引号） */
         .quote-text {
             font-style: italic;
             font-size: 1.02rem;
@@ -110,7 +123,7 @@
         @media (max-width: 768px) {
             .container {
                 grid-template-columns: 1fr;
-                gap: 1.4rem;                        /* 手机端间距也增加 */
+                gap: 1.4rem;
                 padding: 0 0.8rem;
             }
             .content-area {
@@ -135,8 +148,8 @@
 </head>
 <body>
 
-    <!-- 顶部标题栏 -->
-    <header>
+    <!-- 亚克力模糊标题栏 -->
+    <header id="header">
         <div class="site-title">Lyang1273 - 测试页</div>
     </header>
 
@@ -211,8 +224,9 @@
         </div>
     </div>
 
-    <!-- 交互脚本：点击缩小反馈 -->
+    <!-- 交互脚本：点击缩小 + 滚动增强亚克力 -->
     <script>
+        // 点击缩小反馈
         document.querySelectorAll('.tile').forEach(tile => {
             let isAnimating = false;
             const trigger = () => {
@@ -226,6 +240,19 @@
             };
             tile.addEventListener('mousedown', trigger);
             tile.addEventListener('touchstart', trigger, { passive: true });
+        });
+
+        // 滚动时增强亚克力效果
+        const header = document.getElementById('header');
+        let lastScrollY = 0;
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            if (currentScrollY > lastScrollY && currentScrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            lastScrollY = currentScrollY;
         });
     </script>
 
