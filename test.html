@@ -11,13 +11,16 @@
         /* ====================== 全局颜色变量 ====================== */
         :root {
             --bg-body: transparent;
-            --tile-bg: rgba(0, 84, 156, 0.72);       /* 深蓝 + 半透明（毛玻璃基础） */
-            --tile-blur: blur(12px);                /* 磁贴毛玻璃强度 */
+            --tile-bg: rgba(0, 84, 156, 0.72);
+            --tile-blur: blur(12px);
             --text: #ffffff;
-            --header-bg: rgba(255, 255, 255, 0.15);  /* 毛玻璃标题栏底色 */
+            --header-bg: rgba(255, 255, 255, 0.15);
             --header-blur: blur(24px);
             --header-noise: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" /><feColorMatrix type="saturate" values="0"/></filter><rect width="100" height="100" filter="url(%23n)" opacity="0.08"/></svg>');
             --header-border: rgba(255, 255, 255, 0.22);
+            --expand-bg: rgba(0, 70, 130, 0.94);     /* 展开时深蓝背景 */
+            --expand-blur: blur(32px);
+            --btn-color: #4fc3f7;
         }
 
         /* ====================== 基础重置 ====================== */
@@ -40,6 +43,7 @@
             flex-direction: column;
             position: relative;
             overflow-x: hidden;
+            overflow-y: auto;
         }
 
         .bg-container {
@@ -57,21 +61,18 @@
             background: rgba(0, 0, 0, 0.38);
         }
 
-        /* ====================== 毛玻璃标题栏（固定不隐藏） ====================== */
+        /* ====================== 毛玻璃标题栏（固定） ====================== */
         header {
             background: var(--header-bg);
             color: #fff;
             padding: 1rem 2rem;
-            position: fixed;                        /* 改为 fixed，始终可见 */
-            top: 0;
-            left: 0;
-            right: 0;
+            position: fixed;
+            top: 0; left: 0; right: 0;
             z-index: 100;
             backdrop-filter: var(--header-blur) saturate(180%);
             -webkit-backdrop-filter: var(--header-blur) saturate(180%);
             border-bottom: 1px solid var(--header-border);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            transition: all 0.3s ease;
         }
 
         header::before {
@@ -81,7 +82,6 @@
             background: var(--header-noise);
             pointer-events: none;
             z-index: -1;
-            opacity: 1;
         }
 
         .site-title {
@@ -93,9 +93,9 @@
             z-index: 1;
         }
 
-        /* ====================== 内容区域（考虑标题栏高度） ====================== */
+        /* ====================== 内容区域 ====================== */
         .content-area {
-            padding: 7rem 1rem 2.5rem;              /* 上边距增加，避开 fixed 标题栏 */
+            padding: 7rem 1rem 2.5rem;
             flex: 1;
             position: relative;
             z-index: 1;
@@ -108,7 +108,7 @@
             gap: 1.8rem;
         }
 
-        /* ====================== 磁贴（轻微毛玻璃效果） ====================== */
+        /* ====================== 名言磁贴 ====================== */
         .tile {
             background: var(--tile-bg);
             padding: 2rem;
@@ -123,7 +123,7 @@
             min-height: 190px;
             backdrop-filter: var(--tile-blur) saturate(160%);
             -webkit-backdrop-filter: var(--tile-blur) saturate(160%);
-            border: 1px solid rgba(255, 255, 255, 0.12); /* 轻微边框提升层次 */
+            border: 1px solid rgba(255, 255, 255, 0.12);
         }
 
         .tile.shrink {
@@ -137,6 +137,7 @@
             line-height: 1.85;
             color: #ffffff;
             margin-bottom: 1.2rem;
+            flex: 1;
         }
 
         .quote-author {
@@ -146,6 +147,117 @@
             text-align: right;
             font-style: normal;
             margin-top: 0.5rem;
+        }
+
+        /* 展开按钮（左下角） */
+        .expand-btn {
+            position: absolute;
+            left: 0.8rem;
+            bottom: 0.8rem;
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        .expand-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.1);
+        }
+
+        .expand-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--btn-color);
+        }
+
+        /* ====================== 展开模态层 ====================== */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 1000;
+            background: var(--expand-bg);
+            backdrop-filter: var(--expand-blur);
+            -webkit-backdrop-filter: var(--expand-blur);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-quote {
+            font-size: 2.2rem;
+            font-style: italic;
+            line-height: 1.5;
+            text-align: center;
+            max-width: 90%;
+            margin-bottom: 3rem;
+            color: #ffffff;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+
+        .modal-author {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #a0c4ff;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-bio {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            max-width: 800px;
+            text-align: center;
+            color: #e0f2ff;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.1);
+        }
+
+        .close-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: #ffffff;
         }
 
         /* ====================== 响应式 ====================== */
@@ -172,6 +284,23 @@
                 font-size: 0.98rem;
                 line-height: 1.75;
             }
+            .modal-quote {
+                font-size: 1.6rem;
+                margin-bottom: 2rem;
+            }
+            .modal-author {
+                font-size: 1.2rem;
+            }
+            .modal-bio {
+                font-size: 1rem;
+                padding: 1.2rem 1.5rem;
+            }
+            .close-btn {
+                top: 1.2rem;
+                right: 1.2rem;
+                width: 40px;
+                height: 40px;
+            }
         }
     </style>
 </head>
@@ -181,7 +310,7 @@
     <div class="bg-container"></div>
     <div class="bg-overlay"></div>
 
-    <!-- 毛玻璃标题栏（固定始终可见） -->
+    <!-- 毛玻璃标题栏 -->
     <header>
         <div class="site-title">Lyang1273 - 测试页</div>
     </header>
@@ -191,77 +320,129 @@
         <div class="container">
 
             <!-- 名言 1 -->
-            <div class="tile" tabindex="0">
-                <div class="quote-text">
-                    知人者智，自知者明。胜人者有力，自胜者强。
-                </div>
+            <div class="tile" data-quote="知人者智，自知者明。胜人者有力，自胜者强。" data-author="老子" data-bio="老子（约公元前571年—公元前471年），姓李名耳，字聃，中国春秋时期思想家、哲学家，道家学派创始人。著有《道德经》，提出“道法自然”“无为而治”等思想，对中国哲学影响深远。">
+                <div class="quote-text">知人者智，自知者明。胜人者有力，自胜者强。</div>
                 <div class="quote-author">— 老子</div>
+                <div class="expand-btn">
+                    <svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
+                </div>
             </div>
 
             <!-- 名言 2 -->
-            <div class="tile" tabindex="0">
-                <div class="quote-text">
-                    想象力比知识更重要。因为知识是有限的，而想象力概括着世界上的一切，推动着进步，并且是知识进化的源泉。
-                </div>
+            <div class="tile" data-quote="想象力比知识更重要。因为知识是有限的，而想象力概括着世界上的一切，推动着进步，并且是知识进化的源泉。" data-author="阿尔伯特·爱因斯坦" data-bio="阿尔伯特·爱因斯坦（1879—1955），德裔美籍物理学家，相对论的创立者，现代物理学奠基人之一。1921年获诺贝尔物理学奖，其质能方程 E=mc² 改变了人类对宇宙的认知。">
+                <div class="quote-text">想象力比知识更重要。因为知识是有限的，而想象力概括着世界上的一切，推动着进步，并且是知识进化的源泉。</div>
                 <div class="quote-author">— 阿尔伯特·爱因斯坦</div>
+                <div class="expand-btn">
+                    <svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
+                </div>
             </div>
 
             <!-- 名言 3 -->
-            <div class="tile" tabindex="0">
-                <div class="quote-text">
-                    失败乃成功之母。
-                </div>
+            <div class="tile" data-quote="失败乃成功之母。" data-author="托马斯·爱迪生" data-bio="托马斯·阿尔瓦·爱迪生（1847—1931），美国发明家、企业家，被称为“发明大王”。一生拥有1093项专利，包括电灯、留声机、电影摄影机等，极大地推动了现代电气化进程。">
+                <div class="quote-text">失败乃成功之母。</div>
                 <div class="quote-author">— 托马斯·爱迪生</div>
+                <div class="expand-btn">
+                    <svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
+                </div>
             </div>
 
             <!-- 名言 4 -->
-            <div class="tile" tabindex="0">
-                <div class="quote-text">
-                    时间就是生命，时间就是金钱。
-                </div>
+            <div class="tile" data-quote="时间就是生命，时间就是金钱。" data-author="本杰明·富兰克林" data-bio="本杰明·富兰克林（1706—1790），美国开国元勋、科学家、作家、外交家。发明避雷针、双焦眼镜，参与起草《独立宣言》，被誉为“美国精神之父”。">
+                <div class="quote-text">时间就是生命，时间就是金钱。</div>
                 <div class="quote-author">— 富兰克林</div>
+                <div class="expand-btn">
+                    <svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
+                </div>
             </div>
 
             <!-- 名言 5 -->
-            <div class="tile" tabindex="0">
-                <div class="quote-text">
-                    幸福不在于拥有更多，而在于计较更少。
-                </div>
+            <div class="tile" data-quote="幸福不在于拥有更多，而在于计较更少。" data-author="埃皮克提图" data-bio="埃皮克提图（约55—135年），古罗马斯多葛派哲学家，原为奴隶，后获自由。强调内在自由与理性生活，其教导被学生记录为《论说集》和《手册》。">
+                <div class="quote-text">幸福不在于拥有更多，而在于计较更少。</div>
                 <div class="quote-author">— 埃皮克提图</div>
+                <div class="expand-btn">
+                    <svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
+                </div>
             </div>
 
             <!-- 名言 6 -->
-            <div class="tile" tabindex="0">
-                <div class="quote-text">
-                    改变你的想法，你就能改变你的世界。
-                </div>
+            <div class="tile" data-quote="改变你的想法，你就能改变你的世界。" data-author="诺曼·文森特·皮尔" data-bio="诺曼·文森特·皮尔（1898—1993），美国牧师、作家，积极思维运动先驱。著有《积极思考的力量》，影响数百万读者相信信念能改变人生。">
+                <div class="quote-text">改变你的想法，你就能改变你的世界。</div>
                 <div class="quote-author">— 诺曼·文森特·皮尔</div>
+                <div class="expand-btn">
+                    <svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
+                </div>
             </div>
 
             <!-- 名言 7 -->
-            <div class="tile" tabindex="0">
-                <div class="quote-text">
-                    选择比努力更重要。
-                </div>
+            <div class="tile" data-quote="选择比努力更重要。" data-author="曾国藩" data-bio="曾国藩（1811—1872），晚清重臣、湘军创立者、洋务运动先驱。治军严明，著有《曾文正公全集》，其家书被奉为修身治家经典。">
+                <div class="quote-text">选择比努力更重要。</div>
                 <div class="quote-author">— 曾国藩</div>
+                <div class="expand-btn">
+                    <svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
+                </div>
             </div>
 
             <!-- 名言 8 -->
-            <div class="tile" tabindex="0">
-                <div class="quote-text">
-                    习惯决定命运。
-                </div>
+            <div class="tile" data-quote="习惯决定命运。" data-author="亚里士多德" data-bio="亚里士多德（公元前384—前322年），古希腊哲学家、科学家，柏拉图学生、亚历山大大帝老师。创立形式逻辑，著作涵盖物理、生物、伦理、政治等，被称为“百科全书式学者”。">
+                <div class="quote-text">习惯决定命运。</div>
                 <div class="quote-author">— 亚里士多德</div>
+                <div class="expand-btn">
+                    <svg viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>
+                </div>
             </div>
 
         </div>
     </div>
 
-    <!-- 交互脚本：点击缩小 -->
+    <!-- 展开模态层 -->
+    <div class="modal" id="modal">
+        <div class="modal-quote" id="modal-quote"></div>
+        <div class="modal-author" id="modal-author"></div>
+        <div class="modal-bio" id="modal-bio"></div>
+        <div class="close-btn" id="close-btn">
+            <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </div>
+    </div>
+
+    <!-- 交互脚本 -->
     <script>
+        const modal = document.getElementById('modal');
+        const modalQuote = document.getElementById('modal-quote');
+        const modalAuthor = document.getElementById('modal-author');
+        const modalBio = document.getElementById('modal-bio');
+        const closeBtn = document.getElementById('close-btn');
+
+        // 点击展开按钮
+        document.querySelectorAll('.expand-btn').forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.stopPropagation();
+                const tile = btn.closest('.tile');
+                modalQuote.textContent = tile.dataset.quote;
+                modalAuthor.textContent = '— ' + tile.dataset.author;
+                modalBio.textContent = tile.dataset.bio;
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // 关闭模态
+        const closeModal = () => {
+            modal.classList.remove('active');
+            setTimeout(() => {
+                document.body.style.overflow = 'auto';
+            }, 400);
+        };
+
+        closeBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', e => {
+            if (e.target === modal) closeModal();
+        });
+
+        // 磁贴点击缩小反馈（不触发展开）
         document.querySelectorAll('.tile').forEach(tile => {
             let isAnimating = false;
-            const trigger = () => {
+            const trigger = (e) => {
+                if (e.target.closest('.expand-btn')) return;
                 if (isAnimating) return;
                 isAnimating = true;
                 tile.classList.add('shrink');
