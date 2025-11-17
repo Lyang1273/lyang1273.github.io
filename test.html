@@ -3,173 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lyang1273 - 测试页</title>
+    <title>Lyang1273</title>
     <style>
         :root {
-            --bg-body: transparent;
-            --tile-bg: rgba(0, 84, 156, 0.84);
-            --tile-blur: blur(14px);
-            --text-primary: #ffffff;
-            --text-author: #a0c4ff;
-            --header-bg: rgba(255, 255, 255, 0.07);
+            --header-bg: rgba(255,255,255,0.07);
             --header-blur: blur(30px);
-            --header-noise: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" /><feColorMatrix type="saturate" values="0"/></filter><rect width="100" height="100" opacity="0.04"/></svg>');
-            --header-border: rgba(255, 255, 255, 0.14);
-            --expand-bg: rgba(0, 70, 130, 0.98);
-            --expand-blur: blur(40px);
-            --modal-padding: 2.5rem;
-            --modal-max-width: 720px;
-            --grid-gap: 2.8rem;
-            --tile-radius: 0px;
+            --text-main: #ffffff;
+            --text-sub: #a0c4ff;
         }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Segoe UI','PingFang SC',system-ui,sans-serif;color:var(--text-main);background:#000;min-height:100vh;display:flex;flex-direction:column;}
+        .bg-container{position:fixed;inset:0;z-index:-2;background:url('https://www.minecraft.net/content/dam/minecraftnet/games/minecraft/screenshots/EXPLORE_PDPScreenshotRefresh2024_multipleBiomes_01.png') center/cover no-repeat;filter:brightness(0.75) contrast(1.05);}
+        .bg-overlay{position:fixed;inset:0;z-index:-1;background:rgba(0,0,0,0.38);}
 
-        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; user-select:none; }
-        body { font-family:'Segoe UI','PingFang SC',system-ui,sans-serif; color:var(--text-primary); min-height:100vh; display:flex; flex-direction:column; background:#000; overflow-x:hidden; }
-
-        .bg-container { position:fixed; inset:0; z-index:-2; background:url('https://www.minecraft.net/content/dam/minecraftnet/games/minecraft/screenshots/EXPLORE_PDPScreenshotRefresh2024_multipleBiomes_01.png') center/cover no-repeat; filter:brightness(0.75) contrast(1.05); }
-        .bg-overlay { position:fixed; inset:0; z-index:-1; background:rgba(0,0,0,0.38); }
-
-        header {
-            position:fixed; top:0; left:0; right:0; z-index:100;
-            background:var(--header-bg); padding:1rem 2rem;
+        header{
+            position:fixed;top:0;left:0;right:0;z-index:100;
+            background:var(--header-bg);padding:1rem 2rem;
             backdrop-filter:var(--header-blur) saturate(220%);
-            -webkit-backdrop-filter:var(--header-blur) saturate(220%);
-            border-bottom:1px solid var(--header-border);
-            box-shadow:0 4px 26px rgba(0,0,0,0.1);
-            display:flex; align-items:center; justify-content:space-between;
+            border-bottom:1px solid rgba(255,255,255,0.14);
+            display:flex;align-items:center;justify-content:space-between;
         }
-        header::before { content:''; position:absolute; inset:0; background:var(--header-noise); pointer-events:none; z-index:-1; }
-        .site-title { font-size:1.5rem; font-weight:600; letter-spacing:0.6px; text-shadow:0 1px 3px rgba(0,0,0,0.3); }
+        .site-title{font-size:1.5rem;font-weight:600;}
+        .header-buttons{display:flex;gap:1.1rem;}
+        .header-btn{
+            background:rgba(255,255,255,0.11);border:1px solid rgba(255,255,255,0.18);
+            border-radius:12px;padding:0.52rem 1.1rem;font-size:0.92rem;
+            cursor:not-allowed;opacity:0.65;transition:all .3s;
+        }
+        .header-btn:hover{opacity:0.9;background:rgba(255,255,255,0.17);}
 
-        .header-buttons {
-            display:flex; gap:1.1rem; z-index:1;
-        }
-        .header-btn {
-            background:rgba(255,255,255,0.11);
-            border:1px solid rgba(255,255,255,0.18);
-            border-radius:12px;
-            padding:0.52rem 1.1rem;
-            font-size:0.92rem;
-            color:#fff;
-            cursor:not-allowed;
-            opacity:0.65;
-            backdrop-filter:blur(6px);
-            transition:all 0.3s ease;
-            white-space:nowrap;
-        }
-        .header-btn:hover { background:rgba(255,255,255,0.17); opacity:0.9; }
+        main{flex:1;display:flex;flex-direction:column;padding-top:7.5rem;}
 
-        .content-area { padding:7.5rem 2rem 5rem; flex:1; }
-        .grid {
-            max-width:1600px; margin:0 auto;
-            display:grid;
-            grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
-            gap:var(--grid-gap);
-            opacity:0; transform:translateY(20px);
-            transition:opacity 0.6s ease,transform 0.6s ease;
+        /* 上半部分：个人介绍（居中） */
+        .intro-section{
+            flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;
+            text-align:center;padding:2rem;
         }
-        .grid.loaded { opacity:1; transform:translateY(0); }
-        .grid-item { cursor:pointer; transition:transform 0.35s cubic-bezier(0.2,0.8,0.2,1); }
-        .grid-item:hover { transform:translateY(-10px) scale(1.02); }
-
-        .tile {
-            background:var(--tile-bg); padding:2.4rem; border-radius:var(--tile-radius);
-            box-shadow:0 14px 44px rgba(0,0,0,0.38),0 0 0 1px rgba(255,255,255,0.16);
-            backdrop-filter:var(--tile-blur) saturate(160%);
-            -webkit-backdrop-filter:var(--tile-blur) saturate(160%);
-            min-height:180px; display:flex; flex-direction:column; justify-content:space-between;
+        .intro-title{
+            font-size:4.5rem;font-weight:800;letter-spacing:2px;
+            background:linear-gradient(90deg,#fff,#a0c4ff);
+            -webkit-background-clip:text;background-clip:text;
+            -webkit-text-fill-color:transparent;
+            margin-bottom:1rem;
         }
-        .quote-text { font-style:italic; font-size:1.1rem; line-height:1.94; flex:1; text-shadow:0 1px 3px rgba(0,0,0,0.4); margin-bottom:1.6rem; }
-        .quote-author { font-weight:500; font-size:0.98rem; color:var(--text-author); text-align:right; text-shadow:0 1px 2px rgba(0,0,0,0.3); }
-
-        .modal {
-            position:fixed; top:50%; left:50%;
-            transform:translate(-50%,-50%) scale(0.3);
-            z-index:1000; background:var(--expand-bg);
-            backdrop-filter:var(--expand-blur);
-            -webkit-backdrop-filter:var(--expand-blur);
-            max-width:var(--modal-max-width); width:calc(100% - 4rem);
-            max-height:calc(100% - 4rem); padding:var(--modal-padding);
-            border-radius:0; overflow-y:auto;
-            box-shadow:0 40px 110px rgba(0,0,0,0.75);
-            opacity:0; visibility:hidden;
-            transform-origin:var(--origin-x,50%) var(--origin-y,50%);
-            transition:opacity 0.6s cubic-bezier(0.16,1,0.3,1),transform 0.7s cubic-bezier(0.16,1,0.3,1);
+        .intro-subtitle{
+            font-size:1.3rem;color:#c8b6ff;opacity:0.9;letter-spacing:1px;
         }
-        .modal.active { opacity:1; visibility:visible; transform:translate(-50%,-50%) scale(1); }
-        .modal.closing { opacity:0; transform:translate(-50%,-50%) scale(0.3); }
-        .modal-content { text-align:center; opacity:0; transform:translateY(30px); transition:opacity 0.8s ease 0.1s,transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.1s; }
-        .modal.active .modal-content { opacity:1; transform:translateY(0); }
-        .modal-quote { font-size:2.3rem; font-style:italic; line-height:1.5; margin-bottom:2.8rem; }
-        .modal-author { font-size:1.6rem; font-weight:600; color:var(--text-author); margin-bottom:2.2rem; }
-        .modal-bio { font-size:1.18rem; line-height:1.9; color:#e0f2ff; background:rgba(0,0,0,0.38); padding:2.2rem 2.6rem; border-radius:0; backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,0.26); box-shadow:0 18px 52px rgba(0,0,0,0.42); }
 
-        @media (max-width:768px) {
-            :root { --modal-max-width:90%; --modal-padding:2rem; --grid-gap:2rem; }
-            .content-area { padding:6.8rem 1.2rem 3rem; }
-            header { padding:0.8rem 1.2rem; }
-            .site-title { font-size:1.3rem; }
-            .header-btn { font-size:0.84rem; padding:0.45rem 0.9rem; }
-            .grid { grid-template-columns:1:1fr; }
+        /* 下半部分：推荐文章 */
+        .articles-section{
+            padding:4rem 2rem 6rem;background:rgba(0,0,0,0.25);
+            backdrop-filter:blur(12px);
+        }
+        .articles-title{
+            text-align:center;font-size:2rem;margin-bottom:3rem;
+            color:#e0f2ff;
+        }
+        .article-card{
+            max-width:900px;margin:0 auto;background:rgba(0,84,156,0.82);
+            border-radius:0;padding:2.8rem 3rem;
+            box-shadow:0 16px 48px rgba(0,0,0,0.45);
+            border:1px solid rgba(255,255,255,0.16);
+            backdrop-filter:blur(14px);
+            line-height:2;
+            font-size:1.15rem;
+        }
+        .article-card h3{
+            font-size:1.8rem;margin-bottom:1.5rem;color:#fff;
+        }
+        .article-card p{
+            text-indent:2em;color:#e0f2ff;
+        }
+
+        @media (max-width:768px){
+            .intro-title{font-size:3.2rem;}
+            .intro-subtitle{font-size:1.1rem;}
+            .articles-section{padding:3rem 1.2rem;}
+            .article-card{padding:2rem 1.8rem;}
+            .article-card h3{font-size:1.6rem;}
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-container"></div>
-    <div class="bg-overlay"></div>
+<div class="bg-container"></div>
+<div class="bg-overlay"></div>
 
-    <!-- 标题栏：按钮已改为「文章」「照片」「每日简单小结」 -->
-    <header>
-        <div class="site-title">Lyang1273 - 测试页</div>
-        <div class="header-buttons">
-            <div class="header-btn">文章</div>
-            <div class="header-btn">照片</div>
-            <div class="header-btn">每日简单小结</div>
-        </div>
-    </header>
-
-    <div class="content-area">
-        <div class="grid" id="grid">
-            <!-- 你的名言磁贴保持不变 -->
-            <div class="grid-item"><div class="tile" data-quote="知人者智，自知者明。胜人者有力，自胜者强。" data-author="老子" data-bio="老子（约公元前571年—公元前471年），姓李名耳，字聃，中国春秋时期思想家、哲学家，道家学派创始人。"><div class="quote-text">知人者智，自知者明。胜人者有力，自胜者强。</div><div class="quote-author">— 老子</div></div></div>
-            <div class="grid-item"><div class="tile" data-quote="想象力比知识更重要。因为知识是有限的，而想象力概括着世界上的一切，推动着进步，并且是知识进化的源泉。" data-author="阿尔伯特·爱因斯坦" data-bio="阿尔伯特·爱因斯坦（1879—1955），德裔美籍物理学家，相对论的创立者。"><div class="quote-text">想象力比知识更重要。因为知识是有限的，而想象力概括着世界上的一切，推动着进步，并且是知识进化的源泉。</div><div class="quote-author">— 阿尔伯特·爱因斯坦</div></div></div>
-            <div class="grid-item"><div class="tile" data-quote="失败乃成功之母。" data-author="托马斯·爱迪生" data-bio="托马斯·阿尔瓦·爱迪生（1847—1931），美国发明家，被称为“发明大王”。"><div class="quote-text">失败乃成功之母。</div><div class="quote-author">— 托马斯·爱迪生</div></div></div>
-            <div class="grid-item"><div class="tile" data-quote="时间就是生命，时间就是金钱。" data-author="本杰明·富兰克林" data-bio="本杰明·富兰克林（1706—1790），美国开国元勋、科学家。"><div class="quote-text">时间就是生命，时间就是金钱。</div><div class="quote-author">— 富兰克林</div></div></div>
-            <div class="grid-item"><div class="tile" data-quote="幸福不在于拥有更多，而在于计较更少。" data-author="埃皮克提图" data-bio="埃皮克提图（约55—135年），古罗马斯多葛派哲学家。"><div class="quote-text">幸福不在于拥有更多，而在于计较更少。</div><div class="quote-author">— 埃皮克提图</div></div></div>
-            <div class="grid-item"><div class="tile" data-quote="改变你的想法，你就能改变你的世界。" data-author="诺曼·文森特·皮尔" data-bio="诺曼·文森特·皮尔（1898—1993），美国牧师、作家。"><div class="quote-text">改变你的想法，你就能改变你的世界。</div><div class="quote-author">— 诺曼·文森特·皮尔</div></div></div>
-            <div class="grid-item"><div class="tile" data-quote="选择比努力更重要。" data-author="曾国藩" data-bio="曾国藩（1811—1872），晚清重臣、湘军创立者。"><div class="quote-text">选择比努力更重要。</div><div class="quote-author">— 曾国藩</div></div></div>
-            <div class="grid-item"><div class="tile" data-quote="习惯决定命运。" data-author="亚里士多德" data-bio="亚里士多德（公元前384—前322年），古希腊哲学家、科学家。"><div class="quote-text">习惯决定命运。</div><div class="quote-author">— 亚里士多德</div></div></div>
-        </div>
+<header>
+    <div class="site-title">Lyang1273</div>
+    <div class="header-buttons">
+        <div class="header-btn">文章</div>
+        <div class="header-btn">照片</div>
+        <div class="header-btn">每日简单小结</div>
     </div>
+</header>
 
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <div class="modal-quote" id="modal-quote"></div>
-            <div class="modal-author" id="modal-author"></div>
-            <div class="modal-bio" id="modal-bio"></div>
-        </div>
-    </div>
+<main>
+    <!-- 上半部分：个人介绍 -->
+    <section class="intro-section">
+        <h1 class="intro-title">Lyang1273</h1>
+        <p class="intro-subtitle">一个没有目标的小初生</p>
+    </section>
 
-    <script>
-        const modal=document.getElementById('modal'),modalQuote=document.getElementById('modal-quote'),modalAuthor=document.getElementById('modal-author'),modalBio=document.getElementById('modal-bio'),grid=document.getElementById('grid');
-        window.addEventListener('load',()=>setTimeout(()=>grid.classList.add('loaded'),100));
-        document.querySelectorAll('.tile').forEach(t=>{t.addEventListener('click',function(e){e.stopPropagation();
-            const r=this.getBoundingClientRect();
-            modal.style.setProperty('--origin-x',`${r.left+r.width/2}px`);
-            modal.style.setProperty('--origin-y',`${r.top+r.height/2}px`);
-            modalQuote.textContent=this.dataset.quote;
-            modalAuthor.textContent='— '+this.dataset.author;
-            modalBio.textContent=this.dataset.bio;
-            modal.classList.remove('closing'); modal.classList.add('active');
-            document.body.style.overflow='hidden';
-        })});
-        modal.addEventListener('click',e=>{if(e.target===modal) closeModal();});
-        document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('active')) closeModal();});
-        function closeModal(){
-            modal.classList.add('closing');
-            setTimeout(()=>{modal.classList.remove('active','closing');document.body.style.overflow='auto';},700);
-        }
-    </script>
+    <!-- 下半部分：推荐文章 -->
+    <section class="articles-section">
+        <h2 class="articles-title">推荐文章</h2>
+        <article class="article-card">
+            <h3>柳州：螺蛳粉香里藏着的山与水</h3>
+            <p>
+                柳州，一座被喀斯特峰林环抱的工业城市，却因一碗螺蛳粉名满天下。柳江如一条碧绿的绸带从城中蜿蜒而过，两岸奇峰䇯立，马鞍山、都乐岩、鱼峰山在晨雾中若隐若现，仿佛一幅流动的水墨画。夜幕降临，窑埠古镇的灯火映在江面，百年骑楼下飘来酸辣鲜香的味道，那是柳州人用米粉、石螺、豆角、酸笋、花生、木耳熬出的生活哲学——“越酸越辣，越嚼越香”。这里既有重工业的烟囱，也有龙城路上的霓虹；既有柳宗元笔下的“江流曲似九回肠”，也有年轻人凌晨排队只为抢第一锅现煮螺蛳粉的执着。柳州从不温柔，却真实得让人上瘾：它把山水藏进钢筋水泥，把乡愁煮进一碗汤里，让每一位尝过的人都忍不住再来一次。
+            </p>
+        </article>
+    </section>
+</main>
+
 </body>
 </html>
