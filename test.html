@@ -27,68 +27,47 @@
         .header-btn{
             background:rgba(255,255,255,0.11);border:1px solid rgba(255,255,255,0.18);
             border-radius:12px;padding:0.52rem 1.1rem;font-size:0.92rem;
-            cursor:not-allowed;opacity:0.65;transition:all .3s;
+            cursor:pointer;opacity:0.65;transition:all .3s;
         }
-        .header-btn:hover{opacity:0.9;background:rgba(255,255,255,0.17);}
+        .header-btn:hover{opacity:1;background:rgba(255,255,255,0.22);}
+        /* 当前页高亮 */
+        .header-btn.active{
+            opacity:1;background:rgba(255,255,255,0.22);
+            box-shadow:0 0 15px rgba(160,196,255,0.4);
+        }
 
         main{flex:1;display:flex;flex-direction:column;padding-top:7.5rem;}
 
-        /* 上半部分：个人介绍 - 更大、更纯粹 */
         .intro-section{
-            flex:1.6;                            /* 占比更大 */
-            display:flex;flex-direction:column;justify-content:center;align-items:center;
-            text-align:center;padding:2rem;
-            min-height:65vh;                     /* 保证足够高度 */
+            flex:1.6;display:flex;flex-direction:column;justify-content:center;align-items:center;
+            text-align:center;padding:2rem;min-height:65vh;
         }
         .intro-title{
-            font-size:6.5rem;                    /* 显著放大 */
-            font-weight:900;
-            letter-spacing:4px;
-            color:#ffffff;                       /* 纯白 */
-            margin-bottom:1.2rem;
-            text-shadow:0 4px 20px rgba(0,0,0,0.5);
+            font-size:6.5rem;font-weight:900;letter-spacing:4px;color:#fff;
+            margin-bottom:1.2rem;text-shadow:0 4px 20px rgba(0,0,0,0.5);
         }
         .intro-subtitle{
-            font-size:1.6rem;                    /* 小字也放大 */
-            color:#ffffff;                       /* 纯白 */
-            opacity:0.92;
-            letter-spacing:2px;
-            font-weight:400;
+            font-size:1.6rem;color:#fff;opacity:0.92;letter-spacing:2px;font-weight:400;
         }
 
-        /* 下半部分：推荐文章 - 模糊背景大幅减弱 */
         .articles-section{
-            padding:5rem 2rem 7rem;
-            background:rgba(0,0,0,0.15);         /* 模糊背景从0.25 → 0.15 */
-            backdrop-filter:blur(6px);           /* 模糊从12px → 6px，更轻盈 */
+            padding:5rem 2rem 7rem;background:rgba(0,0,0,0.15);backdrop-filter:blur(6px);
         }
-        .articles-title{
-            text-align:center;font-size:2rem;margin-bottom:3rem;
-            color:#e0f2ff;
-        }
+        .articles-title{text-align:center;font-size:2rem;margin-bottom:3rem;color:#e0f2ff;}
         .article-card{
             max-width:960px;margin:0 auto;background:rgba(0,84,156,0.86);
             border-radius:0;padding:3rem 3.4rem;
-            box-shadow:0 18px 56px rgba(0,0,0,0.48);
-            border:1px solid rgba(255,255,255,0.18);
-            backdrop-filter:blur(16px);
-            line-height:2.1;
-            font-size:1.18rem;
+            box-shadow:0 18px 56px rgba(0,0,0,0.48);border:1px solid rgba(255,255,255,0.18);
+            backdrop-filter:blur(16px);line-height:2.1;font-size:1.18rem;
         }
-        .article-card h3{
-            font-size:1.9rem;margin-bottom:1.6rem;color:#fff;
-        }
-        .article-card p{
-            text-indent:2em;color:#e8f4ff;
-        }
+        .article-card h3{font-size:1.9rem;margin-bottom:1.6rem;color:#fff;}
+        .article-card p{text-indent:2em;color:#e8f4ff;}
 
         @media (max-width:768px){
             .intro-title{font-size:4.2rem;letter-spacing:2px;}
             .intro-subtitle{font-size:1.3rem;}
             .intro-section{min-height:55vh;}
-            .articles-section{padding:4rem 1.4rem;}
             .article-card{padding:2.4rem 2rem;}
-            .article-card h3{font-size:1.7rem;}
         }
     </style>
 </head>
@@ -100,20 +79,20 @@
 <header>
     <div class="site-title">Lyang1273</div>
     <div class="header-buttons">
-        <div class="header-btn">文章</div>
-        <div class="header-btn">照片</div>
+        <!-- 主页 → “文章”高亮 -->
+        <div class="header-btn active">文章</div>
+        <!-- 照片按钮已启用 -->
+        <div class="header-btn" onclick="location.href='./img/index.html'">照片</div>
         <div class="header-btn">每日简单小结</div>
     </div>
 </header>
 
 <main>
-    <!-- 个人介绍区（更大 + 纯白文字） -->
     <section class="intro-section">
         <h1 class="intro-title">Lyang1273</h1>
         <p class="intro-subtitle">一个没有目标的小初生</p>
     </section>
 
-    <!-- 推荐文章区（背景模糊大幅减弱） -->
     <section class="articles-section">
         <h2 class="articles-title">推荐文章</h2>
         <article class="article-card">
