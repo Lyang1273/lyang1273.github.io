@@ -6,27 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lyang1273 - 测试页</title>
 
-    <!-- 引入 Masonry 瀑布流库（CDN + defer） -->
-    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js" defer></script>
-    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js" defer></script>
-
     <!-- 样式定义 -->
     <style>
         /* ====================== 全局变量 ====================== */
         :root {
             --bg-body: transparent;
-            --tile-bg: rgba(0, 84, 156, 0.82);          /* 磁贴背景（更实） */
-            --tile-blur: blur(12px);                   /* 毛玻璃强度 */
+            --tile-bg: rgba(0, 84, 156, 0.84);          /* 磁贴背景（更实） */
+            --tile-blur: blur(14px);                   /* 毛玻璃强度 */
             --text-primary: #ffffff;                   /* 主文字 */
             --text-author: #a0c4ff;                    /* 作者名 */
-            --header-bg: rgba(255, 255, 255, 0.08);    /* 标题栏更通透 */
-            --header-blur: blur(28px);
-            --header-noise: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" /><feColorMatrix type="saturate" values="0"/></filter><rect width="100" height="100" filter="url(%23n)" opacity="0.05"/></svg>');
-            --header-border: rgba(255, 255, 255, 0.15);
-            --expand-bg: rgba(0, 70, 130, 0.97);
-            --expand-blur: blur(38px);
-            --modal-margin: 50px;
-            --grid-gap: 2.8rem;                        /* 更大间距，解决拥挤 */
+            --header-bg: rgba(255, 255, 255, 0.07);    /* 标题栏极致通透 */
+            --header-blur: blur(30px);
+            --header-noise: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" /><feColorMatrix type="saturate" values="0"/></filter><rect width="100" height="100" filter="url(%23n)" opacity="0.04"/></svg>');
+            --header-border: rgba(255, 255, 255, 0.14);
+            --expand-bg: rgba(0, 70, 130, 0.98);       /* 展开背景 */
+            --expand-blur: blur(40px);
+            --modal-padding: 2.5rem;                   /* 展开内边距 */
+            --modal-max-width: 720px;                  /* 展开最大宽度 */
+            --grid-gap: 2.8rem;                        /* 网格间距 */
             --tile-radius: 0px;                        /* 直角磁贴 */
         }
 
@@ -68,17 +65,17 @@
             background: rgba(0, 0, 0, 0.38);
         }
 
-        /* ====================== 标题栏（更通透 + 功能按钮） ====================== */
+        /* ====================== 标题栏（极致通透 + 功能按钮） ====================== */
         header {
             position: fixed;
             top: 0; left: 0; right: 0;
             z-index: 100;
             background: var(--header-bg);
             padding: 1rem 2rem;
-            backdrop-filter: var(--header-blur) saturate(200%);
-            -webkit-backdrop-filter: var(--header-blur) saturate(200%);
+            backdrop-filter: var(--header-blur) saturate(220%);
+            -webkit-backdrop-filter: var(--header-blur) saturate(220%);
             border-bottom: 1px solid var(--header-border);
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 4px 26px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -109,8 +106,8 @@
         }
 
         .header-btn {
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.11);
+            border: 1px solid rgba(255, 255, 255, 0.18);
             border-radius: 12px;
             padding: 0.5rem 1rem;
             font-size: 0.9rem;
@@ -124,51 +121,52 @@
         }
 
         .header-btn:hover {
-            background: rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.16);
             opacity: 0.8;
         }
 
         /* ====================== 内容区域 ====================== */
         .content-area {
-            padding: 7.5rem 2rem 4rem;
+            padding: 7.5rem 2rem 5rem;
             flex: 1;
             position: relative;
             z-index: 1;
         }
 
-        /* ====================== 瀑布流布局（修复异常） ====================== */
+        /* ====================== 网格布局（去掉瀑布流 → 响应式网格） ====================== */
         .grid {
             max-width: 1600px;
             margin: 0 auto;
-            position: relative;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: var(--grid-gap);
             opacity: 0;
-            transition: opacity 0.5s ease;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
 
         .grid.loaded {
             opacity: 1;
+            transform: translateY(0);
         }
 
-        .grid-sizer { width: 340px; } /* 更宽列宽，解决异常 */
         .grid-item {
-            width: 340px;
-            margin-bottom: var(--grid-gap);
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
         .grid-item:hover {
-            transform: translateY(-8px);
+            transform: translateY(-10px) scale(1.02);
         }
 
-        /* ====================== 磁贴样式（直角 + 实底） ====================== */
+        /* ====================== 磁贴样式（直角 + 内容自适应） ====================== */
         .tile {
             background: var(--tile-bg);
             padding: 2.4rem;
             border-radius: var(--tile-radius);
             box-shadow: 
-                0 12px 40px rgba(0, 0, 0, 0.35),
-                0 0 0 1px rgba(255, 255, 255, 0.15);
+                0 14px 44px rgba(0, 0, 0, 0.38),
+                0 0 0 1px rgba(255, 255, 255, 0.16);
             backdrop-filter: var(--tile-blur) saturate(160%);
             -webkit-backdrop-filter: var(--tile-blur) saturate(160%);
             position: relative;
@@ -182,180 +180,151 @@
 
         .quote-text {
             font-style: italic;
-            font-size: 1.08rem;
-            line-height: 1.92;
+            font-size: 1.1rem;
+            line-height: 1.94;
             color: var(--text-primary);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.6rem;
             flex: 1;
             text-shadow: 0 1px 3px rgba(0,0,0,0.4);
         }
 
         .quote-author {
             font-weight: 500;
-            font-size: 0.96rem;
+            font-size: 0.98rem;
             color: var(--text-author);
             text-align: right;
             font-style: normal;
-            margin-top: 0.7rem;
+            margin-top: 0.8rem;
             text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
 
-        /* ====================== 展开模态层 ====================== */
+        /* ====================== 展开模态层（自适应大小 + 丝滑动画） ====================== */
         .modal {
             position: fixed;
-            top: var(--modal-margin);
-            left: var(--modal-margin);
-            right: var(--modal-margin);
-            bottom: var(--modal-margin);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.3);
             z-index: 1000;
             background: var(--expand-bg);
             backdrop-filter: var(--expand-blur);
             -webkit-backdrop-filter: var(--expand-blur);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            max-width: var(--modal-max-width);
+            width: calc(100% - 4rem);
+            max-height: calc(100% - 4rem);
+            padding: var(--modal-padding);
+            border-radius: 0px;
+            overflow-y: auto;
+            box-shadow: 0 40px 110px rgba(0, 0, 0, 0.75);
             opacity: 0;
             visibility: hidden;
-            border-radius: 0px; /* 直角模态 */
-            overflow: hidden;
-            box-shadow: 0 35px 100px rgba(0, 0, 0, 0.7);
             transform-origin: var(--origin-x, 50%) var(--origin-y, 50%);
+            transition: 
+                opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                border-radius 0.7s ease;
         }
 
         .modal.active {
             opacity: 1;
             visibility: visible;
-            animation: expandIn 0.7s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
-        }
-
-        @keyframes expandIn {
-            0% {
-                transform: scale(0.3) translateY(100px);
-                opacity: 0;
-            }
-            60% {
-                transform: scale(1.05);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(1);
-            }
+            transform: translate(-50%, -50%) scale(1);
         }
 
         .modal.closing {
-            animation: expandOut 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        @keyframes expandOut {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            40% {
-                transform: scale(1.03);
-            }
-            100% {
-                transform: scale(0.3) translateY(80px);
-                opacity: 0;
-            }
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.3);
         }
 
         .modal-content {
-            width: 100%;
-            max-width: 980px;
             text-align: center;
-            padding: 3.2rem 2.8rem;
             opacity: 0;
-            transform: translateY(40px);
-            animation: contentIn 0.8s ease forwards 0.2s;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease 0.1s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
         }
 
-        @keyframes contentIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .modal.active .modal-content {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .modal-quote {
-            font-size: 2.7rem;
+            font-size: 2.3rem;
             font-style: italic;
             line-height: 1.5;
-            margin-bottom: 3.2rem;
+            margin-bottom: 2.8rem;
             color: #ffffff;
-            text-shadow: 0 3px 15px rgba(0,0,0,0.5);
+            text-shadow: 0 3px 16px rgba(0,0,0,0.5);
         }
 
         .modal-author {
-            font-size: 1.75rem;
+            font-size: 1.6rem;
             font-weight: 600;
             color: var(--text-author);
-            margin-bottom: 2.4rem;
+            margin-bottom: 2.2rem;
         }
 
         .modal-bio {
-            font-size: 1.25rem;
-            line-height: 1.88;
+            font-size: 1.18rem;
+            line-height: 1.9;
             color: #e0f2ff;
-            background: rgba(0, 0, 0, 0.36);
-            padding: 2.4rem 3rem;
+            background: rgba(0, 0, 0, 0.38);
+            padding: 2.2rem 2.6rem;
             border-radius: 0px;
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.24);
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.26);
+            box-shadow: 0 18px 52px rgba(0, 0, 0, 0.42);
         }
 
         .close-btn {
             position: absolute;
-            top: 2.2rem;
-            right: 2.2rem;
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.36);
+            top: 1.8rem;
+            right: 1.8rem;
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 255, 255, 0.22);
+            border: 1px solid rgba(255, 255, 255, 0.38);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             z-index: 1;
         }
 
         .close-btn:hover {
-            background: rgba(255, 255, 255, 0.32);
-            transform: scale(1.18) rotate(90deg);
-            box-shadow: 0 10px 28px rgba(0,0,0,0.4);
+            background: rgba(255, 255, 255, 0.34);
+            transform: scale(1.2) rotate(90deg);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.45);
         }
 
         .close-btn svg {
-            width: 30px;
-            height: 30px;
+            width: 28px;
+            height: 28px;
             fill: #ffffff;
         }
 
         /* ====================== 响应式 ====================== */
         @media (max-width: 768px) {
             :root {
-                --modal-margin: 30px;
+                --modal-max-width: 90%;
+                --modal-padding: 2rem;
                 --grid-gap: 2rem;
             }
-            .content-area { padding: 6.8rem 1.2rem 2rem; }
+            .content-area { padding: 6.8rem 1.2rem 3rem; }
             header { padding: 0.8rem 1.2rem; }
             .site-title { font-size: 1.3rem; }
             .header-btn { font-size: 0.8rem; padding: 0.4rem 0.8rem; }
-            .grid-sizer, .grid-item { width: 100%; }
+            .grid { grid-template-columns: 1fr; }
             .tile { padding: 2rem; }
-            .quote-text { font-size: 1.02rem; line-height: 1.78; }
-            .modal-quote { font-size: 1.95rem; margin-bottom: 2.4rem; }
-            .modal-author { font-size: 1.45rem; }
-            .modal-bio { font-size: 1.08rem; padding: 1.8rem 2.2rem; }
-            .close-btn { width: 50px; height: 50px; top: 1.6rem; right: 1.6rem; }
-            .modal-content { padding: 2.2rem 2rem; }
+            .quote-text { font-size: 1.04rem; line-height: 1.8; }
+            .modal-quote { font-size: 1.9rem; margin-bottom: 2.2rem; }
+            .modal-author { font-size: 1.4rem; }
+            .modal-bio { font-size: 1.06rem; padding: 1.8rem 2rem; }
+            .close-btn { width: 50px; height: 50px; top: 1.4rem; right: 1.4rem; }
         }
     </style>
 </head>
@@ -365,7 +334,7 @@
     <div class="bg-container"></div>
     <div class="bg-overlay"></div>
 
-    <!-- 标题栏（更通透 + 功能按钮） -->
+    <!-- 标题栏 -->
     <header>
         <div class="site-title">Lyang1273 - 测试页</div>
         <div class="header-buttons">
@@ -374,10 +343,9 @@
         </div>
     </header>
 
-    <!-- 名言瀑布流 -->
+    <!-- 名言网格（响应式） -->
     <div class="content-area">
         <div class="grid" id="grid">
-            <div class="grid-sizer"></div>
 
             <!-- 名言磁贴 -->
             <div class="grid-item">
@@ -462,7 +430,7 @@
         </div>
     </div>
 
-    <!-- 展开模态层 -->
+    <!-- 展开模态层（自适应） -->
     <div class="modal" id="modal">
         <div class="modal-content">
             <div class="modal-quote" id="modal-quote"></div>
@@ -474,28 +442,18 @@
         </div>
     </div>
 
-    <!-- 交互脚本（修复瀑布流 + 展开） -->
+    <!-- 交互脚本（丝滑动画 + 中心展开） -->
     <script>
-        // DOM 元素
         const modal = document.getElementById('modal');
         const modalQuote = document.getElementById('modal-quote');
         const modalAuthor = document.getElementById('modal-author');
         const modalBio = document.getElementById('modal-bio');
         const closeBtn = document.getElementById('close-btn');
         const grid = document.getElementById('grid');
-        let masonry;
 
-        // 初始化瀑布流（等待 DOM + 背景图）
-        document.addEventListener('DOMContentLoaded', () => {
-            imagesLoaded(grid, { background: true }, () => {
-                masonry = new Masonry(grid, {
-                    itemSelector: '.grid-item',
-                    columnWidth: '.grid-sizer',
-                    percentPosition: true,
-                    gutter: parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--grid-gap'))
-                });
-                grid.classList.add('loaded');
-            });
+        // 页面加载完成 → 网格淡入
+        window.addEventListener('load', () => {
+            setTimeout(() => grid.classList.add('loaded'), 100);
         });
 
         // 点击磁贴展开
@@ -503,11 +461,11 @@
             tile.addEventListener('click', function(e) {
                 e.stopPropagation();
                 const rect = this.getBoundingClientRect();
-                const originX = ((rect.left + rect.width / 2) / window.innerWidth) * 100 + '%';
-                const originY = ((rect.top + rect.height / 2) / window.innerHeight) * 100 + '%';
+                const originX = rect.left + rect.width / 2;
+                const originY = rect.top + rect.height / 2;
 
-                modal.style.setProperty('--origin-x', originX);
-                modal.style.setProperty('--origin-y', originY);
+                modal.style.setProperty('--origin-x', `${originX}px`);
+                modal.style.setProperty('--origin-y', `${originY}px`);
 
                 modalQuote.textContent = this.dataset.quote;
                 modalAuthor.textContent = '— ' + this.dataset.author;
@@ -525,7 +483,7 @@
             setTimeout(() => {
                 modal.classList.remove('active', 'closing');
                 document.body.style.overflow = 'auto';
-            }, 600);
+            }, 700);
         };
 
         closeBtn.addEventListener('click', closeModal);
