@@ -21,7 +21,7 @@
             --expand-bg: rgba(0, 70, 130, 0.94);
             --expand-blur: blur(32px);
             --btn-color: #4fc3f7;
-            --modal-padding: 5rem;                  /* 展开后四周留白 */
+            --modal-margin: 50px;                   /* 展开后四周留 50px */
         }
 
         /* ====================== 基础重置 ====================== */
@@ -182,10 +182,13 @@
             transition: transform 0.3s ease;
         }
 
-        /* ====================== 展开模态层（带动画 + 留白） ====================== */
+        /* ====================== 展开模态层（50px 留白 + 动画） ====================== */
         .modal {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: var(--modal-margin);
+            left: var(--modal-margin);
+            right: var(--modal-margin);
+            bottom: var(--modal-margin);
             z-index: 1000;
             background: var(--expand-bg);
             backdrop-filter: var(--expand-blur);
@@ -194,11 +197,13 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: var(--modal-padding);
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-            transform: scale(0.85);
+            transform: scale(0.92);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
 
         .modal.active {
@@ -211,6 +216,7 @@
             width: 100%;
             max-width: 900px;
             text-align: center;
+            padding: 2rem;
             animation: fadeInUp 0.6s ease forwards;
             opacity: 0;
             transform: translateY(30px);
@@ -251,8 +257,8 @@
 
         .close-btn {
             position: absolute;
-            top: calc(var(--modal-padding) / 2);
-            right: calc(var(--modal-padding) / 2);
+            top: 1.5rem;
+            right: 1.5rem;
             width: 48px;
             height: 48px;
             background: rgba(255, 255, 255, 0.15);
@@ -265,6 +271,7 @@
             transition: all 0.3s ease;
             backdrop-filter: blur(4px);
             -webkit-backdrop-filter: blur(4px);
+            z-index: 1;
         }
 
         .close-btn:hover {
@@ -287,10 +294,10 @@
             }
         }
 
-        /* ====================== 响应式 ====================== */
+        /* ====================== 响应式（手机端留白缩至 30px） ====================== */
         @media (max-width: 768px) {
             :root {
-                --modal-padding: 2.5rem;
+                --modal-margin: 30px;
             }
             .container {
                 grid-template-columns: 1fr;
@@ -328,6 +335,11 @@
             .close-btn {
                 width: 40px;
                 height: 40px;
+                top: 1rem;
+                right: 1rem;
+            }
+            .modal-content {
+                padding: 1.5rem;
             }
         }
     </style>
@@ -466,6 +478,13 @@
         closeBtn.addEventListener('click', closeModal);
         modal.addEventListener('click', e => {
             if (e.target === modal) closeModal();
+        });
+
+        // 键盘 Esc 关闭
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
         });
 
         // 磁贴点击缩小反馈
