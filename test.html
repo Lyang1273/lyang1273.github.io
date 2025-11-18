@@ -4,49 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lyang1273</title>
+    <link rel="stylesheet" href="/style.css">
     <style>
-        /* ============ 标题栏统一样式 ============ */
-        header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.07);padding:1rem 2rem;backdrop-filter:blur(30px) saturate(220%);border-bottom:1px solid rgba(255,255,255,0.14);display:flex;align-items:center;justify-content:space-between;}
-        .site-title{font-size:1.5rem;font-weight:600;color:#fff;}
-        .header-buttons{display:flex;gap:0.8rem;}
-        .header-link{text-decoration:none !important;}
-        .header-btn{background:rgba(255,255,255,0.11);border:1px solid rgba(255,255,255,0.18);border-radius:12px;padding:0.48rem 0.95rem;font-size:0.9rem;color:#fff;cursor:pointer;opacity:0.65;transition:all .3s ease;display:inline-block;}
-        .header-link:hover .header-btn{opacity:1;background:rgba(255,255,255,0.22);}
-        .header-link.disabled .header-btn{opacity:0.4;cursor:not-allowed;}
-        .header-link.disabled:hover .header-btn{opacity:0.4;background:rgba(255,255,255,0.11);}
-
-        *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:'Segoe UI','PingFang SC',system-ui,sans-serif;color:#fff;background:#000;min-height:100vh;display:flex;flex-direction:column;}
-        .bg-container{position:fixed;inset:0;z-index:-2;background:url('https://www.minecraft.net/content/dam/minecraftnet/games/minecraft/screenshots/EXPLORE_PDPScreenshotRefresh2024_multipleBiomes_01.png') center/cover no-repeat;filter:brightness(0.75) contrast(1.05);}
-        .bg-overlay{position:fixed;inset:0;z-index:-1;background:rgba(0,0,0,0.38);}
-
-        main{flex:1;padding-top:7.5rem;display:flex;flex-direction:column;}
-
-        /* 介绍区缩小，更紧凑优雅 */
-        .intro-section{
-            flex:1.1;                                 /* 原来1.6 → 1.1 */
-            display:flex;flex-direction:column;justify-content:center;align-items:center;
-            text-align:center;padding:2rem;
-            min-height:50vh;                          /* 原来65vh → 50vh */
-        }
-        .intro-title{
-            font-size:5.8rem;font-weight:900;letter-spacing:3px;
-            margin-bottom:0.4rem;text-shadow:0 4px 20px rgba(0,0,0,0.5);
-        }
-        .intro-subtitle{
-            font-size:1.8rem;opacity:0.92;letter-spacing:1px;font-weight:300;
-        }
-
-        .articles-section{padding:4rem 2rem 7rem;background:rgba(0,0,0,0.15);backdrop-filter:blur(6px);}
-        .articles-title{text-align:center;font-size:2rem;margin-bottom:3rem;color:#e0f2ff;}
-        .article-card{max-width:960px;margin:0 auto;background:rgba(0,84,156,0.86);padding:3rem 3.4rem;box-shadow:0 18px 56px rgba(0,0,0,0.48);border:1px solid rgba(255,255,255,0.18);backdrop-filter:blur(16px);line-height:2.1;font-size:1.18rem;}
-        .article-card h3{font-size:1.9rem;margin-bottom:1.6rem;color:#fff;}
-        .article-card p{text-indent:2em;color:#e8f4ff;}
-
+        .intro-section{flex:1.1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:2rem;min-height:50vh;}
+        .intro-title{font-size:5.8rem;font-weight:900;letter-spacing:3px;margin-bottom:0.4rem;text-shadow:0 4px 20px rgba(0,0,0,0.5);}
+        .intro-subtitle{font-size:1.8rem;opacity:0.92;letter-spacing:1px;font-weight:300;}
+        .articles-section{padding:4rem 2rem 7rem;background:rgba(0,0,0,0.15);backdrop-filter:blur(6px);text-align:center;}
+        .no-article-tip{font-size:1.1rem;opacity:0.6;}
         @media(max-width:768px){
             .intro-title{font-size:3.8rem;}
             .intro-subtitle{font-size:1.4rem;}
-            .intro-section{min-height:45vh;}
         }
     </style>
 </head>
@@ -59,15 +26,10 @@
 <main>
     <section class="intro-section">
         <h1 class="intro-title">Lyang1273</h1>
-        <p class="intro-subtitle">Lyang1273's Blog</p>   <!-- 唯一修改的文字 -->
+        <p class="intro-subtitle">Lyang1273's Blog</p>
     </section>
-
     <section class="articles-section">
-        <h2 class="articles-title">推荐文章</h2>
-        <article class="article-card">
-            <h3>柳州：螺蛳粉香里藏着的山与水</h3>
-            <p>柳州，一座被喀斯特峰林环抱的工业城市，却因一碗螺蛳粉名满天下。柳江如一条碧绿的绸带从城中蜿蜒而过，两岸奇峰䇯立，马鞍山、都乐岩、鱼峰山在晨雾中若隐若现，仿佛一幅流动的水墨画。夜幕降临，窑埠古镇的灯火映在江面，百年骑楼下飘来酸辣鲜香的味道，那是柳州人用米粉、石螺、豆角、酸笋、花生、木耳熬出的生活哲学——“越酸越辣，越嚼越香”。这里既有重工业的烟囱，也有龙城路上的霓虹；既有柳宗元笔下的“江流曲似九回肠”，也有年轻人凌晨排队只为抢第一锅现煮螺蛳粉的执着。柳州从不温柔，却真实得让人上瘾：它把山水藏进钢筋水泥，把乡愁煮进一碗汤里，让每一位尝过的人都忍不住再来一次。</p>
-        </article>
+        <div class="no-article-tip">暂无文章</div>
     </section>
 </main>
 
