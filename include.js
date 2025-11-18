@@ -1,20 +1,18 @@
-// include.js —— 自动引入 + 自动高亮
-document.addEventListener("DOMContentLoaded", function () {
+// include.js —— 放在根目录，所有页面直接引用 /include.js
+document.addEventListener("DOMContentLoaded", () => {
     const includes = document.querySelectorAll("[w3-include-html]");
     includes.forEach(el => {
-        const file = el.getAttribute("w3-include-html");
-        fetch(file)
+        fetch(el.getAttribute("w3-include-html"))
             .then(r => r.text())
             .then(html => {
                 el.innerHTML = html;
                 el.removeAttribute("w3-include-html");
 
                 // 自动高亮当前页面
-                const current = location.pathname.split("/").pop() || "index.html";
+                const currentPath = location.pathname;  // 例如 /img/index.html
                 document.querySelectorAll(".header-btn").forEach(btn => {
-                    const target = btn.getAttribute("data-page") || "index.html";
-                    const targetFile = target.split("/").pop();
-                    if (targetFile === current) {
+                    const link = btn.parentElement.getAttribute("href") || "";
+                    if (link === currentPath || (currentPath === "/" && link === "/index.html")) {
                         btn.classList.add("active");
                     }
                 });
