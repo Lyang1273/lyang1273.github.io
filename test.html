@@ -19,16 +19,35 @@
         body{font-family:'Segoe UI','PingFang SC',system-ui,sans-serif;color:#fff;background:#000;min-height:100vh;display:flex;flex-direction:column;}
         .bg-container{position:fixed;inset:0;z-index:-2;background:url('https://www.minecraft.net/content/dam/minecraftnet/games/minecraft/screenshots/EXPLORE_PDPScreenshotRefresh2024_multipleBiomes_01.png') center/cover no-repeat;filter:brightness(0.75) contrast(1.05);}
         .bg-overlay{position:fixed;inset:0;z-index:-1;background:rgba(0,0,0,0.38);}
+
         main{flex:1;padding-top:7.5rem;display:flex;flex-direction:column;}
-        .intro-section{flex:1.6;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:2rem;min-height:65vh;}
-        .intro-title{font-size:5.8rem;font-weight:900;letter-spacing:3px;margin-bottom:1.2rem;text-shadow:0 4px 20px rgba(0,0,0,0.5);}
-        .intro-subtitle{font-size:1.6rem;opacity:0.92;letter-spacing:2px;}
-        .articles-section{padding:5rem 2rem 7rem;background:rgba(0,0,0,0.15);backdrop-filter:blur(6px);}
+
+        /* 介绍区缩小，更紧凑优雅 */
+        .intro-section{
+            flex:1.1;                                 /* 原来1.6 → 1.1 */
+            display:flex;flex-direction:column;justify-content:center;align-items:center;
+            text-align:center;padding:2rem;
+            min-height:50vh;                          /* 原来65vh → 50vh */
+        }
+        .intro-title{
+            font-size:5.8rem;font-weight:900;letter-spacing:3px;
+            margin-bottom:0.4rem;text-shadow:0 4px 20px rgba(0,0,0,0.5);
+        }
+        .intro-subtitle{
+            font-size:1.8rem;opacity:0.92;letter-spacing:1px;font-weight:300;
+        }
+
+        .articles-section{padding:4rem 2rem 7rem;background:rgba(0,0,0,0.15);backdrop-filter:blur(6px);}
         .articles-title{text-align:center;font-size:2rem;margin-bottom:3rem;color:#e0f2ff;}
         .article-card{max-width:960px;margin:0 auto;background:rgba(0,84,156,0.86);padding:3rem 3.4rem;box-shadow:0 18px 56px rgba(0,0,0,0.48);border:1px solid rgba(255,255,255,0.18);backdrop-filter:blur(16px);line-height:2.1;font-size:1.18rem;}
         .article-card h3{font-size:1.9rem;margin-bottom:1.6rem;color:#fff;}
         .article-card p{text-indent:2em;color:#e8f4ff;}
-        @media(max-width:768px){.intro-title{font-size:3.8rem;}}
+
+        @media(max-width:768px){
+            .intro-title{font-size:3.8rem;}
+            .intro-subtitle{font-size:1.4rem;}
+            .intro-section{min-height:45vh;}
+        }
     </style>
 </head>
 <body>
@@ -40,8 +59,9 @@
 <main>
     <section class="intro-section">
         <h1 class="intro-title">Lyang1273</h1>
-        <p class="intro-subtitle">一个没有目标的小初生</p>
+        <p class="intro-subtitle">Lyang1273's Blog</p>   <!-- 唯一修改的文字 -->
     </section>
+
     <section class="articles-section">
         <h2 class="articles-title">推荐文章</h2>
         <article class="article-card">
