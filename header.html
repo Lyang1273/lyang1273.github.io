@@ -1,25 +1,61 @@
-<!-- header.html —— 全站统一标题栏-->
+<!-- header.html —— 全站统一标题栏 -->
 <header>
-    <div class="header-buttons">
-        <a href="/index.html"><div class="header-btn" data-page="index.html">主页</div></a>
-        <a href="/img/index.html"><div class="header-btn" data-page="img/index.html">照片</div></a>
-        <a href="/daily/index.html"><div class="header-btn" data-page="daily/index.html">每日简单小结</div></a>
-    </div>
+    <!-- 最左侧放名字 -->
     <div class="site-title">Lyang1273</div>
+
+    <!-- 右侧四个固定按钮 -->
+    <div class="header-buttons">
+        <a href="/index.html"><div class="header-btn">主页</div></a>
+        <a href="/articles/index.html"><div class="header-btn">文章</div></a>     <!-- 文章页还没建，先占位 -->
+        <a href="/img/index.html"><div class="header-btn">照片</div></a>
+        <a href="javascript:void(0)" class="disabled"><div class="header-btn">每日简单小结</div></a> <!-- 暂不启用 -->
+    </div>
 </header>
 
 <style>
-    /* 按钮更紧凑精致 */
-    .header-buttons { gap: 0.75rem; align-items: center; }
+    header {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 100;
+        background: rgba(255,255,255,0.07);
+        padding: 1rem 2rem;
+        backdrop-filter: blur(30px) saturate(220%);
+        border-bottom: 1px solid rgba(255,255,255,0.14);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .site-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+    .header-buttons {
+        display: flex;
+        gap: 0.8rem;                     /* 按钮间距更紧凑 */
+        align-items: center;
+    }
     .header-btn {
+        background: rgba(255,255,255,0.11);
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 12px;
         padding: 0.48rem 0.95rem;
         font-size: 0.9rem;
+        color: #fff;
+        cursor: pointer;
         opacity: 0.65;
         transition: all .3s ease;
     }
-    .header-btn:hover, .header-btn.active {
+    .header-btn:hover {
         opacity: 1;
         background: rgba(255,255,255,0.22);
-        box-shadow: 0 0 15px rgba(160,196,255,0.4);
+    }
+    /* 暂时禁用的按钮（每日小结） */
+    .disabled .header-btn {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+    .disabled:hover .header-btn {
+        opacity: 0.4;
+        background: rgba(255,255,255,0.11);
     }
 </style>
