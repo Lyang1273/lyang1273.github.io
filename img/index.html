@@ -10,74 +10,39 @@
         body{font-family:'Segoe UI','PingFang SC',system-ui,sans-serif;color:var(--text-main);background:#000;min-height:100vh;display:flex;flex-direction:column;}
         .bg-container{position:fixed;inset:0;z-index:-2;background:url('https://www.minecraft.net/content/dam/minecraftnet/games/minecraft/screenshots/EXPLORE_PDPScreenshotRefresh2024_multipleBiomes_01.png') center/cover no-repeat;filter:brightness(0.75) contrast(1.05);}
         .bg-overlay{position:fixed;inset:0;z-index:-1;background:rgba(0,0,0,0.38);}
-
         header{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--header-bg);padding:1rem 2rem;backdrop-filter:var(--header-blur) saturate(220%);border-bottom:1px solid rgba(255,255,255,0.14);display:flex;align-items:center;justify-content:space-between;}
         .site-title{font-size:1.5rem;font-weight:600;}
-        .header-buttons{display:flex;gap:1.1rem;}
+        .header-buttons{display:flex;gap:1.1rem;align-items:center;}
         .header-btn{background:rgba(255,255,255,0.11);border:1px solid rgba(255,255,255,0.18);border-radius:12px;padding:0.52rem 1.1rem;font-size:0.92rem;cursor:pointer;opacity:0.65;transition:all .3s;}
         .header-btn:hover,.header-btn.active{opacity:1;background:rgba(255,255,255,0.22);box-shadow:0 0 15px rgba(160,196,255,0.4);}
-
         main{flex:1;padding-top:7.5rem;display:flex;flex-direction:column;align-items:center;}
         .section-title{margin:4rem 0 2rem;font-size:2.8rem;font-weight:800;letter-spacing:2px;text-shadow:0 4px 20px rgba(0,0,0,0.5);}
-
-        /* 最佳照片板块 */
         .best-photo{max-width:1100px;width:100%;padding:0 2rem 4rem;}
-        .best-photo img{
-            width:100%;border-radius:0;box-shadow:0 20px 60px rgba(0,0,0,0.6);
-            transition:transform .6s cubic-bezier(0.16,1,0.3,1);
-            cursor:pointer;
-        }
+        .best-photo img{width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.6);transition:transform .6s cubic-bezier(0.16,1,0.3,1);cursor:pointer;}
         .best-photo img:hover{transform:scale(1.03);}
-
-        /* 其他照片可后续继续加在这里 */
         .gallery{width:100%;max-width:1400px;padding:0 2rem 8rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:2.4rem;}
-        .photo-item{position:relative;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,0.5);cursor:pointer;transition:transform .4s cubic-bezier(0.16,1,0.3,1);}
+        .photo-item{box-shadow:0 12px 40px rgba(0,0,0,0.5);cursor:pointer;transition:transform .4s cubic-bezier(0.16,1,0.3,1);}
         .photo-item:hover{transform:translateY(-12px) scale(1.03);}
         .photo-item img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease;}
         .photo-item:hover img{transform:scale(1.1);}
-
-        @media(max-width:768px){
-            .section-title{font-size:2.2rem;margin:3rem 0 1.5rem;}
-            .best-photo{padding:0 1.2rem 3rem;}
-            .gallery{gap:1.8rem;padding:0 1.2rem 6rem;}
-        }
     </style>
 </head>
 <body>
-
 <div class="bg-container"></div>
 <div class="bg-overlay"></div>
 
-<header>
-    <div class="site-title">Lyang1273</div>
-    <div class="header-buttons">
-        <div class="header-btn" onclick="location.href='../index.html'">文章</div>
-        <div class="header-btn active">照片</div>
-        <div class="header-btn" onclick="location.href='../daily/index.html'">每日简单小结</div>
-    </div>
-</header>
+<div w3-include-html="../header.html"></div>
 
 <main>
-    <!-- 最佳照片 -->
     <h2 class="section-title">最佳照片</h2>
     <div class="best-photo">
-        <!-- 点击后在新标签页打开原图 -->
         <a href="../assets/img/photo/photo0.jpg" target="_blank" rel="noopener">
             <img src="../assets/img/photo/photo0.jpg" alt="最佳照片">
         </a>
     </div>
-
-    <!-- 其他照片（目前留空，后面你继续往这里加就行） -->
-    <div class="gallery" id="other-photos">
-        <!-- 未来照片放这里，例如：
-        <div class="photo-item">
-            <a href="../assets/img/photo/xxx.jpg" target="_blank" rel="noopener">
-                <img src="../assets/img/photo/xxx.jpg" alt="">
-            </a>
-        </div>
-        -->
-    </div>
+    <div class="gallery"></div>
 </main>
 
+<script src="../include.js"></script>
 </body>
 </html>
