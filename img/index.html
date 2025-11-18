@@ -5,19 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>照片 - Lyang1273</title>
     <style>
-        :root{--header-bg:rgba(255,255,255,0.07);--header-blur:blur(30px);--text-main:#fff;}
+        /* ============ 标题栏统一样式（必须包含） ============ */
+        header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.07);padding:1rem 2rem;backdrop-filter:blur(30px) saturate(220%);border-bottom:1px solid rgba(255,255,255,0.14);display:flex;align-items:center;justify-content:space-between;}
+        .site-title{font-size:1.5rem;font-weight:600;color:#fff;}
+        .header-buttons{display:flex;gap:0.8rem;}
+        .header-btn{background:rgba(255,255,255,0.11);border:1px solid rgba(255,255,255,0.18);border-radius:12px;padding:0.48rem 0.95rem;font-size:0.9rem;color:#fff;cursor:pointer;opacity:0.65;transition:all .3s ease;}
+        .header-btn:hover{opacity:1;background:rgba(255,255,255,0.22);}
+        .disabled .header-btn{opacity:0.4;cursor:not-allowed;}
+        .disabled:hover .header-btn{opacity:0.4;background:rgba(255,255,255,0.11);}
+
         *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:'Segoe UI','PingFang SC',system-ui,sans-serif;color:var(--text-main);background:#000;min-height:100vh;display:flex;flex-direction:column;}
+        body{font-family:'Segoe UI','PingFang SC',system-ui,sans-serif;color:#fff;background:#000;min-height:100vh;display:flex;flex-direction:column;}
         .bg-container{position:fixed;inset:0;z-index:-2;background:url('https://www.minecraft.net/content/dam/minecraftnet/games/minecraft/screenshots/EXPLORE_PDPScreenshotRefresh2024_multipleBiomes_01.png') center/cover no-repeat;filter:brightness(0.75) contrast(1.05);}
         .bg-overlay{position:fixed;inset:0;z-index:-1;background:rgba(0,0,0,0.38);}
-        header{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--header-bg);padding:1rem 2rem;backdrop-filter:var(--header-blur) saturate(220%);border-bottom:1px solid rgba(255,255,255,0.14);display:flex;align-items:center;justify-content:space-between;}
-        .site-title{font-size:1.5rem;font-weight:600;}
         main{flex:1;padding-top:7.5rem;display:flex;flex-direction:column;align-items:center;}
         .section-title{margin:4rem 0 2rem;font-size:2.8rem;font-weight:800;letter-spacing:2px;text-shadow:0 4px 20px rgba(0,0,0,0.5);}
         .best-photo{max-width:1100px;width:100%;padding:0 2rem 5rem;}
         .best-photo img{width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.6);transition:transform .6s cubic-bezier(0.16,1,0.3,1);cursor:pointer;}
         .best-photo img:hover{transform:scale(1.03);}
-        @media(max-width:768px){.section-title{font-size:2.2rem;}}
     </style>
 </head>
 <body>
