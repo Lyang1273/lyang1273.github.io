@@ -1,23 +1,39 @@
-/* 全站公共样式 */
-header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.07);padding:1rem 2rem;backdrop-filter:blur(30px) saturate(220%);border-bottom:1px solid rgba(255,255,255,0.14);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+/* style.css —— 全站公共样式 */
+header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(255,255,255,0.07);
+    padding:0.9rem 1.6rem;
+    backdrop-filter:blur(30px) saturate(220%);
+    border-bottom:1px solid rgba(255,255,255,0.14);
+    display:flex;align-items:center;justify-content:space-between;
+    flex-wrap:wrap;gap:0.8rem;
+}
 .site-title{font-size:1.5rem;font-weight:600;color:#fff;white-space:nowrap;}
-.header-buttons{display:flex;gap:0.8rem;flex-wrap:wrap;justify-content:flex-end;}
+.header-buttons{display:flex;gap:0.65rem;flex-wrap:wrap;justify-content:flex-end;}
 .header-link{text-decoration:none !important;}
-.header-btn{background:rgba(255,255,255,0.11);border:1px solid rgba(255,255,255,0.18);border-radius:12px;padding:0.48rem 0.95rem;font-size:0.9rem;color:#fff;cursor:pointer;opacity:0.65;transition:all .3s ease;display:inline-block;}
+.header-btn{
+    background:rgba(255,255,255,0.11);
+    border:1px solid rgba(255,255,255,0.18);
+    border-radius:12px;
+    padding:0.42rem 0.88rem;              /* 按钮更小 */
+    font-size:0.88rem;                    /* 文字稍小 */
+    color:#fff;cursor:pointer;
+    opacity:0.65;transition:all .3s ease;display:inline-block;
+}
 .header-link:hover .header-btn{opacity:1;background:rgba(255,255,255,0.22);}
 .header-link.disabled .header-btn{opacity:0.4;cursor:not-allowed;}
 .header-link.disabled:hover .header-btn{opacity:0.4;background:rgba(255,255,255,0.11);}
 
-/* 超窄屏幕优化 */
+/* 超窄屏优化 */
 @media(max-width:480px){
-    header{padding:0.8rem 1.2rem;}
-    .header-buttons{gap:0.5rem;}
-    .header-btn{font-size:0.85rem;padding:0.4rem 0.75rem;}
+    header{padding:0.7rem 1rem;}
+    .header-buttons{gap:0.45rem;}
+    .header-btn{font-size:0.82rem;padding:0.38rem 0.7rem;}
 }
 
-/* 全局基础样式 */
+/* 全局基础 */
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Segoe UI','PingFang SC',system-ui,sans-serif;color:#fff;background:#000;min-height:100vh;display:flex;flex-direction:column;}
 .bg-container{position:fixed;inset:0;z-index:-2;background:url('https://www.minecraft.net/content/dam/minecraftnet/games/minecraft/screenshots/EXPLORE_PDPScreenshotRefresh2024_multipleBiomes_01.png') center/cover no-repeat;filter:brightness(0.75) contrast(1.05);}
 .bg-overlay{position:fixed;inset:0;z-index:-1;background:rgba(0,0,0,0.38);}
-main{flex:1;padding-top:7.5rem;}
+main{flex:1;padding-top:7rem;}   /* 配合新标题栏高度 */
