@@ -38,6 +38,7 @@
             flex:1;display:flex;align-items:center;gap:0.8rem;
             min-width:0;cursor:pointer;user-select:none;
             height:50px;-webkit-tap-highlight-color:transparent;
+            touch-action:none; 
         }
         .time{font-size:0.94rem;opacity:0.85;width:46px;flex-shrink:0;text-align:center;}
         .progress-bar{
@@ -50,7 +51,8 @@
             width:18px;height:18px;background:#6ecfff;border-radius:50%;
             opacity:0;transition:opacity .2s;box-shadow:0 0 12px rgba(110,207,255,0.8);
         }
-        .progress-area:active .progress-knob{opacity:1;}
+        .progress-area:active .progress-knob,
+        .progress-area.dragging .progress-knob{opacity:1;}
 
         @media(max-width:768px){
             .music-item{flex-direction:row;padding:1.5rem 1.8rem;gap:1.6rem;}
@@ -70,7 +72,6 @@
     <h1 class="page-title">音乐</h1>
     <div class="music-list">
 
-        <!-- 第一首 -->
         <div class="music-item">
             <div class="music-cover">
                 <img src="/assets/music/album_image/Andrew Prahlow - 14.3 Billion Years.jpg" alt="14.3 Billion Years">
@@ -96,7 +97,6 @@
             </div>
         </div>
 
-        <!-- 第二首 -->
         <div class="music-item">
             <div class="music-cover">
                 <img src="/assets/music/album_image/Andrew Prahlow - Travelers' encore.jpg" alt="Travelers' Encore">
@@ -138,7 +138,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const total = player.querySelector('.time.total');
         const area  = player.querySelector('.progress-area');
 
-        // 播放暂停
         btn.addEventListener('click', () => {
             if (audio.paused) {
                 document.querySelectorAll('audio').forEach(a => a !== audio && a.pause());
@@ -150,7 +149,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // 更新进度
         audio.addEventListener('timeupdate', () => {
             if (!audio.duration) return;
             const percent = (audio.currentTime / audio.duration) * 100;
@@ -158,10 +156,9 @@ document.addEventListener('DOMContentLoaded', () => {
             knob.style.left = percent + '%';
             cur.textContent = format(audio.currentTime);
         });
-        audio.addEventListener('loadedmetadata', () => {
-            total.textContent = format(audio.duration);
-        });
+        audio.addEventListener('loadedmetadata', () => total.textContent = format(audio.duration));
 
+        // 永不失灵的拖动核心（只加了 touch-action:none 和 preventDefault）
         let dragging = false;
         const seek = (clientX) => {
             const rect = area.getBoundingClientRect();
@@ -171,14 +168,17 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         area.addEventListener('pointerdown', e => {
+            e.preventDefault();           // 关键
             dragging = true;
             area.classList.add('dragging');
-            seek(e.clientX);
-            e.preventDefault();
+            seek(e.clientX || e.touches[0].clientX);
         });
 
         document.addEventListener('pointermove', e => {
-            if (dragging) seek(e.clientX);
+            if (dragging) {
+                e.preventDefault();       // 关键
+                seek(e.clientX || e.touches[0].clientX);
+            }
         });
 
         document.addEventListener('pointerup', () => {
@@ -187,7 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 area.classList.remove('dragging');
             }
         });
-
     });
 
     function format(s) {
