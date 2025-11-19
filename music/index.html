@@ -30,12 +30,16 @@
 
         .controls{display:flex;align-items:center;gap:1.4rem;flex-wrap:wrap;}
         .play-btn{
-            width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.16);
-            border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
-            transition:all .3s;box-shadow:0 8px 25px rgba(0,0,0,0.4);
+            width:48px; height:48px;            /* 调小了 */
+            border-radius:50%;
+            background:rgba(255,255,255,0.18);
+            border:none;cursor:pointer;
+            display:flex;align-items:center;justify-content:center;
+            transition:all .3s;
+            box-shadow:0 6px 20px rgba(0,0,0,0.4);
         }
-        .play-btn:hover{background:rgba(255,255,255,0.26);}
-        .play-btn svg{width:28px;height:28px;fill:#fff;}
+        .play-btn:hover{background:rgba(255,255,255,0.28);}
+        .play-btn svg{width:22px;height:22px;fill:#fff;}
 
         .progress-area{flex:1;display:flex;align-items:center;gap:0.8rem;min-width:200px;cursor:pointer;}
         .time-current,.time-total{font-size:0.94rem;opacity:0.8;width:44px;text-align:center;}
@@ -50,8 +54,8 @@
         @media(max-width:768px){
             .music-item{flex-direction:column;text-align:center;gap:1.6rem;}
             .music-cover img{width:110px;height:110px;}
-            .play-btn{width:64px;height:64px;}
-            .play-btn svg{width:32px;height:32px;}
+            .play-btn{width:56px;height:56px;}
+            .play-btn svg{width:26px;height:26px;}
         }
     </style>
 </head>
@@ -87,6 +91,7 @@
                         <span class="time-total">0:00</span>
                     </div>
                 </div>
+                <!-- 关键修复：直接写 src，兼容所有浏览器 -->
                 <audio preload="metadata" src="/assets/music/Andrew Prahlow - 14.3 Billion Years.mp3"></audio>
             </div>
         </div>
@@ -122,7 +127,7 @@
 </main>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.music-item').forEach(item => {
         const audio = item.querySelector('audio');
         const btn = item.querySelector('.play-btn');
@@ -130,10 +135,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const knob = item.querySelector('.progress-knob');
         const current = item.querySelector('.time-current');
         const total = item.querySelector('.time-total');
-        const bar = item.querySelector('.progress-area');
+        const progressArea = item.querySelector('.progress-area');
 
-        // 播放暂停
-        btn.onclick = () => {
+        // 播放/暂停
+        btn.addEventListener('click', () => {
             if (audio.paused) {
                 audio.play();
                 btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>';
@@ -141,45 +146,50 @@ document.addEventListener('DOMContentLoaded', function() {
                 audio.pause();
                 btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
             }
-        };
+        });
 
         // 更新进度
-        audio.ontimeupdate = () => {
+        audio.addEventListener('timeupdate', () => {
             const percent = (audio.currentTime / audio.duration) * 100 || 0;
             fill.style.width = percent + '%';
             knob.style.left = percent + '%';
-            current.textContent = format(audio.currentTime);
-        };
+            current.textContent = formatTime(audio.currentTime);
+        });
 
-        // 加载完成显示总时长
-        audio.onloadedmetadata = () => {
-            total.textContent = format(audio.duration);
-        };
+        // 显示总时长
+        audio.addEventListener('loadedmetadata', () => {
+            total.textContent = formatTime(audio.duration);
+        });
 
-        // 点击/触摸拖动进度条（完美支持手机）
-        bar.onpointerdown = e => {
-            const seek = (evt) => {
-                const rect = bar.getBoundingClientRect();
-                const pos = (evt.clientX || evt.touches[0].clientX) - rect.left;
-                const ratio = Math.max(0, Math.min(1, pos / rect.width));
-                audio.currentTime = ratio * audio.duration;
+        // 点击/拖动进度条（完美支持触摸）
+        progressArea.addEventListener('pointerdown', e => {
+            const update = evt => {
+                const rect = progressArea.getBoundingClientRect();
+                let x = evt.clientX || (evt.touches && evt.touches[0].clientX);
+                let pos = (x - rect.left) / rect.width;
+                pos = Math.max(0, Math.min(1, pos));
+                audio.currentTime = pos * audio.duration;
             };
-            seek(e);
-            const move = evt => seek(evt);
+            update(e);
+
+            const move = evt => { evt.preventDefault(); update(evt); };
             const up = () => {
                 document.removeEventListener('pointermove', move);
                 document.removeEventListener('pointerup', up);
+                document.removeEventListener('pointercancel', up);
             };
+
             document.addEventListener('pointermove', move);
             document.addEventListener('pointerup', up);
-        };
+            document.addEventListener('pointercancel', up);
+        });
     });
 
-    function format(s) {
-        if (isNaN(s)) return '0:00';
-        const m = Math.floor(s / 60);
-        const sec = Math.floor(s % 60);
-        return m + ':' + (sec < 10 ? '0' : '') + sec;
+    function formatTime(seconds) {
+        if (!isFinite(seconds)) return '0:00';
+        const m = Math.floor(seconds / 60);
+        const s = Math.floor(seconds % 60);
+        return m + ':' + (s < 10 ? '0' : '') + s;
     }
 });
 </script>
