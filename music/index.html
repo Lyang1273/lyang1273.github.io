@@ -29,29 +29,39 @@
         .music-title{font-size:1.26rem;font-weight:600;margin-bottom:0.4rem;}
         .music-artist{font-size:0.96rem;opacity:0.75;}
 
-        /* 优化浏览器默认控件（iOS 尽量显示进度条） */
+        /* 关键：只保留播放按钮 + 音量滑块 */
         audio{
-            width:100%;                        /* 强制全宽，避免 iOS 圆卡 */
-            height:52px;                       /* 高度适中，iOS 会显示完整控件 */
+            width:100%;
+            height:54px;
             margin-top:1rem;
-            border-radius:12px;
-            outline:none;
-            background:rgba(255,255,255,0.08); /* 毛玻璃背景 */
-            backdrop-filter:blur(8px);
+            border-radius:14px;
+            background:transparent;
         }
+        /* 隐藏进度条、时间、下载、速度等所有多余控件 */
+        audio::-webkit-media-controls-timeline,
+        audio::-webkit-media-controls-current-time-display,
+        audio::-webkit-media-controls-time-remaining-display,
+        audio::-webkit-media-controls-timeline-container,
+        audio::-webkit-media-controls-download-button,
+        audio::-webkit-media-controls-fullscreen-button,
+        audio::-webkit-media-controls-playback-rate-button,
+        audio::-webkit-media-controls-seek-back-button,
+        audio::-webkit-media-controls-seek-forward-button{
+            display:none !important;
+        }
+        /* 让播放按钮和音量滑块更漂亮 */
         audio::-webkit-media-controls-panel{
-            background:rgba(255,255,255,0.1);  /* 控件面板毛玻璃 */
-            border-radius:12px;
-        }
-        audio::-webkit-media-controls-play-button, audio::-webkit-media-controls-volume-slider-container{
-            background:rgba(255,255,255,0.15); /* 按钮/滑块毛玻璃 */
+            background:rgba(255,255,255,0.1);
+            backdrop-filter:blur(10px);
+            border-radius:14px;
+            padding:0 12px;
         }
 
         @media(max-width:768px){
             .page-title{font-size:2.5rem;}
             .music-item{flex-direction:column;text-align:center;padding:2rem 1.6rem;gap:1.4rem;}
             .music-cover img{width:100px;height:100px;}
-            audio{height:48px;}                /* 手机稍小 */
+            audio{height:50px;}
         }
     </style>
 </head>
@@ -73,9 +83,8 @@
             <div class="music-info">
                 <div class="music-title">14.3 Billion Years</div>
                 <div class="music-artist">Andrew Prahlow</div>
-                <audio controls preload="metadata">
+                <audio controls preload="metadata" controlsList="nodownload noplaybackrate">
                     <source src="/assets/music/Andrew Prahlow - 14.3 Billion Years.mp3" type="audio/mpeg">
-                    您的浏览器不支持播放
                 </audio>
             </div>
         </div>
@@ -87,9 +96,8 @@
             <div class="music-info">
                 <div class="music-title">Travelers' Encore</div>
                 <div class="music-artist">Andrew Prahlow</div>
-                <audio controls preload="metadata">
+                <audio controls preload="metadata" controlsList="nodownload noplaybackrate">
                     <source src="/assets/music/Andrew Prahlow - Travelers' encore.mp3" type="audio/mpeg">
-                    您的浏览器不支持播放
                 </audio>
             </div>
         </div>
