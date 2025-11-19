@@ -13,55 +13,52 @@
             background:rgba(255,255,255,0.08);
             border:1px solid rgba(255,255,255,0.16);
             border-radius:16px;
-            padding:1.8rem 2.2rem;
-            display:flex;align-items:center;gap:2rem;
+            padding:1.6rem 2rem;
+            display:flex;align-items:center;gap:1.8rem;
             transition:all .35s ease;
             backdrop-filter:blur(12px);
         }
         .music-item:hover{background:rgba(255,255,255,0.14);transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,0.5);}
-        .music-cover img{width:78px;height:78px;border-radius:14px;object-fit:cover;box-shadow:0 10px 30px rgba(0,0,0,0.6);flex-shrink:0;}
+        .music-cover img{width:76px;height:76px;border-radius:12px;object-fit:cover;box-shadow:0 8px 25px rgba(0,0,0,0.6);flex-shrink:0;}
 
-        .player{flex:1;display:flex;flex-direction:column;gap:0.9rem;min-width:0;}
-        .track-info .music-title{font-size:1.28rem;font-weight:600;}
-        .track-info .music-artist{font-size:0.96rem;opacity:0.75;}
+        .player{flex:1;display:flex;flex-direction:column;gap:0.8rem;min-width:0;}
+        .track-info .music-title{font-size:1.26rem;font-weight:600;}
+        .track-info .music-artist{font-size:0.94rem;opacity:0.75;}
 
         .controls{display:flex;align-items:center;gap:1.2rem;width:100%;}
         .play-btn{
             width:44px;height:44px;border-radius:50%;
-            background:rgba(255,255,255,0.22);border:none;
-            flex-shrink:0;cursor:pointer;transition:all .3s;
-            box-shadow:0 5px 18px rgba(0,0,0,0.4);
+            background:rgba(255,255,255,0.22);border:none;flex-shrink:0;
+            cursor:pointer;transition:all .3s;box-shadow:0 5px 18px rgba(0,0,0,0.4);
         }
         .play-btn:hover{background:rgba(255,255,255,0.32);}
         .play-btn svg{width:20px;height:20px;fill:#fff;}
 
         .progress-area{
-            flex:1;display:flex;align-items:center;gap:0.8rem;min-width:0;cursor:pointer;
-            user-select:none;
+            flex:1;display:flex;align-items:center;gap:0.8rem;
+            min-width:0;cursor:pointer;user-select:none;
+            height:50px; /* 加大点击区域 */
+            -webkit-tap-highlight-color:transparent;
         }
         .time{font-size:0.94rem;opacity:0.85;width:46px;flex-shrink:0;text-align:center;}
-        .progress-wrapper{flex:1;height:40px;display:flex;align-items:center;position:relative;}
         .progress-bar{
-            width:100%;height:8px;background:rgba(255,255,255,0.18);border-radius:4px;
-            position:absolute;inset:0;margin:auto;
+            flex:1;height:8px;background:rgba(255,255,255,0.18);
+            border-radius:4px;position:relative;
         }
-        .progress-fill{height:100%;width:0;background:#6ecfff;border-radius:4px;transition:width .1s linear;}
+        .progress-fill{height:100%;width:0;background:#6ecfff;border-radius:4px;}
         .progress-knob{
             position:absolute;top:50%;left:0;transform:translate(-50%,-50%);
-            width:16px;height:16px;background:#6ecfff;border-radius:50%;
-            opacity:0;transition:opacity .2s;box-shadow:0 3px 12px rgba(110,207,255,0.7);
+            width:18px;height:18px;background:#6ecfff;border-radius:50%;
+            opacity:0;transition:opacity .2s;box-shadow:0 0 12px rgba(110,207,255,0.8);
         }
-        .progress-area:active .progress-knob,
-        .progress-area.dragging .progress-knob{opacity:1;}
+        .progress-area:active .progress-knob{opacity:1;}
 
         @media(max-width:768px){
-            .music-item{flex-direction:row;align-items:center;gap:1.8rem;padding:1.6rem 2rem;}
-            .music-cover img{width:72px;height:72px;}
+            .music-item{flex-direction:row;padding:1.5rem 1.8rem;gap:1.6rem;}
             .play-btn{width:52px;height:52px;}
             .play-btn svg{width:24px;height:24px;}
-            .time{width:42px;font-size:0.9rem;}
             .progress-bar{height:10px;border-radius:5px;}
-            .progress-knob{width:20px;height:20px;}
+            .progress-knob{width:22px;height:22px;}
         }
     </style>
 </head>
@@ -89,11 +86,9 @@
                     </button>
                     <div class="progress-area">
                         <span class="time current">0:00</span>
-                        <div class="progress-wrapper">
-                            <div class="progress-bar">
-                                <div class="progress-fill"></div>
-                                <div class="progress-knob"></div>
-                            </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                            <div class="progress-knob"></div>
                         </div>
                         <span class="time total">0:00</span>
                     </div>
@@ -116,11 +111,9 @@
                     </button>
                     <div class="progress-area">
                         <span class="time current">0:00</span>
-                        <div class="progress-wrapper">
-                            <div class="progress-bar">
-                                <div class="progress-fill"></div>
-                                <div class="progress-knob"></div>
-                            </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                            <div class="progress-knob"></div>
                         </div>
                         <span class="time total">0:00</span>
                     </div>
@@ -144,7 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const total = player.querySelector('.time.total');
         const area  = player.querySelector('.progress-area');
 
-        btn.addEventListener('click', () => {
+        // 播放暂停
+        btn.onclick = () => {
             if (audio.paused) {
                 document.querySelectorAll('audio').forEach(a => a !== audio && a.pause());
                 audio.play();
@@ -153,46 +147,49 @@ document.addEventListener('DOMContentLoaded', () => {
                 audio.pause();
                 btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
             }
-        });
+        };
 
-        audio.addEventListener('timeupdate', () => {
+        // 更新进度
+        audio.ontimeupdate = () => {
             if (!audio.duration) return;
             const percent = (audio.currentTime / audio.duration) * 100;
             fill.style.width = percent + '%';
             knob.style.left = percent + '%';
             cur.textContent = format(audio.currentTime);
-        });
+        };
+        audio.onloadedmetadata = () => total.textContent = format(audio.duration);
 
-        audio.addEventListener('loadedmetadata', () => {
-            total.textContent = format(audio.duration);
-        });
-
-        // 拖动（丝滑不卡）
-        let dragging = false;
-        const seek = (clientX) => {
+        // 超级稳的拖动方案（touch + mouse）
+        const seek = (x) => {
             const rect = area.getBoundingClientRect();
-            let pos = (clientX - rect.left) / rect.width;
+            let pos = (x - rect.left) / rect.width;
             pos = Math.max(0, Math.min(1, pos));
             audio.currentTime = pos * audio.duration;
+            fill.style.width = (pos * 100) + '%';
+            knob.style.left = (pos * 100) + '%';
         };
 
-        area.addEventListener('pointerdown', e => {
-            dragging = true;
-            area.classList.add('dragging');
+        // 鼠标
+        area.onmousedown = e => {
             seek(e.clientX);
+            const move = e => seek(e.clientX);
+            const up = () => {
+                document.removeEventListener('mousemove', move);
+                document.removeEventListener('mouseup', up);
+            };
+            document.addEventListener('mousemove', move);
+            document.addEventListener('mouseup', up);
+        };
+
+        // 触摸（最稳写法）
+        area.ontouchstart = e => {
             e.preventDefault();
-        });
-
-        document.addEventListener('pointermove', e => {
-            if (dragging) seek(e.clientX);
-        });
-
-        document.addEventListener('pointerup', () => {
-            if (dragging) {
-                dragging = false;
-                area.classList.remove('dragging');
-            }
-        });
+            seek(e.touches[0].clientX);
+        };
+        area.ontouchmove = e => {
+            e.preventDefault();
+            seek(e.touches[0].clientX);
+        };
     });
 
     function format(s) {
