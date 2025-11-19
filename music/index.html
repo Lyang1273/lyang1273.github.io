@@ -29,39 +29,18 @@
         .music-title{font-size:1.26rem;font-weight:600;margin-bottom:0.4rem;}
         .music-artist{font-size:0.96rem;opacity:0.75;}
 
-        /* 关键：只保留播放按钮 + 音量滑块 */
-        audio{
-            width:100%;
-            height:54px;
-            margin-top:1rem;
-            border-radius:14px;
-            background:transparent;
-        }
-        /* 隐藏进度条、时间、下载、速度等所有多余控件 */
+        /* 关键：只隐藏进度条和时间，其他全部保留原样 */
         audio::-webkit-media-controls-timeline,
-        audio::-webkit-media-controls-current-time-display,
-        audio::-webkit-media-controls-time-remaining-display,
         audio::-webkit-media-controls-timeline-container,
-        audio::-webkit-media-controls-download-button,
-        audio::-webkit-media-controls-fullscreen-button,
-        audio::-webkit-media-controls-playback-rate-button,
-        audio::-webkit-media-controls-seek-back-button,
-        audio::-webkit-media-controls-seek-forward-button{
+        audio::-webkit-media-controls-current-time-display,
+        audio::-webkit-media-controls-time-remaining-display {
             display:none !important;
-        }
-        /* 让播放按钮和音量滑块更漂亮 */
-        audio::-webkit-media-controls-panel{
-            background:rgba(255,255,255,0.1);
-            backdrop-filter:blur(10px);
-            border-radius:14px;
-            padding:0 12px;
         }
 
         @media(max-width:768px){
             .page-title{font-size:2.5rem;}
             .music-item{flex-direction:column;text-align:center;padding:2rem 1.6rem;gap:1.4rem;}
             .music-cover img{width:100px;height:100px;}
-            audio{height:50px;}
         }
     </style>
 </head>
@@ -83,8 +62,9 @@
             <div class="music-info">
                 <div class="music-title">14.3 Billion Years</div>
                 <div class="music-artist">Andrew Prahlow</div>
-                <audio controls preload="metadata" controlsList="nodownload noplaybackrate">
+                <audio controls preload="metadata">
                     <source src="/assets/music/Andrew Prahlow - 14.3 Billion Years.mp3" type="audio/mpeg">
+                    您的浏览器不支持播放
                 </audio>
             </div>
         </div>
@@ -96,8 +76,9 @@
             <div class="music-info">
                 <div class="music-title">Travelers' Encore</div>
                 <div class="music-artist">Andrew Prahlow</div>
-                <audio controls preload="metadata" controlsList="nodownload noplaybackrate">
+                <audio controls preload="metadata">
                     <source src="/assets/music/Andrew Prahlow - Travelers' encore.mp3" type="audio/mpeg">
+                    您的浏览器不支持播放
                 </audio>
             </div>
         </div>
