@@ -8,7 +8,6 @@
     <style>
         main{display:flex;flex-direction:column;align-items:center;padding-bottom:10rem;}
         .page-title{margin:4rem 0 3rem;font-size:3.2rem;font-weight:800;letter-spacing:3px;text-shadow:0 4px 20px rgba(0,0,0,0.5);}
-
         .music-list{width:100%;max-width:860px;padding:0 2rem;display:flex;flex-direction:column;gap:2.2rem;}
         .music-item{
             background:rgba(255,255,255,0.08);
@@ -25,15 +24,10 @@
             box-shadow:0 16px 40px rgba(0,0,0,0.5);
         }
         .music-cover img{width:82px;height:82px;border-radius:14px;object-fit:cover;box-shadow:0 10px 30px rgba(0,0,0,0.6);}
+        .player{flex:1;display:flex;flex-direction:column;gap:1rem;}
+        .track-info .music-title{font-size:1.28rem;font-weight:600;}
+        .track-info .music-artist{font-size:0.96rem;opacity:0.75;}
 
-        .player{
-            flex:1;display:flex;flex-direction:column;gap:1rem;
-        }
-        .track-info{margin-bottom:0.4rem;}
-        .music-title{font-size:1.28rem;font-weight:600;}
-        .music-artist{font-size:0.96rem;opacity:0.75;}
-
-        /* 自制播放控件 */
         .controls{display:flex;align-items:center;gap:1.4rem;flex-wrap:wrap;}
         .play-btn{
             width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.16);
@@ -43,12 +37,10 @@
         .play-btn:hover{background:rgba(255,255,255,0.26);}
         .play-btn svg{width:28px;height:28px;fill:#fff;}
 
-        .progress-area{flex:1;display:flex;align-items:center;gap:0.8rem;min-width:200px;}
-        .time-current, .time-total{font-size:0.94rem;opacity:0.8;min-width:42px;text-align:center;}
-        .progress-bar{
-            flex:1;height:6px;background:rgba(255,255,255,0.18);border-radius:3px;position:relative;cursor:pointer;
-        }
-        .progress-fill{height:100%;width:0;background:#6ecfff;border-radius:3px;transition:width .1s;}
+        .progress-area{flex:1;display:flex;align-items:center;gap:0.8rem;min-width:200px;cursor:pointer;}
+        .time-current,.time-total{font-size:0.94rem;opacity:0.8;width:44px;text-align:center;}
+        .progress-bar{flex:1;height:6px;background:rgba(255,255,255,0.18);border-radius:3px;position:relative;}
+        .progress-fill{height:100%;width:0;background:#6ecfff;border-radius:3px;}
         .progress-knob{
             position:absolute;top:50%;left:0;transform:translate(-50%,-50%);
             width:16px;height:16px;background:#6ecfff;border-radius:50%;opacity:0;transition:opacity .2s;
@@ -70,7 +62,6 @@
 
 <main>
     <h1 class="page-title">音乐</h1>
-
     <div class="music-list">
 
         <!-- 歌曲 1 -->
@@ -84,10 +75,10 @@
                     <div class="music-artist">Andrew Prahlow</div>
                 </div>
                 <div class="controls">
-                    <button class="play-btn" onclick="togglePlay(this)">
+                    <button class="play-btn">
                         <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                     </button>
-                    <div class="progress-area" onclick="seek(event)">
+                    <div class="progress-area">
                         <span class="time-current">0:00</span>
                         <div class="progress-bar">
                             <div class="progress-fill"></div>
@@ -96,9 +87,7 @@
                         <span class="time-total">0:00</span>
                     </div>
                 </div>
-                <audio preload="metadata" ontimeupdate="update(this)" onloadedmetadata="loaded(this)">
-                    <source src="/assets/music/Andrew Prahlow - 14.3 Billion Years.mp3" type="audio/mpeg">
-                </audio>
+                <audio preload="metadata" src="/assets/music/Andrew Prahlow - 14.3 Billion Years.mp3"></audio>
             </div>
         </div>
 
@@ -113,10 +102,10 @@
                     <div class="music-artist">Andrew Prahlow</div>
                 </div>
                 <div class="controls">
-                    <button class="play-btn" onclick="togglePlay(this)">
+                    <button class="play-btn">
                         <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                     </button>
-                    <div class="progress-area" onclick="seek(event)">
+                    <div class="progress-area">
                         <span class="time-current">0:00</span>
                         <div class="progress-bar">
                             <div class="progress-fill"></div>
@@ -125,9 +114,7 @@
                         <span class="time-total">0:00</span>
                     </div>
                 </div>
-                <audio preload="metadata" ontimeupdate="update(this)" onloadedmetadata="loaded(this)">
-                    <source src="/assets/music/Andrew Prahlow - Travelers' encore.mp3" type="audio/mpeg">
-                </audio>
+                <audio preload="metadata" src="/assets/music/Andrew Prahlow - Travelers' encore.mp3"></audio>
             </div>
         </div>
 
@@ -135,48 +122,66 @@
 </main>
 
 <script>
-// 播放 / 暂停
-function togglePlay(btn) {
-    const audio = btn.closest('.player').querySelector('audio');
-    if (audio.paused) {
-        audio.play();
-        btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>';
-    } else {
-        audio.pause();
-        btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.music-item').forEach(item => {
+        const audio = item.querySelector('audio');
+        const btn = item.querySelector('.play-btn');
+        const fill = item.querySelector('.progress-fill');
+        const knob = item.querySelector('.progress-knob');
+        const current = item.querySelector('.time-current');
+        const total = item.querySelector('.time-total');
+        const bar = item.querySelector('.progress-area');
+
+        // 播放暂停
+        btn.onclick = () => {
+            if (audio.paused) {
+                audio.play();
+                btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>';
+            } else {
+                audio.pause();
+                btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+            }
+        };
+
+        // 更新进度
+        audio.ontimeupdate = () => {
+            const percent = (audio.currentTime / audio.duration) * 100 || 0;
+            fill.style.width = percent + '%';
+            knob.style.left = percent + '%';
+            current.textContent = format(audio.currentTime);
+        };
+
+        // 加载完成显示总时长
+        audio.onloadedmetadata = () => {
+            total.textContent = format(audio.duration);
+        };
+
+        // 点击/触摸拖动进度条（完美支持手机）
+        bar.onpointerdown = e => {
+            const seek = (evt) => {
+                const rect = bar.getBoundingClientRect();
+                const pos = (evt.clientX || evt.touches[0].clientX) - rect.left;
+                const ratio = Math.max(0, Math.min(1, pos / rect.width));
+                audio.currentTime = ratio * audio.duration;
+            };
+            seek(e);
+            const move = evt => seek(evt);
+            const up = () => {
+                document.removeEventListener('pointermove', move);
+                document.removeEventListener('pointerup', up);
+            };
+            document.addEventListener('pointermove', move);
+            document.addEventListener('pointerup', up);
+        };
+    });
+
+    function format(s) {
+        if (isNaN(s)) return '0:00';
+        const m = Math.floor(s / 60);
+        const sec = Math.floor(s % 60);
+        return m + ':' + (sec < 10 ? '0' : '') + sec;
     }
-}
-
-// 更新进度条和时间
-function update(audio) {
-    const player = audio.closest('.player');
-    const percent = (audio.currentTime / audio.duration) * 100 || 0;
-    player.querySelector('.progress-fill').style.width = percent + '%';
-    player.querySelector('.progress-knob').style.left = percent + '%';
-    player.querySelector('.time-current').textContent = format(audio.currentTime);
-}
-function loaded(audio) {
-    const player = audio.closest('.player');
-    player.querySelector('.time-total').textContent = format(audio.duration);
-}
-
-// 拖动进度（完美支持触摸）
-function seek(e) {
-    const area = e.currentTarget;
-    const audio = area.closest('.player').querySelector('audio');
-    const rect = area.getBoundingClientRect();
-    const pos = (e.clientX || e.touches[0].clientX) - rect.left;
-    const ratio = pos / rect.width;
-    audio.currentTime = ratio * audio.duration;
-}
-
-// 格式化时间
-function format(s) {
-    if (isNaN(s)) return '0:00';
-    const m = Math.floor(s / 60 | 0;
-    const sec = Math.round(s % 60);
-    return m + ':' + (sec < 10 ? '0' : '') + sec;
-}
+});
 </script>
 
 <script src="/include.js"></script>
