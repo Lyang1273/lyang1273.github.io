@@ -37,8 +37,7 @@
         .progress-area{
             flex:1;display:flex;align-items:center;gap:0.8rem;
             min-width:0;cursor:pointer;user-select:none;
-            height:50px; /* 加大点击区域 */
-            -webkit-tap-highlight-color:transparent;
+            height:50px;-webkit-tap-highlight-color:transparent;
         }
         .time{font-size:0.94rem;opacity:0.85;width:46px;flex-shrink:0;text-align:center;}
         .progress-bar{
@@ -71,9 +70,10 @@
     <h1 class="page-title">音乐</h1>
     <div class="music-list">
 
+        <!-- 第一首 -->
         <div class="music-item">
             <div class="music-cover">
-                <img src="https://pic.netbian.com/uploads/allimg/2407/240727-1722079738-8c7f.jpg" alt="Outer Wilds">
+                <img src="/assets/music/album_image/Andrew Prahlow - 14.3 Billion Years.jpg" alt="14.3 Billion Years">
             </div>
             <div class="player" data-src="/assets/music/Andrew Prahlow - 14.3 Billion Years.mp3">
                 <div class="track-info">
@@ -96,9 +96,10 @@
             </div>
         </div>
 
+        <!-- 第二首 -->
         <div class="music-item">
             <div class="music-cover">
-                <img src="https://pic.netbian.com/uploads/allimg/2407/240727-1722079738-8c7f.jpg" alt="Outer Wilds">
+                <img src="/assets/music/album_image/Andrew Prahlow - Travelers' encore.jpg" alt="Travelers' Encore">
             </div>
             <div class="player" data-src="/assets/music/Andrew Prahlow - Travelers' encore.mp3">
                 <div class="track-info">
@@ -138,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const area  = player.querySelector('.progress-area');
 
         // 播放暂停
-        btn.onclick = () => {
+        btn.addEventListener('click', () => {
             if (audio.paused) {
                 document.querySelectorAll('audio').forEach(a => a !== audio && a.pause());
                 audio.play();
@@ -147,49 +148,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 audio.pause();
                 btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
             }
-        };
+        });
 
         // 更新进度
-        audio.ontimeupdate = () => {
+        audio.addEventListener('timeupdate', () => {
             if (!audio.duration) return;
             const percent = (audio.currentTime / audio.duration) * 100;
             fill.style.width = percent + '%';
             knob.style.left = percent + '%';
             cur.textContent = format(audio.currentTime);
-        };
-        audio.onloadedmetadata = () => total.textContent = format(audio.duration);
+        });
+        audio.addEventListener('loadedmetadata', () => {
+            total.textContent = format(audio.duration);
+        });
 
-        // 超级稳的拖动方案（touch + mouse）
-        const seek = (x) => {
+        let dragging = false;
+        const seek = (clientX) => {
             const rect = area.getBoundingClientRect();
-            let pos = (x - rect.left) / rect.width;
+            let pos = (clientX - rect.left) / rect.width;
             pos = Math.max(0, Math.min(1, pos));
             audio.currentTime = pos * audio.duration;
-            fill.style.width = (pos * 100) + '%';
-            knob.style.left = (pos * 100) + '%';
         };
 
-        // 鼠标
-        area.onmousedown = e => {
+        area.addEventListener('pointerdown', e => {
+            dragging = true;
+            area.classList.add('dragging');
             seek(e.clientX);
-            const move = e => seek(e.clientX);
-            const up = () => {
-                document.removeEventListener('mousemove', move);
-                document.removeEventListener('mouseup', up);
-            };
-            document.addEventListener('mousemove', move);
-            document.addEventListener('mouseup', up);
-        };
+            e.preventDefault();
+        });
 
-        // 触摸（最稳写法）
-        area.ontouchstart = e => {
-            e.preventDefault();
-            seek(e.touches[0].clientX);
-        };
-        area.ontouchmove = e => {
-            e.preventDefault();
-            seek(e.touches[0].clientX);
-        };
+        document.addEventListener('pointermove', e => {
+            if (dragging) seek(e.clientX);
+        });
+
+        document.addEventListener('pointerup', () => {
+            if (dragging) {
+                dragging = false;
+                area.classList.remove('dragging');
+            }
+        });
+
     });
 
     function format(s) {
