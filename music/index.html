@@ -28,26 +28,34 @@
         .play-btn{
             width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.18);
             border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
-            transition:all .3s;box-shadow:0 6px 20px rgba(0,0,0,0.4);
+            transition:all .3s;box-shadow:0 6px 20px rgba(0,0,0,0.4);flex-shrink:0;
         }
         .play-btn:hover{background:rgba(255,255,255,0.28);}
         .play-btn svg{width:22px;height:22px;fill:#fff;}
 
-        .progress-area{flex:1;display:flex;align-items:center;gap:0.8rem;min-width:220px;cursor:pointer;user-select:none;}
-        .time{font-size:0.94rem;opacity:0.8;width:44px;text-align:center;}
-        .progress-bar{flex:1;height:6px;background:rgba(255,255,255,0.18);border-radius:3px;position:relative;}
+        /* 关键优化：整个进度区域（包括时间文字）都可点击拖动 */
+        .progress-container{
+            flex:1;display:flex;align-items:center;gap:0.8rem;
+            min-width:0;cursor:pointer;user-select:none;
+        }
+        .time{font-size:0.94rem;opacity:0.8;width:44px;text-align:center;flex-shrink:0;}
+        .progress-wrapper{flex:1;position:relative;height:36px;display:flex;align-items:center;}
+        .progress-bar{
+            width:100%;height:6px;background:rgba(255,255,255,0.18);border-radius:3px;position:relative;
+        }
         .progress-fill{height:100%;width:0;background:#6ecfff;border-radius:3px;transition:width .1s linear;}
         .progress-knob{
             position:absolute;top:50%;left:0;transform:translate(-50%,-50%);
             width:16px;height:16px;background:#6ecfff;border-radius:50%;opacity:0;transition:opacity .2s;
         }
-        .progress-area:hover .progress-knob{opacity:1;}
+        .progress-container:hover .progress-knob{opacity:1;}
 
         @media(max-width:768px){
             .music-item{flex-direction:column;text-align:center;gap:1.6rem;}
             .music-cover img{width:110px;height:110px;}
             .play-btn{width:56px;height:56px;}
             .play-btn svg{width:26px;height:26px;}
+            .progress-container{gap:1rem;}
         }
     </style>
 </head>
@@ -74,11 +82,13 @@
                     <button class="play-btn">
                         <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                     </button>
-                    <div class="progress-area">
-                        <span class="time">0:00</span>
-                        <div class="progress-bar">
-                            <div class="progress-fill"></div>
-                            <div class="progress-knob"></div>
+                    <div class="progress-container">
+                        <span class="time current">0:00</span>
+                        <div class="progress-wrapper">
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                                <div class="progress-knob"></div>
+                            </div>
                         </div>
                         <span class="time total">0:00</span>
                     </div>
@@ -100,11 +110,13 @@
                     <button class="play-btn">
                         <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                     </button>
-                    <div class="progress-area">
+                    <div class="progress-container">
                         <span class="time current">0:00</span>
-                        <div class="progress-bar">
-                            <div class="progress-fill"></div>
-                            <div class="progress-knob"></div>
+                        <div class="progress-wrapper">
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                                <div class="progress-knob"></div>
+                            </div>
                         </div>
                         <span class="time total">0:00</span>
                     </div>
@@ -118,7 +130,6 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.player').forEach(player => {
-        // 动态创建 audio，避免提前加载导致卡顿
         const audio = new Audio(player.dataset.src);
         audio.preload = 'metadata';
 
@@ -127,13 +138,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const knob = player.querySelector('.progress-knob');
         const currentTime = player.querySelector('.time.current');
         const totalTime = player.querySelector('.time.total');
-        const bar = player.querySelector('.progress-bar');
+        const container = player.querySelector('.progress-container');  // 整个区域都可点击
 
         // 播放/暂停
         btn.addEventListener('click', () => {
             if (audio.paused) {
-                // 暂停其他正在播放的
-                document.querySelectorAll('audio').forEach(a => { if (a !== audio) a.pause(); });
+                document.querySelectorAll('audio').forEach(a => a !== audio && a.pause());
                 audio.play();
                 btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>';
             } else {
@@ -150,23 +160,23 @@ document.addEventListener('DOMContentLoaded', () => {
             currentTime.textContent = format(audio.currentTime);
         });
 
-        // 加载完成显示总时长
         audio.addEventListener('loadedmetadata', () => {
             totalTime.textContent = format(audio.duration);
         });
 
-        // 进度条拖动（完美支持鼠标+触摸）
+        // 拖动进度（整个 container 区域都响应）
         let isDragging = false;
-        const seek = (x) => {
-            const rect = bar.getBoundingClientRect();
-            let pos = (x - rect.left) / rect.width;
+        const seek = (clientX) => {
+            const rect = container.getBoundingClientRect();
+            let pos = (clientX - rect.left) / rect.width;
             pos = Math.max(0, Math.min(1, pos));
             audio.currentTime = pos * audio.duration;
         };
 
-        bar.addEventListener('pointerdown', e => {
+        container.addEventListener('pointerdown', e => {
             isDragging = true;
             seek(e.clientX);
+            e.preventDefault();
         });
 
         document.addEventListener('pointermove', e => {
@@ -176,9 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('pointerup', () => {
             isDragging = false;
         });
-
-        // 防止手机上拖动时页面滚动
-        bar.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
     });
 
     function format(s) {
