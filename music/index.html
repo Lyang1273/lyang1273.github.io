@@ -38,7 +38,7 @@
             flex:1;display:flex;align-items:center;gap:0.8rem;
             min-width:0;cursor:pointer;user-select:none;
             height:50px;-webkit-tap-highlight-color:transparent;
-            touch-action:none; 
+            touch-action:none;
         }
         .time{font-size:0.94rem;opacity:0.85;width:46px;flex-shrink:0;text-align:center;}
         .progress-bar{
@@ -72,6 +72,7 @@
     <h1 class="page-title">音乐</h1>
     <div class="music-list">
 
+        <!-- 1. 14.3 Billion Years -->
         <div class="music-item">
             <div class="music-cover">
                 <img src="/assets/music/album_image/Andrew Prahlow - 14.3 Billion Years.jpg" alt="14.3 Billion Years">
@@ -97,6 +98,7 @@
             </div>
         </div>
 
+        <!-- 2. Travelers' Encore -->
         <div class="music-item">
             <div class="music-cover">
                 <img src="/assets/music/album_image/Andrew Prahlow - Travelers' encore.jpg" alt="Travelers' Encore">
@@ -114,6 +116,33 @@
                         <span class="time current">0:00</span>
                         <div class="progress-bar">
                             <div class="progress-fill"></div>
+                            <div class="progress-knob"></div>
+                        </div>
+                        <span class="time total">0:00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. 新增：Flower Dance -->
+        <div class="music-item">
+            <div class="music-cover">
+                <img src="/assets/music/album_image/Flowers Dance.jpg" alt="Flower Dance">
+            </div>
+            <div class="player" data-src="/assets/music/Flowers dance.mp3">
+                <div class="track-info">
+                    <div class="music-title">Flower Dance</div>
+                    <div class="music-artist">DJ OKAWARI</div>
+                </div>
+                <div class="controls">
+                    <button class="play-btn">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                    <div class="progress-area">
+                        <span class="time current">0:00</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                            <div class="progress-kn76px
                             <div class="progress-knob"></div>
                         </div>
                         <span class="time total">0:00</span>
@@ -158,7 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         audio.addEventListener('loadedmetadata', () => total.textContent = format(audio.duration));
 
-        // 永不失灵的拖动核心（只加了 touch-action:none 和 preventDefault）
         let dragging = false;
         const seek = (clientX) => {
             const rect = area.getBoundingClientRect();
@@ -168,16 +196,16 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         area.addEventListener('pointerdown', e => {
-            e.preventDefault();           // 关键
+            e.preventDefault();
             dragging = true;
             area.classList.add('dragging');
-            seek(e.clientX || e.touches[0].clientX);
+            seek(e.clientX || (e.touches && e.touches[0].clientX));
         });
 
         document.addEventListener('pointermove', e => {
             if (dragging) {
-                e.preventDefault();       // 关键
-                seek(e.clientX || e.touches[0].clientX);
+                e.preventDefault();
+                seek(e.clientX || (e.touches && e.touches[0].clientX));
             }
         });
 
