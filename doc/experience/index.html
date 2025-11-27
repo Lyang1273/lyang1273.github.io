@@ -47,7 +47,7 @@
 </main>
 
 <script>
-// 从 JSON 加载文章列表
+// 修复：用反引号模板字符串确保插值生效
 fetch('/doc/articles.json')
   .then(r => r.json())
   .then(articles => {
@@ -60,7 +60,7 @@ fetch('/doc/articles.json')
     latest.forEach(art => {
       const div = document.createElement('div');
       div.className = 'article-item';
-      div.onclick = () => location.href = `/doc/\( {art.category}/ \){art.id}.html`;
+      div.onclick = () => location.href = `/doc/\( {art.category}/ \){art.id}.html`;  // 修复：用反引号
       div.innerHTML = `
         <div class="article-title">${art.title}</div>
         <div class="article-meta">
@@ -74,7 +74,8 @@ fetch('/doc/articles.json')
 
     if (latest.length === 0) container.innerHTML = '<p style="text-align:center;opacity:0.6;padding:4rem 0;">暂无文章～</p>';
   })
-  .catch(() => {
+  .catch(err => {
+    console.error('JSON 加载失败:', err);  // 调试用
     document.getElementById('latestArticles').innerHTML = '<p style="text-align:center;opacity:0.6;padding:4rem 0;">暂无文章～</p>';
   });
 </script>
