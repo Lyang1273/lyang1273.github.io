@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加载中... - Lyang1273</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.css">
+    <style>
+        main{max-width:860px;margin:0 auto;padding:2rem 2rem 12rem;}
+        .article-header{text-align:center;margin:4rem 0 3rem;}
+        .article-title{font-size:2.6rem;font-weight:800;}
+        .article-meta{opacity:0.7;margin-top:1rem;font-size:1rem;}
+        .markdown-body{
+            background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);
+            border-radius:18px;padding:3rem;backdrop-filter:blur(12px);box-sizing:border-box;
+        }
+        @media(max-width:768px){.article-title{font-size:2.2rem;}.markdown-body{padding:2rem;}}
+    </style>
+</head>
+<body>
+<div class="bg-container"></div>
+<div class="bg-overlay"></div>
+<div w3-include-html="/header.html"></div>
+
+<main>
+    <header class="article-header">
+        <h1 id="title">加载中...</h1>
+        <div class="article-meta" id="meta">加载中...</div>
+    </header>
+    <article class="markdown-body" id="content">加载中...</article>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+fetch('content.md')
+  .then(r => r.text())
+  .then(md => {
+    const title = md.match(/^#\s+(.+)/)?.[1] || '无标题';
+    const date = md.match(/\n(\d{4}-\d{2}-\d{2})/)?.[1] || '未知日期';
+    const category = location.pathname.includes('diary') ? '日记' : '经验';
+
+    document.title = `${title} - Lyang1273`;
+    document.getElementById('title').textContent = title;
+    document.getElementById('meta').textContent = `\( {date} • \){category}`;
+
+    const content = md.replace(/^#.+\n/, '').replace(/^\d{4}-\d{2}-\d{2}\n?/, '').trim();
+    document.getElementById('content').innerHTML = marked.parse(content);
+  });
+</script>
+<script src="/include.js"></script>
+</body>
+</html>
