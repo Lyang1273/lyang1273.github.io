@@ -8,15 +8,33 @@
     <style>
         main{max-width:920px;margin:0 auto;padding:0 2rem 10rem;}
         .page-title{font-size:3.2rem;font-weight:800;text-align:center;margin:4rem 0 3rem;letter-spacing:3px;}
+
+        /* 极简文字分类卡片 */
+        .categories{
+            display:flex;gap:2rem;justify-content:center;margin:4rem 0 6rem;flex-wrap:wrap;
+        }
+        .cat-card{
+            background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.18);
+            border-radius:16px;padding:1.6rem 3rem;font-size:1.4rem;font-weight:600;
+            cursor:pointer;transition:all .35s;backdrop-filter:blur(10px);
+        }
+        .cat-card:hover{
+            background:rgba(110,207,255,0.18);color:#6ecfff;
+            transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,0.4);
+        }
+
+        .latest-articles h2{font-size:1.9rem;font-weight:700;margin:2rem 0;text-align:center;opacity:0.9;}
         .article-list{display:flex;flex-direction:column;gap:2rem;}
-        .article-item{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:18px;padding:2rem 2.4rem;transition:all .35s;backdrop-filter:blur(12px);cursor:pointer;}
+        .article-item{
+            background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+            border-radius:18px;padding:2rem 2.4rem;transition:all .35s;backdrop-filter:blur(12px);cursor:pointer;
+        }
         .article-item:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(0,0,0,0.5);background:rgba(255,255,255,0.13);}
         .article-title{font-size:1.36rem;font-weight:600;margin-bottom:0.8rem;}
-        .article-title a{color:inherit;text-decoration:none;}
-        .article-meta{font-size:0.94rem;opacity:0.75;margin-bottom:0.8rem;display:flex;gap:1.6rem;flex-wrap:wrap;}
+        .article-meta{font-size:0.94rem;opacity:0.75;margin-bottom:0.8rem;display:flex;gap:1.6rem;}
         .article-tag{background:rgba(110,207,255,0.2);color:#6ecfff;padding:0.3rem 0.9rem;border-radius:20px;font-size:0.86rem;}
         .article-excerpt{line-height:1.7;opacity:0.88;}
-        @media(max-width:768px){.article-item{padding:1.8rem 2rem;}}
+        @media(max-width:768px){.cat-card{padding:1.4rem 2.4rem;font-size:1.3rem;}.article-item{padding:1.8rem 2rem;}}
     </style>
 </head>
 <body>
@@ -27,58 +45,45 @@
 <main>
     <h1 class="page-title">文章</h1>
 
+    <!-- 极简文字分类 -->
     <div class="categories">
-        <div class="category-card" onclick="location.href='/doc/diary/'">
-            <div class="category-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6z"/></svg></div>
-            <div class="category-title">日记</div>
-            <div class="category-desc">生活碎碎念、情绪记录</div>
-        </div>
-        <div class="category-card" onclick="location.href='/doc/experience/'">
-            <div class="category-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
-            <div class="category-title">经验</div>
-            <div class="category-desc">技术总结、踩坑记录</div>
-        </div>
+        <div class="cat-card" onclick="location.href='/doc/diary/'">日记</div>
+        <div class="cat-card" onclick="location.href='/doc/experience/'">经验</div>
     </div>
 
     <div class="latest-articles">
-        <h2 class="section-title">最新更新</h2>
-        <div class="article-list" id="latestArticles">加载中...</div>
+        <h2>最新更新</h2>
+        <div class="article-list" id="list">加载中...</div>
     </div>
 </main>
 
 <script>
-// 修复：用反引号模板字符串确保插值生效
+// 关键修复：用 innerHTML + 反引号模板字符串，确保链接正确生成
 fetch('/doc/articles.json')
-  .then(r => r.json())
+  .then(r => { if (!r.ok) throw 'JSON 文件未找到'; return r.json(); })
   .then(articles => {
-    const container = document.getElementById('latestArticles');
-    container.innerHTML = '';
-
-    // 首页显示最新 6 篇
-    const latest = articles.slice(0, 6).reverse(); // 倒序最新在前
-
-    latest.forEach(art => {
-      const div = document.createElement('div');
-      div.className = 'article-item';
-      div.onclick = () => location.href = `/doc/\( {art.category}/ \){art.id}.html`;  // 修复：用反引号
-      div.innerHTML = `
+    // 取最新 6 篇（倒序）
+    const latest = articles.sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 6);
+    
+    document.getElementById('list').innerHTML = latest.map(art => `
+      <div class="article-item" onclick="location.href='/doc/\( {art.category}/ \){art.id}.html'">
         <div class="article-title">${art.title}</div>
         <div class="article-meta">
           <span>${art.date}</span>
           <span class="article-tag">${art.category === 'diary' ? '日记' : '经验'}</span>
         </div>
-        <div class="article-excerpt">${art.excerpt}</div>
-      `;
-      container.appendChild(div);
-    });
-
-    if (latest.length === 0) container.innerHTML = '<p style="text-align:center;opacity:0.6;padding:4rem 0;">暂无文章～</p>';
+        <div class="article-excerpt">${art.excerpt || ''}</div>
+      </div>
+    `).join('');
   })
   .catch(err => {
-    console.error('JSON 加载失败:', err);  // 调试用
-    document.getElementById('latestArticles').innerHTML = '<p style="text-align:center;opacity:0.6;padding:4rem 0;">暂无文章～</p>';
+    document.getElementById('list').innerHTML = `
+      <div style="text-align:center;padding:4rem 0;opacity:0.6;">
+        文章加载失败<br><small style="font-size:0.9rem;">请检查 /doc/articles.json 是否存在</small>
+      </div>`;
   });
 </script>
+
 <script src="/include.js"></script>
 </body>
 </html>
