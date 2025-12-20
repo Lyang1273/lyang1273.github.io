@@ -24,7 +24,7 @@ const CONTENT = `
 
 <!-- 自动导入公共模板 -->
 <script>
-fetch('/article-template.html')
+fetch('/doc/article-template.html')
   .then(r => r.text())
   .then(template => {
     document.write(template);
