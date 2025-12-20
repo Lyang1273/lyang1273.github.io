@@ -6,24 +6,68 @@
     <title id="page-title">文章 - Lyang1273</title>
     <link rel="stylesheet" href="/style.css">
     <style>
-        main { max-width: 860px; margin: 0 auto; padding: 2rem 2rem 12rem; }
-        .article-header { text-align: center; margin: 4rem 0 3rem; }
-        .article-title { font-size: 2.6rem; font-weight: 800; }
-        .article-meta { opacity: 0.7; margin-top: 1rem; font-size: 1rem; }
-        .content {
-            background: rgba(255,255,255,0.07);
-            border: 1px solid rgba(255,255,255,0.14);
-            border-radius: 18px;
-            padding: 3rem;
-            backdrop-filter: blur(12px);
-            line-height: 1.8;
-            font-size: 1.08rem;
+        main {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
         }
-        .content img { max-width: 100%; border-radius: 12px; margin: 1.5rem 0; display: block; }
-        .content pre { background: rgba(0,0,0,0.4); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+        .article-card {
+            width: 100%;
+            max-width: 860px;
+            background: rgba(255,255,255,0.08); /* 更深的半透明底 */
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 24px;
+            padding: 4rem 4rem;
+            backdrop-filter: blur(30px) saturate(180%); /* 超强全模糊核心 */
+            box-shadow: 0 25px 80px rgba(0,0,0,0.6);
+            box-sizing: border-box;
+        }
+        .article-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            text-align: center;
+            margin: 0 0 1.2rem;
+            line-height: 1.3;
+            letter-spacing: 1px;
+        }
+        .article-meta {
+            text-align: center;
+            opacity: 0.7;
+            font-size: 1.1rem;
+            margin-bottom: 4rem;
+        }
+        .content {
+            line-height: 1.9;
+            font-size: 1.1rem;
+        }
+        .content img {
+            max-width: 100%;
+            border-radius: 16px;
+            margin: 2.5rem 0;
+            display: block;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+        }
+        .content pre {
+            background: rgba(0,0,0,0.4);
+            padding: 1.4rem;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 2rem 0;
+        }
+        .content blockquote {
+            border-left: 5px solid #6ecfff;
+            padding-left: 2rem;
+            margin: 2.5rem 0;
+            font-style: italic;
+            opacity: 0.9;
+        }
         @media (max-width: 768px) {
-            .article-title { font-size: 2.2rem; }
-            .content { padding: 2rem; }
+            main { padding: 1rem; align-items: flex-start; padding-top: 6rem; }
+            .article-card { padding: 3rem 2.2rem; border-radius: 20px; }
+            .article-title { font-size: 2.3rem; }
+            .content { font-size: 1.06rem; }
         }
     </style>
 </head>
@@ -33,12 +77,12 @@
 <div w3-include-html="/header.html"></div>
 
 <main>
-    <header class="article-header">
+    <div class="article-card">
         <h1 class="article-title" id="title">加载中...</h1>
         <div class="article-meta" id="meta">加载中...</div>
-    </header>
-    <div class="content" id="content">
-        加载中...
+        <div class="content" id="content">
+            加载中...
+        </div>
     </div>
 </main>
 
