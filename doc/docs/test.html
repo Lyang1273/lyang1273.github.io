@@ -23,6 +23,7 @@ const CONTENT = `
 </script>
 
 <!-- 自动导入公共模板 -->
+<div w3-include-html="/doc/article-template.html"></div>
 <script>
 fetch('/doc/article-template.html')
   .then(r => r.text())
