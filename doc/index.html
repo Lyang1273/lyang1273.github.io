@@ -4,61 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>文章 - Lyang1273</title>
-    <link rel="stylesheet" href="/style.css"> <!-- 全局样式（毛玻璃、背景等） -->
-
+    <link rel="stylesheet" href="/style.css">
     <style>
-        /* 主容器居中，底部留白 */
-        main { max-width: 920px; margin: 0 auto; padding: 0 2rem 10rem; }
-
-        /* 页面标题 */
-        .page-title { font-size: 3.2rem; font-weight: 800; text-align: center; margin: 4rem 0 3rem; letter-spacing: 3px; }
-
-        /* 文章列表垂直排列，间距统一 */
-        .article-list { display: flex; flex-direction: column; gap: 2rem; }
-
-        /* 每篇文章卡片样式 */
-        .article-item {
-            background: rgba(255,255,255,0.08);           /* 半透明背景 */
-            border: 1px solid rgba(255,255,255,0.15);     /* 边框 */
-            border-radius: 18px;                          /* 圆角 */
-            padding: 1.9rem 2.3rem;                       /* 内边距 */
-            transition: all .35s;                         /* 悬停动画 */
-            backdrop-filter: blur(12px);                  /* 毛玻璃效果 */
-            cursor: pointer;                              /* 手型光标 */
+        main{max-width:920px;margin:0 auto;padding:0 2rem 10rem;}
+        .page-title{font-size:3.2rem;font-weight:800;text-align:center;margin:4rem 0 3rem;letter-spacing:3px;}
+        .article-list{display:flex;flex-direction:column;gap:2.5rem;} /* 卡片间距稍大 */
+        .article-item{
+            background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+            border-radius:18px;padding:2.4rem 2.8rem;transition:all .35s;backdrop-filter:blur(12px);cursor:pointer;
         }
-        .article-item:hover {
-            transform: translateY(-6px);                  /* 悬停上浮 */
-            box-shadow: 0 16px 40px rgba(0,0,0,0.5);      /* 阴影增强 */
-            background: rgba(255,255,255,0.13);
-        }
-
-        /* 文章标题 */
-        .article-title { font-size: 1.36rem; font-weight: 600; margin: 0 0 0.8rem; }
-        .article-title a { color: inherit; text-decoration: none; } /* 链接无下划线 */
-
-        /* 元信息（日期） */
-        .article-meta { font-size: 0.94rem; opacity: 0.75; margin-bottom: 0.8rem; }
-
-        /* 摘要文字 */
-        .excerpt { line-height: 1.7; opacity: 0.88; font-size: 0.98rem; }
-
-        /* 手机端优化 */
-        @media (max-width: 768px) {
-            .article-item { padding: 1.8rem 2rem; }
+        .article-item:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(0,0,0,0.5);background:rgba(255,255,255,0.13);}
+        .article-title{font-size:1.42rem;font-weight:600;margin:0 0 1rem;color:#6ecfff;} /* 标题浅蓝色 + 更大 */
+        .article-title a{color:#6ecfff;text-decoration:none;transition:color .3s;}
+        .article-title a:hover{color:#8be0ff;}
+        .article-meta{font-size:0.94rem;opacity:0.75;margin-bottom:1rem;display:flex;gap:1.6rem;flex-wrap:wrap;}
+        .tag{background:rgba(110,207,255,0.2);color:#6ecfff;padding:0.3rem 0.9rem;border-radius:20px;font-size:0.86rem;}
+        .excerpt{line-height:1.8;opacity:0.88;font-size:1.02rem;} /* 摘要行高更大，更易读 */
+        @media(max-width:768px){
+            .article-item{padding:2rem 2.4rem;}
+            .article-title{font-size:1.36rem;}
         }
     </style>
 </head>
 <body>
-<div class="bg-container"></div>     <!-- 背景图片容器 -->
-<div class="bg-overlay"></div>       <!-- 背景遮罩层 -->
-<div w3-include-html="/header.html"></div> <!-- 统一标题栏 -->
+<div class="bg-container"></div>
+<div class="bg-overlay"></div>
+<div w3-include-html="/header.html"></div>
 
 <main>
     <h1 class="page-title">文章</h1>
 
     <div class="article-list">
 
-        <!-- 文章列表，最上面的是最新的 -->
+        <!-- 新文章永远复制到最上面 -->
         <div class="article-item">
             <div class="article-title"><a href="20251220-01.html">测试</a></div>
             <div class="article-meta"><span>2025-12-20</span></div>
@@ -68,6 +46,6 @@
     </div>
 </main>
 
-<script src="/include.js"></script> <!-- 加载统一标题栏 -->
+<script src="/include.js"></script>
 </body>
 </html>
