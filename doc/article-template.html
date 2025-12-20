@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">文章 - Lyang1273</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        main { max-width: 860px; margin: 0 auto; padding: 2rem 2rem 12rem; }
+        .article-header { text-align: center; margin: 4rem 0 3rem; }
+        .article-title { font-size: 2.6rem; font-weight: 800; }
+        .article-meta { opacity: 0.7; margin-top: 1rem; font-size: 1rem; }
+        .content {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: 18px;
+            padding: 3rem;
+            backdrop-filter: blur(12px);
+            line-height: 1.8;
+            font-size: 1.08rem;
+        }
+        .content img { max-width: 100%; border-radius: 12px; margin: 1.5rem 0; display: block; }
+        .content pre { background: rgba(0,0,0,0.4); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+        @media (max-width: 768px) {
+            .article-title { font-size: 2.2rem; }
+            .content { padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="bg-container"></div>
+<div class="bg-overlay"></div>
+<div w3-include-html="/header.html"></div>
+
+<main>
+    <header class="article-header">
+        <h1 class="article-title" id="title">加载中...</h1>
+        <div class="article-meta" id="meta">加载中...</div>
+    </header>
+    <div class="content" id="content">
+        加载中...
+    </div>
+</main>
+
+<script src="/include.js"></script>
+</body>
+</html>

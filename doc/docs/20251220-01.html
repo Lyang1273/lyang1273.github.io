@@ -1,0 +1,30 @@
+<script>
+// 文章标题
+const TITLE = "测试";
+
+// 发布日期
+const DATE = "2025-12-20";
+
+// 正文内容
+const CONTENT = `
+    <p>Because baby, I could build a castle.</p>
+`;
+</script>
+
+<!-- 自动导入公共模板 -->
+<script>
+fetch('/article-template.html')
+  .then(r => r.text())
+  .then(template => {
+    document.write(template);
+    document.close();
+    
+    // 等待 DOM 加载完成后再填充内容
+    document.addEventListener('DOMContentLoaded', () => {
+      document.title = `${TITLE} - Lyang1273`;
+      document.getElementById('title').textContent = TITLE;
+      document.getElementById('meta').textContent = DATE;
+      document.getElementById('content').innerHTML = CONTENT;
+    });
+  });
+</script>
