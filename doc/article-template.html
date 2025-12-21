@@ -3,39 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">文章 - Lyang1273</title>
+    <title>Lyang1273</title>
     <link rel="stylesheet" href="/style.css">
     <style>
-        main { max-width: 860px; margin: 0 auto; padding: 2rem 2rem 12rem; }
-        .article-card {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.18);
-            border-radius: 24px;
-            padding: 4rem;
-            backdrop-filter: blur(30px) saturate(180%);
-            box-shadow: 0 25px 80px rgba(0,0,0,0.6);
+        /* 新增样式 */
+        .title-section {
+            text-align: center;
+            margin-bottom: 50px;
         }
-        .article-title { font-size: 2.8rem; font-weight: 800; text-align: center; margin: 0 0 1.2rem; }
-        .article-meta { text-align: center; opacity: 0.7; font-size: 1.1rem; margin-bottom: 4rem; }
-        .content { line-height: 1.9; font-size: 1.1rem; }
-        .content img { max-width: 100%; border-radius: 16px; margin: 2.5rem 0; display: block; box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
-        .content pre { background: rgba(0,0,0,0.4); padding: 1.4rem; border-radius: 12px; overflow-x: auto; margin: 2rem 0; }
-        @media (max-width: 768px) {
-            .article-card { padding: 3rem 2.2rem; }
-            .article-title { font-size: 2.3rem; }
+        .title-section h1 {
+            font-size: 24px;
+        }
+        .title-section p {
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .content-section {
+            padding: 0 20px;
         }
     </style>
 </head>
 <body>
 <div class="bg-container"></div>
 <div class="bg-overlay"></div>
+
 <div w3-include-html="/header.html"></div>
 
 <main>
-    <div class="article-card">
-        <h1 class="article-title" id="title">加载中...</h1>
-        <div class="article-meta" id="meta">加载中...</div>
-        <div class="content" id="content">加载中...</div>
+    <!-- 标题和发布时间 -->
+    <div class="title-section">
+        <h1>标题</h1>
+        <p>日期</p>
+    </div>
+
+    <!-- 正文内容 -->
+    <div class="content-section">
+        <p>正文</p>
     </div>
 </main>
 

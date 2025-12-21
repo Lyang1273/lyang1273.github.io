@@ -5,7 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lyang1273</title>
     <link rel="stylesheet" href="/style.css">
-    
+    <style>
+        /* 新增样式 */
+        .title-section {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+        .title-section h1 {
+            font-size: 24px;
+        }
+        .title-section p {
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .content-section {
+            padding: 0 20px;
+        }
+    </style>
 </head>
 <body>
 <div class="bg-container"></div>
@@ -14,11 +30,16 @@
 <div w3-include-html="/header.html"></div>
 
 <main>
+    <!-- 标题和发布时间 -->
+    <div class="title-section">
+        <h1>测试标题</h1>
+        <p>2025年12月20日</p>
+    </div>
 
-    <h1>测试标题</h1>
-    <p>你好哇</p>
-    <h2>New Romantics</h2>
-    <pre>Because baby, I could build a castle  
+    <!-- 正文内容 -->
+    <div class="content-section">
+        <h2>New Romantics</h2>
+        <pre>Because baby, I could build a castle  
 Out of all the bricks they threw at me  
 And every day is like a battle
 But every night with us is like a dream
@@ -30,7 +51,7 @@ We are too busy dancing
 To get knocked off our feet
 Baby, we're the new romantics
 The best people in life are free</pre>
-
+    </div>
 </main>
 
 <script src="/include.js"></script>
