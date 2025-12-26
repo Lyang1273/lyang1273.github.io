@@ -1,83 +1,64 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lyang1273</title>
+    <link rel="stylesheet" href="/style.css">
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #333;
-            color: #fff;
+        .intro-section{flex:1.1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:2rem;min-height:50vh;}
+        .intro-title{font-size:5.8rem;font-weight:900;letter-spacing:3px;margin-bottom:0.4rem;text-shadow:0 4px 20px rgba(0,0,0,0.5);}
+        .intro-subtitle{font-size:1.8rem;opacity:0.92;letter-spacing:1px;font-weight:300;}
+
+        .articles-section{
+            padding:4rem 2rem 7rem;
+            background:rgba(0,0,0,0.15);
+            backdrop-filter:blur(6px);
+            text-align:center;
         }
-        
-        .navbar {
-            display: flex;
-            align-items: center;
-            padding: 10px 20px;
-            background-color: #222;
+        .articles-title{
+            font-size:2rem;
+            margin-bottom:1.2rem;
+            color:#e0f2ff;
+            font-weight:600;
         }
-        
-        .navbar a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 10px;
-            font-size: 24px;
+        .no-article-tip{
+            font-size:1.1rem;
+            opacity:0.6;
+            font-weight:300;
         }
-        
-        .navbar .music-player {
-            display: none; /* 默认情况下隐藏音乐播放器 */
-            flex: 1 0 100%;
-            text-align: center;
-            margin-top: 10px;
-        }
-        
-        .content {
-            font-weight: bold;
-            padding-left: 10px; /* 增加屏幕左间距10像素 */
-        }
-        
-        .content h1, .content p {
-            margin: 15px 0; /* 设置上下间距为15像素 */
-        }
-        
-        .content p, .connect p {
-            margin: 3px 0;
-        }
-        
-        @media (min-width: 600px) {
-            .navbar .music-player {
-                display: block; /* 在大屏幕上显示音乐播放器 */
-                flex: 0 0 auto;
-                text-align: left;
-                margin-top: 0;
-            }
+
+        @media(max-width:768px){
+            .intro-title{font-size:3.8rem;}
+            .intro-subtitle{font-size:1.4rem;}
+            .articles-title{font-size:1.7rem;}
         }
     </style>
 </head>
-
 <body>
-    <div class="navbar">
-        <a href="https://lyang1273.github.io">Lyang1273</a>
-        <div>
-            <a href="https://lyang1273.github.io">主页</a>
-            <a href="/doc">文章</a>
-            <a href="/repository">资料库</a>
-        </div>
-        <div class="music-player">
-            <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="298" height="52" src="//music.163.com/outchain/player?type=2&id=29803287&auto=0&height=32"></iframe>
-        </div>
-    </div>
-    <div class="content">
-        <h1>测试标题</h1>
-        <p>测试文本（〜^∇^)〜</p>
-        <p>测试文本（〜^∇^)〜</p>
-        
-        <a href="/test.html">试试新主页</a>
-    </div>
-</body>
+<div class="bg-container"></div>
+<div class="bg-overlay"></div>
 
+<div w3-include-html="/header.html"></div>
+
+<main>
+    <section class="intro-section">
+        <h1 class="intro-title">Lyang1273</h1>
+        <p class="intro-subtitle">Lyang1273's Blog</p>
+    </section>
+
+    <section class="articles-section">
+        <h2 class="articles-title">推荐文章</h2>
+        
+        <div class="article-item">
+            <div class="article-title"><a href="/doc/docs/test.html">测试</a></div>
+            <div class="article-meta"><span>2025-12-20</span></div>
+            <div class="excerpt">Because baby, I could build a castle.</div>
+        </div>
+        
+    </section>
+</main>
+
+<script src="/include.js"></script>
+</body>
 </html>
