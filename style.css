@@ -1,82 +1,96 @@
-/* 全局基础 */
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { 
-    font-family: 'Inter', 'Segoe UI', 'PingFang SC', system-ui, sans-serif; 
-    color: #fff; 
-    background: #000; 
-    min-height: 100vh; 
-    display: flex; 
-    flex-direction: column;
-    line-height: 1.6;
+/* style.css - 修正版本 */
+
+/* 1. 恢复原有的导航栏样式 (完全改回去了) */
+header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255, 255, 255, 0.07);
+    padding: 0.75rem 1.4rem;
+    backdrop-filter: blur(30px) saturate(220%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 0.6rem;
+    min-height: 48px;
+}
+.site-title {
+    font-size: 1.42rem;
+    font-weight: 600; color: #fff;
+    white-space: nowrap;
+}
+.header-buttons {
+    display: flex; gap: 0.42rem;
+    flex-wrap: wrap; justify-content: flex-end;
+}
+.header-link { text-decoration: none !important; color: #fff !important; }
+.header-btn {
+    background: rgba(255, 255, 255, 0.11);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 10px;
+    padding: 0.35rem 0.72rem;
+    font-size: 0.84rem;
+    color: #fff; cursor: pointer;
+    opacity: 0.65; transition: all .28s ease;
+    display: inline-block;
+    white-space: nowrap;
+}
+.header-link:hover .header-btn, .header-btn.active {
+    opacity: 1; background: rgba(255, 255, 255, 0.24);
+}
+.header-link.disabled .header-btn {
+    opacity: 0.38; cursor: not-allowed;
 }
 
-/* 背景处理：增加模糊度让内容更清晰 */
+/* 2. 背景优化：大幅降低模糊度 */
 .bg-container {
     position: fixed; inset: 0; z-index: -2;
     background: url('https://www.minecraft.net/content/dam/minecraftnet/games/minecraft/screenshots/EXPLORE_PDPScreenshotRefresh2024_multipleBiomes_01.png') center/cover no-repeat;
-    filter: brightness(0.6) contrast(1.1) blur(10px); /* 增加了模糊 */
-    transform: scale(1.1); /* 消除边缘模糊白边 */
+    filter: brightness(0.65) blur(2px); /* 模糊度从 10px 降到 2px */
+    transform: scale(1.05);
 }
-.bg-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(0,0,0,0.45); }
+.bg-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(0,0,0,0.3); }
 
-/* 导航栏保持原有毛玻璃，微调间距 */
-header {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 0.8rem 2rem;
-    backdrop-filter: blur(20px) saturate(180%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex; align-items: center; justify-content: space-between;
+/* 3. 全局基础 */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+    font-family: 'Segoe UI', 'PingFang SC', system-ui, sans-serif; 
+    color: #fff; background: #000; min-height: 100vh; 
+    display: flex; flex-direction: column; 
 }
 
-/* 按钮高亮样式 */
-.header-btn.active {
-    background: rgba(255, 255, 255, 0.2) !important;
-    opacity: 1 !important;
-    border-color: rgba(255, 255, 255, 0.4) !important;
-}
-
-/* 首页主体布局 */
-main { flex: 1; padding-top: 5rem; }
-
+/* 4. 简洁的主页内容区 */
+main { flex: 1; padding-top: 6rem; }
 .intro-section {
     display: flex; flex-direction: column; justify-content: center; align-items: center;
-    text-align: center; padding: 6rem 2rem;
+    text-align: center; padding: 4rem 2rem;
 }
 .intro-title {
-    font-size: 4.5rem; font-weight: 800; letter-spacing: -2px;
-    margin-bottom: 0.5rem;
+    font-size: 4rem; font-weight: 900; letter-spacing: -1px; margin-bottom: 0.4rem;
 }
 .intro-subtitle {
-    font-size: 1.1rem; opacity: 0.5; letter-spacing: 4px; text-transform: uppercase;
+    font-size: 1.1rem; opacity: 0.6; letter-spacing: 4px; text-transform: uppercase;
 }
 
-/* 文章区域：简洁化卡片 */
-.articles-section {
-    max-width: 800px; margin: 0 auto; padding: 0 2rem 5rem;
-}
-.articles-title {
-    font-size: 1.5rem; margin-bottom: 2rem; opacity: 0.9; font-weight: 600;
-}
-
+/* 推荐文章卡片 */
+.articles-section { max-width: 800px; margin: 0 auto; padding: 0 1.5rem 5rem; }
+.articles-title { font-size: 1.5rem; margin-bottom: 1.8rem; font-weight: 600; text-align: left; }
 .article-card {
     display: block; text-decoration: none; color: inherit;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px; padding: 1.5rem;
-    margin-bottom: 1.2rem; transition: all 0.3s ease;
+    margin-bottom: 1rem; transition: all 0.3s ease;
 }
 .article-card:hover {
-    background: rgba(255, 255, 255, 0.08);
-    transform: translateY(-4px);
-    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-3px);
 }
-.article-meta { font-size: 0.85rem; opacity: 0.4; margin-bottom: 0.5rem; font-family: monospace; }
-.article-item-title { font-size: 1.3rem; margin-bottom: 0.6rem; font-weight: 600; }
+.article-meta { font-size: 0.85rem; opacity: 0.4; margin-bottom: 0.5rem; }
+.article-item-title { font-size: 1.25rem; margin-bottom: 0.5rem; font-weight: 600; }
 .excerpt { font-size: 0.95rem; opacity: 0.7; font-weight: 300; }
 
-/* 响应式适配 */
-@media(max-width:768px){
+/* 手机端适配 */
+@media(max-width:480px){
+    header { padding: 0.6rem 1rem; }
     .intro-title { font-size: 3rem; }
-    header { padding: 0.8rem 1rem; }
+    .article-card { padding: 1.2rem; }
 }
