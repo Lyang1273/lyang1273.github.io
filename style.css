@@ -1,96 +1,94 @@
-/* style.css - 修正版本 */
+/* style.css - 磨砂玻璃卡片 & 点击反馈版本 */
 
-/* 1. 恢复原有的导航栏样式 (完全改回去了) */
-header {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: rgba(255, 255, 255, 0.07);
-    padding: 0.75rem 1.4rem;
-    backdrop-filter: blur(30px) saturate(220%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-    display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: 0.6rem;
-    min-height: 48px;
-}
-.site-title {
-    font-size: 1.42rem;
-    font-weight: 600; color: #fff;
-    white-space: nowrap;
-}
-.header-buttons {
-    display: flex; gap: 0.42rem;
-    flex-wrap: wrap; justify-content: flex-end;
-}
-.header-link { text-decoration: none !important; color: #fff !important; }
-.header-btn {
-    background: rgba(255, 255, 255, 0.11);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 10px;
-    padding: 0.35rem 0.72rem;
-    font-size: 0.84rem;
-    color: #fff; cursor: pointer;
-    opacity: 0.65; transition: all .28s ease;
-    display: inline-block;
-    white-space: nowrap;
-}
-.header-link:hover .header-btn, .header-btn.active {
-    opacity: 1; background: rgba(255, 255, 255, 0.24);
-}
-.header-link.disabled .header-btn {
-    opacity: 0.38; cursor: not-allowed;
+/* 1. 全局设置：屏蔽蓝色高亮 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* 2. 背景优化：大幅降低模糊度 */
-.bg-container {
-    position: fixed; inset: 0; z-index: -2;
-    background: url('https://www.minecraft.net/content/dam/minecraftnet/games/minecraft/screenshots/EXPLORE_PDPScreenshotRefresh2024_multipleBiomes_01.png') center/cover no-repeat;
-    filter: brightness(0.65) blur(2px); /* 模糊度从 10px 降到 2px */
-    transform: scale(1.05);
-}
-.bg-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(0,0,0,0.3); }
-
-/* 3. 全局基础 */
-* { margin: 0; padding: 0; box-sizing: border-box; }
 body { 
     font-family: 'Segoe UI', 'PingFang SC', system-ui, sans-serif; 
     color: #fff; background: #000; min-height: 100vh; 
     display: flex; flex-direction: column; 
 }
 
-/* 4. 简洁的主页内容区 */
+/* 2. 背景：保持清晰 */
+.bg-container {
+    position: fixed; inset: 0; z-index: -2;
+    background: url('https://www.minecraft.net/content/dam/minecraftnet/games/minecraft/screenshots/EXPLORE_PDPScreenshotRefresh2024_multipleBiomes_01.png') center/cover no-repeat;
+    filter: brightness(0.6); 
+}
+.bg-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(0,0,0,0.2); }
+
+/* 3. 导航栏 (保持原有质感) */
+header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255, 255, 255, 0.07);
+    padding: 0.75rem 1.4rem;
+    backdrop-filter: blur(25px) saturate(200%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex; align-items: center; justify-content: space-between;
+}
+.site-title { font-size: 1.42rem; font-weight: 600; color: #fff; }
+.header-buttons { display: flex; gap: 0.42rem; }
+.header-link { text-decoration: none !important; color: inherit; }
+.header-btn {
+    background: rgba(255, 255, 255, 0.11);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    padding: 0.35rem 0.72rem;
+    font-size: 0.84rem;
+    color: #fff; cursor: pointer;
+    opacity: 0.7; transition: all .2s ease;
+}
+.header-link:active .header-btn { transform: scale(0.92); } /* 点击缩小的反馈 */
+.header-link:hover .header-btn, .header-btn.active {
+    opacity: 1; background: rgba(255, 255, 255, 0.25);
+}
+
+/* 4. 主页布局 */
 main { flex: 1; padding-top: 6rem; }
 .intro-section {
     display: flex; flex-direction: column; justify-content: center; align-items: center;
-    text-align: center; padding: 4rem 2rem;
+    text-align: center; padding: 4.5rem 2rem;
 }
-.intro-title {
-    font-size: 4rem; font-weight: 900; letter-spacing: -1px; margin-bottom: 0.4rem;
-}
-.intro-subtitle {
-    font-size: 1.1rem; opacity: 0.6; letter-spacing: 4px; text-transform: uppercase;
-}
+.intro-title { font-size: 4rem; font-weight: 900; letter-spacing: -1px; margin-bottom: 0.4rem; }
+.intro-subtitle { font-size: 1.1rem; opacity: 0.6; letter-spacing: 4px; text-transform: uppercase; }
 
-/* 推荐文章卡片 */
+/* 5. 磨砂玻璃文章卡片 */
 .articles-section { max-width: 800px; margin: 0 auto; padding: 0 1.5rem 5rem; }
-.articles-title { font-size: 1.5rem; margin-bottom: 1.8rem; font-weight: 600; text-align: left; }
+.articles-title { font-size: 1.5rem; margin-bottom: 1.8rem; font-weight: 600; }
+
 .article-card {
     display: block; text-decoration: none; color: inherit;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px; padding: 1.5rem;
-    margin-bottom: 1rem; transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.06); /* 更加透明 */
+    backdrop-filter: blur(12px) saturate(150%); /* 核心：卡片背后的模糊效果 */
+    -webkit-backdrop-filter: blur(12px) saturate(150%); /* 兼容 Safari */
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px; 
+    padding: 1.5rem;
+    margin-bottom: 1.2rem; 
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
-.article-card:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateY(-3px);
+
+.article-card:hover { 
+    background: rgba(255, 255, 255, 0.1); 
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-4px); 
 }
-.article-meta { font-size: 0.85rem; opacity: 0.4; margin-bottom: 0.5rem; }
+
+.article-card:active { 
+    transform: scale(0.97) translateY(-2px); /* 点击卡片时的轻微缩小压感 */
+}
+
+.article-meta { font-size: 0.85rem; opacity: 0.5; margin-bottom: 0.5rem; }
 .article-item-title { font-size: 1.25rem; margin-bottom: 0.5rem; font-weight: 600; }
-.excerpt { font-size: 0.95rem; opacity: 0.7; font-weight: 300; }
+.excerpt { font-size: 0.95rem; opacity: 0.7; font-weight: 300; line-height: 1.5; }
 
 /* 手机端适配 */
 @media(max-width:480px){
-    header { padding: 0.6rem 1rem; }
-    .intro-title { font-size: 3rem; }
+    .intro-title { font-size: 3.2rem; }
     .article-card { padding: 1.2rem; }
 }
