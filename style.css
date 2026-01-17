@@ -8,13 +8,29 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+
 body { 
     font-family: 'Segoe UI', 'PingFang SC', system-ui, sans-serif; 
-    color: #333; /* 主文字使用深灰色，比纯黑更温和 */
-    background: #f2f2f2; /* 纯灰白色背景 */
+    color: #333; 
+    background: #f2f2f2; /* 确保背景是纯灰白 */
     min-height: 100vh; 
-    display: flex; flex-direction: column; 
+    display: flex; 
+    flex-direction: column; 
 }
+
+/* 缩小顶部空隙：从 7rem 减小到 4.5rem */
+main { 
+    flex: 1; 
+    padding-top: 4.5rem; 
+}
+
+/* 保持导航栏紧凑 */
+header {
+    background: rgba(242, 242, 242, 0.7);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
 
 /* 2. 背景层：移除所有渐变，使用纯色 */
 .bg-container {
