@@ -1,4 +1,4 @@
-// include.js —— 放在根目录，所有页面直接引用 /include.js
+
 document.addEventListener("DOMContentLoaded", () => {
     const includes = document.querySelectorAll("[w3-include-html]");
     includes.forEach(el => {
