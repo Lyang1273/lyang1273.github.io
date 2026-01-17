@@ -1,6 +1,5 @@
-/* style.css - 纯灰白色极简版 */
 
-/* 1. 全局设置：屏蔽蓝色高亮 */
+/* 1. 全局设置 */
 * {
     margin: 0;
     padding: 0;
@@ -8,47 +7,32 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-
 body { 
     font-family: 'Segoe UI', 'PingFang SC', system-ui, sans-serif; 
     color: #333; 
-    background: #f2f2f2; /* 确保背景是纯灰白 */
+    background: #f2f2f2; 
     min-height: 100vh; 
     display: flex; 
     flex-direction: column; 
 }
 
-/* 缩小顶部空隙：从 7rem 减小到 4.5rem */
-main { 
-    flex: 1; 
-    padding-top: 4.5rem; 
-}
-
-/* 保持导航栏紧凑 */
-header {
-    background: rgba(242, 242, 242, 0.7);
-    backdrop-filter: blur(20px) saturate(180%);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-
-/* 2. 背景层：移除所有渐变，使用纯色 */
+/* 2. 背景层 */
 .bg-container {
     position: fixed; inset: 0; z-index: -2;
     background: #f2f2f2; 
 }
-.bg-overlay { display: none; } /* 纯色背景不需要遮罩 */
 
 /* 3. 导航栏 (高通透毛玻璃) */
 header {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: rgba(242, 242, 242, 0.7); /* 与背景同色但带透明 */
+    background: rgba(242, 242, 242, 0.7);
     padding: 0.75rem 1.4rem;
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     display: flex; align-items: center; justify-content: space-between;
 }
+
 .site-title { font-size: 1.42rem; font-weight: 700; color: #000; letter-spacing: -0.5px; }
 .header-buttons { display: flex; gap: 0.5rem; }
 .header-link { text-decoration: none !important; color: inherit; }
@@ -64,57 +48,47 @@ header {
 }
 .header-link:active .header-btn { transform: scale(0.92); }
 .header-link:hover .header-btn, .header-btn.active {
-    background: #000; /* 悬停时反色，增加视觉冲击力 */
+    background: #000; 
     color: #fff;
     opacity: 1;
 }
 
-/* 4. 主页内容布局 */
-main { flex: 1; padding-top: 7rem; }
+/* 4. 关键布局修复：为所有页面的 main 容器提供统一的顶部避让间距 */
+main { 
+    flex: 1; 
+    padding-top: 5.5rem; /* 预留出导航栏的高度加上间距 */
+    width: 100%;
+}
+
+/* 5. 主页专用样式 (仅 index.html 使用) */
 .intro-section {
     display: flex; flex-direction: column; justify-content: center; align-items: center;
     text-align: center; padding: 4rem 2rem;
 }
-.intro-title { 
-    font-size: 4.2rem; font-weight: 800; letter-spacing: -1.5px; 
-    margin-bottom: 0.5rem; color: #000; 
-}
-.intro-subtitle { 
-    font-size: 1rem; opacity: 0.4; letter-spacing: 5px; 
-    text-transform: uppercase; color: #000;
-}
+.intro-title { font-size: 4.2rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 0.5rem; color: #000; }
+.intro-subtitle { font-size: 1rem; opacity: 0.4; letter-spacing: 5px; text-transform: uppercase; color: #000; }
 
-/* 5. 纯灰白磨砂卡片 */
-.articles-section { max-width: 760px; margin: 0 auto; padding: 0 1.5rem 5rem; }
-.articles-title { font-size: 1.2rem; margin-bottom: 2rem; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px; }
-
-.article-card {
-    display: block; text-decoration: none; color: inherit;
-    background: rgba(255, 255, 255, 0.4); /* 半透明白色卡片 */
+/* 6. 通用磨砂卡片样式 (文章列表使用) */
+.article-card, .article-item {
+    background: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.6); 
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); /* 极细微的投影 */
-    border-radius: 12px; /* 减小圆角，更符合工业极简风 */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    border-radius: 12px;
     padding: 1.8rem;
-    margin-bottom: 1.5rem; 
     transition: all 0.3s ease;
 }
 
-.article-card:hover { 
+.article-card:hover, .article-item:hover { 
     background: rgba(255, 255, 255, 0.7);
     transform: translateY(-2px); 
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
     border-color: rgba(255, 255, 255, 1);
 }
 
-.article-card:active { transform: scale(0.98); }
-
-.article-meta { font-size: 0.8rem; opacity: 0.4; margin-bottom: 0.6rem; font-family: monospace; }
-.article-item-title { font-size: 1.4rem; margin-bottom: 0.6rem; font-weight: 700; color: #000; }
-.excerpt { font-size: 0.95rem; opacity: 0.6; font-weight: 400; line-height: 1.7; color: #444; }
-
 /* 手机端适配 */
 @media(max-width:480px){
     .intro-title { font-size: 3rem; }
+    main { padding-top: 4.5rem; }
 }
