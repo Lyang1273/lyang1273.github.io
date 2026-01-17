@@ -1,4 +1,4 @@
-/* style.css - 磨砂玻璃卡片 & 点击反馈版本 */
+/* style.css - 纯灰白色极简版 */
 
 /* 1. 全局设置：屏蔽蓝色高亮 */
 * {
@@ -10,93 +10,95 @@
 
 body { 
     font-family: 'Segoe UI', 'PingFang SC', system-ui, sans-serif; 
-    color: #fff; background: #000; min-height: 100vh; 
+    color: #333; /* 主文字使用深灰色，比纯黑更温和 */
+    background: #f2f2f2; /* 纯灰白色背景 */
+    min-height: 100vh; 
     display: flex; flex-direction: column; 
 }
 
-/* 2. 背景：保持清晰 */
-/*
+/* 2. 背景层：移除所有渐变，使用纯色 */
 .bg-container {
     position: fixed; inset: 0; z-index: -2;
-    background: url('https://www.minecraft.net/content/dam/minecraftnet/games/minecraft/screenshots/EXPLORE_PDPScreenshotRefresh2024_multipleBiomes_01.png') center/cover no-repeat;
-    filter: brightness(0.6); 
+    background: #f2f2f2; 
 }
-*/
-.bg-container {
-    position: fixed; inset: 0; z-index: -2;
-    /* 使用对角线渐变，颜色跨度不要太大 */
-    background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-}
+.bg-overlay { display: none; } /* 纯色背景不需要遮罩 */
 
-.bg-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(0,0,0,0.2); }
-
-/* 3. 导航栏 (保持原有质感) */
+/* 3. 导航栏 (高通透毛玻璃) */
 header {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: rgba(255, 255, 255, 0.07);
+    background: rgba(242, 242, 242, 0.7); /* 与背景同色但带透明 */
     padding: 0.75rem 1.4rem;
-    backdrop-filter: blur(25px) saturate(200%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     display: flex; align-items: center; justify-content: space-between;
 }
-.site-title { font-size: 1.42rem; font-weight: 600; color: #fff; }
-.header-buttons { display: flex; gap: 0.42rem; }
+.site-title { font-size: 1.42rem; font-weight: 700; color: #000; letter-spacing: -0.5px; }
+.header-buttons { display: flex; gap: 0.5rem; }
 .header-link { text-decoration: none !important; color: inherit; }
+
 .header-btn {
-    background: rgba(255, 255, 255, 0.11);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 10px;
-    padding: 0.35rem 0.72rem;
+    background: rgba(0, 0, 0, 0.05); 
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    border-radius: 8px;
+    padding: 0.35rem 0.75rem;
     font-size: 0.84rem;
-    color: #fff; cursor: pointer;
-    opacity: 0.7; transition: all .2s ease;
+    color: #555; cursor: pointer;
+    transition: all .2s ease;
 }
-.header-link:active .header-btn { transform: scale(0.92); } /* 点击缩小的反馈 */
+.header-link:active .header-btn { transform: scale(0.92); }
 .header-link:hover .header-btn, .header-btn.active {
-    opacity: 1; background: rgba(255, 255, 255, 0.25);
+    background: #000; /* 悬停时反色，增加视觉冲击力 */
+    color: #fff;
+    opacity: 1;
 }
 
-/* 4. 主页布局 */
-main { flex: 1; padding-top: 6rem; }
+/* 4. 主页内容布局 */
+main { flex: 1; padding-top: 7rem; }
 .intro-section {
     display: flex; flex-direction: column; justify-content: center; align-items: center;
-    text-align: center; padding: 4.5rem 2rem;
+    text-align: center; padding: 4rem 2rem;
 }
-.intro-title { font-size: 4rem; font-weight: 900; letter-spacing: -1px; margin-bottom: 0.4rem; }
-.intro-subtitle { font-size: 1.1rem; opacity: 0.6; letter-spacing: 4px; text-transform: uppercase; }
+.intro-title { 
+    font-size: 4.2rem; font-weight: 800; letter-spacing: -1.5px; 
+    margin-bottom: 0.5rem; color: #000; 
+}
+.intro-subtitle { 
+    font-size: 1rem; opacity: 0.4; letter-spacing: 5px; 
+    text-transform: uppercase; color: #000;
+}
 
-/* 5. 磨砂玻璃文章卡片 */
-.articles-section { max-width: 800px; margin: 0 auto; padding: 0 1.5rem 5rem; }
-.articles-title { font-size: 1.5rem; margin-bottom: 1.8rem; font-weight: 600; }
+/* 5. 纯灰白磨砂卡片 */
+.articles-section { max-width: 760px; margin: 0 auto; padding: 0 1.5rem 5rem; }
+.articles-title { font-size: 1.2rem; margin-bottom: 2rem; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px; }
 
 .article-card {
     display: block; text-decoration: none; color: inherit;
-    background: rgba(255, 255, 255, 0.06); /* 更加透明 */
-    backdrop-filter: blur(12px) saturate(150%); /* 核心：卡片背后的模糊效果 */
-    -webkit-backdrop-filter: blur(12px) saturate(150%); /* 兼容 Safari */
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 20px; 
-    padding: 1.5rem;
-    margin-bottom: 1.2rem; 
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    background: rgba(255, 255, 255, 0.4); /* 半透明白色卡片 */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.6); 
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); /* 极细微的投影 */
+    border-radius: 12px; /* 减小圆角，更符合工业极简风 */
+    padding: 1.8rem;
+    margin-bottom: 1.5rem; 
+    transition: all 0.3s ease;
 }
 
 .article-card:hover { 
-    background: rgba(255, 255, 255, 0.1); 
-    border-color: rgba(255, 255, 255, 0.25);
-    transform: translateY(-4px); 
+    background: rgba(255, 255, 255, 0.7);
+    transform: translateY(-2px); 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    border-color: rgba(255, 255, 255, 1);
 }
 
-.article-card:active { 
-    transform: scale(0.97) translateY(-2px); /* 点击卡片时的轻微缩小压感 */
-}
+.article-card:active { transform: scale(0.98); }
 
-.article-meta { font-size: 0.85rem; opacity: 0.5; margin-bottom: 0.5rem; }
-.article-item-title { font-size: 1.25rem; margin-bottom: 0.5rem; font-weight: 600; }
-.excerpt { font-size: 0.95rem; opacity: 0.7; font-weight: 300; line-height: 1.5; }
+.article-meta { font-size: 0.8rem; opacity: 0.4; margin-bottom: 0.6rem; font-family: monospace; }
+.article-item-title { font-size: 1.4rem; margin-bottom: 0.6rem; font-weight: 700; color: #000; }
+.excerpt { font-size: 0.95rem; opacity: 0.6; font-weight: 400; line-height: 1.7; color: #444; }
 
 /* 手机端适配 */
 @media(max-width:480px){
-    .intro-title { font-size: 3.2rem; }
-    .article-card { padding: 1.2rem; }
+    .intro-title { font-size: 3rem; }
 }
