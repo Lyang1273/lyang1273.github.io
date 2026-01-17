@@ -70,8 +70,7 @@ main {
     margin-bottom: 0.5rem; color: #000; 
 }
 .intro-subtitle { 
-    font-size: 1rem; opacity: 0.4; letter-spacing: 5px; 
-    text-transform: uppercase; color: #000;
+    font-size: 1rem; opacity: 0.4; letter-spacing: 5px; color: #000;
 }
 
 /* 6. 文章卡片通用样式 (主页推荐 & 文章列表通用) */
