@@ -15,11 +15,19 @@ body {
 }
 
 /* 2. 背景：保持清晰 */
+/*
 .bg-container {
     position: fixed; inset: 0; z-index: -2;
     background: url('https://www.minecraft.net/content/dam/minecraftnet/games/minecraft/screenshots/EXPLORE_PDPScreenshotRefresh2024_multipleBiomes_01.png') center/cover no-repeat;
     filter: brightness(0.6); 
 }
+*/
+.bg-container {
+    position: fixed; inset: 0; z-index: -2;
+    /* 使用对角线渐变，颜色跨度不要太大 */
+    background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+}
+
 .bg-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(0,0,0,0.2); }
 
 /* 3. 导航栏 (保持原有质感) */
