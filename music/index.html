@@ -6,74 +6,81 @@
     <title>音乐 - Lyang1273</title>
     <link rel="stylesheet" href="/style.css">
     <style>
-        main{display:flex;flex-direction:column;align-items:center;padding-bottom:10rem;}
-        .page-title{margin:4rem 0 3rem;font-size:3.2rem;font-weight:800;letter-spacing:3px;text-shadow:0 4px 20px rgba(0,0,0,0.5);}
-        .music-list{width:100%;max-width:860px;padding:0 2rem;display:flex;flex-direction:column;gap:2.2rem;}
-        .music-item{
-            background:rgba(255,255,255,0.08);
-            border:1px solid rgba(255,255,255,0.16);
-            border-radius:16px;
-            padding:1.6rem 2rem;
-            display:flex;align-items:center;gap:1.8rem;
-            transition:all .35s ease;
-            backdrop-filter:blur(12px);
-        }
-        .music-item:hover{background:rgba(255,255,255,0.14);transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,0.5);}
-        .music-cover img{width:76px;height:76px;border-radius:12px;object-fit:cover;box-shadow:0 8px 25px rgba(0,0,0,0.6);flex-shrink:0;}
+        /* 页面专属布局优化 */
+        main { display: flex; flex-direction: column; align-items: center; padding-bottom: 8rem; }
+        
+        .music-header { text-align: center; padding: 4rem 1.5rem 2rem; }
+        .page-title { font-size: 3.5rem; font-weight: 800; letter-spacing: -1px; color: #000; margin-bottom: 0.5rem; }
+        .notice-bar { font-size: 0.85rem; color: #888; background: rgba(0,0,0,0.04); padding: 0.5rem 1.2rem; border-radius: 20px; }
+        .notice-bar a { color: #444; font-weight: 600; margin-left: 4px; }
 
-        .player{flex:1;display:flex;flex-direction:column;gap:0.8rem;min-width:0;}
-        .track-info .music-title{font-size:1.26rem;font-weight:600;}
-        .track-info .music-artist{font-size:0.94rem;opacity:0.75;}
+        .music-list { width: 100%; max-width: 720px; padding: 0 1.5rem; display: flex; flex-direction: column; gap: 1.2rem; }
 
-        .controls{display:flex;align-items:center;gap:1.2rem;width:100%;}
-        .play-btn{
-            width:44px;height:44px;border-radius:50%;
-            background:rgba(255,255,255,0.22);border:none;flex-shrink:0;
-            cursor:pointer;transition:all .3s;box-shadow:0 5px 18px rgba(0,0,0,0.4);
+        /* 音乐项：极简毛玻璃卡片 */
+        .music-item {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 16px;
+            padding: 1.2rem;
+            display: flex; align-items: center; gap: 1.2rem;
+            transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
         }
-        .play-btn:hover{background:rgba(255,255,255,0.32);}
-        .play-btn svg{width:20px;height:20px;fill:#fff;}
+        .music-item:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+            border-color: #fff;
+        }
 
-        .progress-area{
-            flex:1;display:flex;align-items:center;gap:0.8rem;
-            min-width:0;cursor:pointer;user-select:none;
-            height:50px;-webkit-tap-highlight-color:transparent;
-            touch-action:none;
-        }
-        .time{font-size:0.94rem;opacity:0.85;width:46px;flex-shrink:0;text-align:center;}
-        .progress-bar{
-            flex:1;height:8px;background:rgba(255,255,255,0.18);
-            border-radius:4px;position:relative;
-        }
-        .progress-fill{height:100%;width:0;background:#6ecfff;border-radius:4px;}
-        .progress-knob{
-            position:absolute;top:50%;left:0;transform:translate(-50%,-50%);
-            width:18px;height:18px;background:#6ecfff;border-radius:50%;
-            opacity:0;transition:opacity .2s;box-shadow:0 0 12px rgba(110,207,255,0.8);
-        }
-        .progress-area:active .progress-knob,
-        .progress-area.dragging .progress-knob{opacity:1;}
+        /* 封面图：去掉了重阴影 */
+        .music-cover img { width: 72px; height: 72px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
 
-        @media(max-width:768px){
-            .music-item{flex-direction:row;padding:1.5rem 1.8rem;gap:1.6rem;}
-            .play-btn{width:52px;height:52px;}
-            .play-btn svg{width:24px;height:24px;}
-            .progress-bar{height:10px;border-radius:5px;}
-            .progress-knob{width:22px;height:22px;}
+        .player { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+        .track-info .music-title { font-size: 1.15rem; font-weight: 700; color: #000; }
+        .track-info .music-artist { font-size: 0.85rem; opacity: 0.5; margin-top: 2px; }
+
+        .controls { display: flex; align-items: center; gap: 1rem; width: 100%; }
+        
+        /* 播放按钮：黑白极简 */
+        .play-btn {
+            width: 38px; height: 38px; border-radius: 50%;
+            background: #000; border: none; flex-shrink: 0;
+            cursor: pointer; transition: transform 0.2s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .play-btn:active { transform: scale(0.9); }
+        .play-btn svg { width: 16px; height: 16px; fill: #fff; }
+
+        /* 进度条：极细线条设计 */
+        .progress-area { flex: 1; display: flex; flex-direction: column; gap: 4px; cursor: pointer; }
+        .progress-bar-container { width: 100%; height: 4px; background: rgba(0,0,0,0.05); border-radius: 2px; position: relative; }
+        .progress-fill { height: 100%; width: 0%; background: #000; border-radius: 2px; transition: width 0.1s linear; }
+        
+        .time-box { display: flex; justify-content: space-between; font-size: 0.75rem; color: #999; font-family: monospace; }
+
+        @media(max-width:480px){
+            .page-title { font-size: 2.8rem; }
+            .music-item { padding: 1rem; gap: 1rem; }
+            .music-cover img { width: 60px; height: 60px; }
         }
     </style>
 </head>
 <body>
 <div class="bg-container"></div>
-<div class="bg-overlay"></div>
 <div w3-include-html="/header.html"></div>
 
 <main>
-    <p>此页面的音质较低，前往<a href="/assets/music/original">此处</a>可聆听音质较好的版本</p>
-    <h1 class="page-title">音乐</h1>
-    <div class="music-list">
+    <section class="music-header">
+        <h1 class="page-title">音乐</h1>
+        <p class="notice-bar">
+            此页面的音质较低，前往<a href="/assets/music/original">此处</a>聆听高音质版本
+        </p>
+    </section>
 
-        <!-- 1. 14.3 Billion Years -->
+    <div class="music-list">
         <div class="music-item">
             <div class="music-cover">
                 <img src="/assets/music/album_image/Andrew Prahlow - 14.3 Billion Years.jpg" alt="14.3 Billion Years">
@@ -88,18 +95,18 @@
                         <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                     </button>
                     <div class="progress-area">
-                        <span class="time current">0:00</span>
-                        <div class="progress-bar">
+                        <div class="progress-bar-container">
                             <div class="progress-fill"></div>
-                            <div class="progress-knob"></div>
                         </div>
-                        <span class="time total">0:00</span>
+                        <div class="time-box">
+                            <span class="time current">0:00</span>
+                            <span class="time total">0:00</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 2. Travelers' Encore -->
         <div class="music-item">
             <div class="music-cover">
                 <img src="/assets/music/album_image/Andrew Prahlow - Travelers' encore.jpg" alt="Travelers' Encore">
@@ -114,18 +121,18 @@
                         <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                     </button>
                     <div class="progress-area">
-                        <span class="time current">0:00</span>
-                        <div class="progress-bar">
+                        <div class="progress-bar-container">
                             <div class="progress-fill"></div>
-                            <div class="progress-knob"></div>
                         </div>
-                        <span class="time total">0:00</span>
+                        <div class="time-box">
+                            <span class="time current">0:00</span>
+                            <span class="time total">0:00</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 3. Flower Dance -->
         <div class="music-item">
             <div class="music-cover">
                 <img src="/assets/music/album_image/Flower Dance.jpg" alt="Flower Dance">
@@ -140,43 +147,17 @@
                         <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                     </button>
                     <div class="progress-area">
-                        <span class="time current">0:00</span>
-                        <div class="progress-bar">
+                        <div class="progress-bar-container">
                             <div class="progress-fill"></div>
-                            <div class="progress-knob"></div>
                         </div>
-                        <span class="time total">0:00</span>
+                        <div class="time-box">
+                            <span class="time current">0:00</span>
+                            <span class="time total">0:00</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <!-- 4. Wake (Live) -->
-        <div class="music-item">
-            <div class="music-cover">
-                <img src="/assets/music/album_image/Wake(Live).jpg" alt="Wake (Live)">
-            </div>
-            <div class="player" data-src="/assets/music/Wake(Live).mp3">
-                <div class="track-info">
-                    <div class="music-title">Wake (Live)</div>
-                    <div class="music-artist">Hillsong Young & Free</div>
-                </div>
-                <div class="controls">
-                    <button class="play-btn">
-                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
-                    <div class="progress-area">
-                        <span class="time current">0:00</span>
-                        <div class="progress-bar">
-                            <div class="progress-fill"></div>
-                            <div class="progress-knob"></div>
-                        </div>
-                        <span class="time total">0:00</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 </main>
 
@@ -188,14 +169,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const btn   = player.querySelector('.play-btn');
         const fill  = player.querySelector('.progress-fill');
-        const knob  = player.querySelector('.progress-knob');
         const cur   = player.querySelector('.time.current');
         const total = player.querySelector('.time.total');
         const area  = player.querySelector('.progress-area');
 
         btn.addEventListener('click', () => {
             if (audio.paused) {
-                document.querySelectorAll('audio').forEach(a => a !== audio && a.pause());
+                document.querySelectorAll('audio').forEach(a => { if(a !== audio) a.pause(); });
                 audio.play();
                 btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>';
             } else {
@@ -205,41 +185,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         audio.addEventListener('timeupdate', () => {
-            if (!audio.duration) return;
             const percent = (audio.currentTime / audio.duration) * 100;
             fill.style.width = percent + '%';
-            knob.style.left = percent + '%';
             cur.textContent = format(audio.currentTime);
         });
+
         audio.addEventListener('loadedmetadata', () => total.textContent = format(audio.duration));
 
-        let dragging = false;
-        const seek = (clientX) => {
-            const rect = area.getBoundingClientRect();
-            let pos = (clientX - rect.left) / rect.width;
-            pos = Math.max(0, Math.min(1, pos));
+        area.addEventListener('click', (e) => {
+            const rect = area.querySelector('.progress-bar-container').getBoundingClientRect();
+            const pos = (e.clientX - rect.left) / rect.width;
             audio.currentTime = pos * audio.duration;
-        };
-
-        area.addEventListener('pointerdown', e => {
-            e.preventDefault();
-            dragging = true;
-            area.classList.add('dragging');
-            seek(e.clientX || (e.touches && e.touches[0].clientX));
-        });
-
-        document.addEventListener('pointermove', e => {
-            if (dragging) {
-                e.preventDefault();
-                seek(e.clientX || (e.touches && e.touches[0].clientX));
-            }
-        });
-
-        document.addEventListener('pointerup', () => {
-            if (dragging) {
-                dragging = false;
-                area.classList.remove('dragging');
-            }
         });
     });
 
