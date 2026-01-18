@@ -105,6 +105,6 @@ main {
 
 /* 手机端适配 */
 @media(max-width:480px){
-    .intro-title { font-size: 3rem; }
+    .intro-title { font-size: 2.5rem; }
     main { padding-top: 4rem; }
 }
