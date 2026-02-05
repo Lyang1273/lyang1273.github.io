@@ -1,0 +1,60 @@
+/* article.css - 文章页面专用样式 */
+
+/* 标题区域样式 */
+.title-section {
+    text-align: center;
+    margin-bottom: 30px;
+    /* 自动换行 */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+.title-section h1 {
+    font-size: 32px;
+    /* 标题自动换行 */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    /* 防止溢出 */
+    overflow: hidden;
+}
+
+.title-section p {
+    font-size: 14px;
+    margin-top: 10px;
+    /* 日期自动换行 */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+/* 正文区域样式 */
+.content-section {
+    padding: 0 20px;
+    line-height: 1.5;
+    /* 正文自动换行 */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+.content-section p {
+    /* 段落自动换行 */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    margin-bottom: 1em; /* 段落间距 */
+}
+
+/* pre标签样式（代码块） */
+pre {
+    line-height: 1.5;
+    /* 保留格式并自动换行 */
+    white-space: pre-wrap; /* 保留空格和换行，同时自动换行 */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    background-color: #f5f5f5; /* 可选：代码块背景 */
+    padding: 10px; /* 可选：内边距 */
+    border-radius: 4px; /* 可选：圆角 */
+}
