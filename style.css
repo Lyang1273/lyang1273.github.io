@@ -9,7 +9,7 @@
 body { 
     font-family: 'Segoe UI', 'PingFang SC', system-ui, sans-serif; 
     color: #333; 
-    background: #f2f2f2; 
+    background: #2C2C2C; 
     min-height: 100vh; 
     display: flex; 
     flex-direction: column; 
@@ -18,7 +18,7 @@ body {
 /* 2. 背景层：保持固定 */
 .bg-container {
     position: fixed; inset: 0; z-index: -2;
-    background: #f2f2f2; 
+    background: #2C2C2C;
 }
 
 /* 3. 导航栏：固定在顶部 */
@@ -48,8 +48,8 @@ header {
 
 /* 按钮激活与悬停效果 */
 .header-link:hover .header-btn, .header-btn.active {
-    background: #000; 
-    color: #fff;
+    background: #B3B3B3;
+    color: #696969;
     opacity: 1;
 }
 
