@@ -8,8 +8,8 @@
 
 body { 
     font-family: 'Segoe UI', 'PingFang SC', system-ui, sans-serif; 
-    color: #333; 
-    background: #2C2C2C; 
+    color: #E0E0E0; 
+    background: #121212; 
     min-height: 100vh; 
     display: flex; 
     flex-direction: column; 
@@ -18,38 +18,38 @@ body {
 /* 2. 背景层：保持固定 */
 .bg-container {
     position: fixed; inset: 0; z-index: -2;
-    background: #2C2C2C;
+    background: #121212;
 }
 
 /* 3. 导航栏：固定在顶部 */
 header {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: rgba(242, 242, 242, 0.7);
+    background: rgba(30, 30, 30, 0.7);
     padding: 0.75rem 1.4rem;
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     display: flex; align-items: center; justify-content: space-between;
 }
 
-.site-title { font-size: 1.42rem; font-weight: 700; color: #000; letter-spacing: -0.5px; }
+.site-title { font-size: 1.42rem; font-weight: 700; color: #F5F5F5; letter-spacing: -0.5px; }
 .header-buttons { display: flex; gap: 0.5rem; }
 .header-link { text-decoration: none !important; color: inherit; }
 
 .header-btn {
-    background: rgba(0, 0, 0, 0.05); 
-    border: 1px solid rgba(0, 0, 0, 0.03);
+    background: rgba(255, 255, 255, 0.05); 
+    border: 1px solid rgba(255, 255, 255, 0.03);
     border-radius: 8px;
     padding: 0.35rem 0.75rem;
     font-size: 0.84rem;
-    color: #555; cursor: pointer;
+    color: #B3B3B3; cursor: pointer;
     transition: all .2s ease;
 }
 
 /* 按钮激活与悬停效果 */
 .header-link:hover .header-btn, .header-btn.active {
-    background: #B3B3B3;
-    color: #696969;
+    background: #2C2C2C;
+    color: #E0E0E0;
     opacity: 1;
 }
 
@@ -67,25 +67,25 @@ main {
 }
 .intro-title { 
     font-size: 4.2rem; font-weight: 800; letter-spacing: -1.5px; 
-    margin-bottom: 0.5rem; color: #000; 
+    margin-bottom: 0.5rem; color: #F5F5F5; 
 }
 .intro-subtitle { 
-    font-size: 1rem; letter-spacing: 2px; color: #000;
+    font-size: 1rem; letter-spacing: 2px; color: #B3B3B3;
 }
 
 /* 6. 文章卡片通用样式 (主页推荐 & 文章列表通用) */
 .articles-section { max-width: 760px; margin: 0 auto; padding: 0 1.5rem 5rem; }
-.articles-title { font-size: 1.2rem; margin-bottom: 2rem; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 1px; }
+.articles-title { font-size: 1.2rem; margin-bottom: 2rem; font-weight: 700; color: #F5F5F5; text-transform: uppercase; letter-spacing: 1px; }
 
 .article-card, .article-item {
     display: block; 
     text-decoration: none; 
     color: inherit;
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(40, 40, 40, 0.4);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.6); 
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1); 
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     border-radius: 12px;
     padding: 1.8rem;
     margin-bottom: 1.5rem; 
@@ -93,15 +93,15 @@ main {
 }
 
 .article-card:hover, .article-item:hover { 
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(50, 50, 50, 0.7);
     transform: translateY(-2px); 
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-    border-color: rgba(255, 255, 255, 1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
-.article-meta { font-size: 0.8rem; opacity: 0.4; margin-bottom: 0.6rem; font-family: monospace; }
-.article-item-title, .article-title { font-size: 1.4rem; margin-bottom: 0.6rem; font-weight: 700; color: #000; }
-.excerpt { font-size: 0.95rem; opacity: 0.6; line-height: 1.7; color: #444; }
+.article-meta { font-size: 0.8rem; opacity: 0.6; margin-bottom: 0.6rem; font-family: monospace; }
+.article-item-title, .article-title { font-size: 1.4rem; margin-bottom: 0.6rem; font-weight: 700; color: #F5F5F5; }
+.excerpt { font-size: 0.95rem; opacity: 0.8; line-height: 1.7; color: #B3B3B3; }
 
 /* 手机端适配 */
 @media(max-width:480px){
