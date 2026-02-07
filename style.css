@@ -104,7 +104,7 @@ main {
     font-size: 1rem; letter-spacing: 2px; color: #B3B3B3;
 }
 
-/* 6. 文章卡片通用样式 (主页推荐 & 文章列表通用) */
+/* 6. 文章卡片通用样式 */
 .articles-section { max-width: 760px; margin: 0 auto; padding: 0 1.5rem 5rem; }
 .articles-title { font-size: 1.2rem; margin-bottom: 2rem; font-weight: 700; color: #F5F5F5; text-transform: uppercase; letter-spacing: 1px; }
 
