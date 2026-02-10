@@ -19,36 +19,39 @@
 </header>
 
 <style>
-/* 更通透的顶部栏：降低不透明度并增强毛玻璃 */
+/* 更低高度的顶部栏 */
 .site-header {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 100;
   display: flex;
   align-items: center;
-  gap: 18px;                 /* 增大标题与导航的间距 */
-  padding: 12px 18px;
-  background: rgba(20,20,20,0.42); /* 更通透（从0.75降到0.42） */
-  backdrop-filter: blur(14px) saturate(140%);
+  gap: 12px;                 /* 标题与导航间距略小 */
+  padding: 8px 14px;         /* 减小上下内边距以降低高度 */
+  background: rgba(20,20,20,0.40);
+  backdrop-filter: blur(12px) saturate(130%);
   border-bottom: 1px solid rgba(255,255,255,0.03);
+  height: 48px;              /* 固定高度，便于布局一致 */
+  box-sizing: border-box;
 }
 
-/* 标题：增加右侧外边距以拉开与导航的距离 */
+/* 标题更紧凑 */
 .site-title {
   color: #fff;
   font-weight: 700;
-  margin-right: 12px;
+  margin-right: 8px;
   flex: 0 0 auto;
-  letter-spacing: 0.4px;
+  font-size: 0.98rem;        /* 略小字体 */
+  line-height: 1;
 }
 
-/* 箭头按钮（桌面增强） */
+/* 箭头按钮更小 */
 .nav-arrow {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px; height: 36px;
-  border-radius: 8px;
+  width: 30px; height: 30px; /* 缩小尺寸 */
+  border-radius: 6px;
   border: none;
   background: rgba(255,255,255,0.03);
   color: #fff;
@@ -56,36 +59,39 @@
   transition: background .12s, opacity .12s;
   opacity: 0.95;
   flex: 0 0 auto;
+  font-size: 18px;
 }
 .nav-arrow:hover { background: rgba(255,255,255,0.06); }
 
-/* 横向滚动容器（核心） */
+/* 横向滚动容器高度与内边距调整 */
 .nav-scroll {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
-  padding: 6px 4px;
+  padding: 4px 2px;          /* 减小垂直内边距 */
   align-items: center;
   flex: 1 1 auto;
-  max-width: calc(100% - 260px);
+  max-width: calc(100% - 200px);
+  height: 100%;              /* 填满 header 高度 */
 }
 
-/* —— 隐藏滚动条（视觉上完全隐藏） —— */
+/* 隐藏滚动条 */
 .nav-scroll::-webkit-scrollbar { display: none; }
 .nav-scroll { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* 链接样式 */
+/* 链接样式更紧凑 */
 .header-link { text-decoration: none; }
 .header-btn {
   display: inline-block;
   white-space: nowrap;
   color: #E8E8E8;
-  padding: 8px 12px;
-  border-radius: 10px;
+  padding: 6px 10px;         /* 缩小内边距 */
+  border-radius: 8px;
   transition: background .12s, color .12s, transform .08s;
-  font-size: 0.95rem;
+  font-size: 0.88rem;        /* 更小字体 */
+  line-height: 1;
 }
 .header-btn:hover, .header-btn:focus {
   background: rgba(255,255,255,0.04);
@@ -94,40 +100,40 @@
   outline: none;
 }
 
-/* 可选：启用 scroll-snap（每个链接对齐） */
+/* scroll-snap 保持 */
 .nav-scroll { scroll-snap-type: x mandatory; }
 .header-btn { scroll-snap-align: start; }
 
-/* 更柔和的遮罩提示（降低强度以配合通透感） */
+/* 遮罩强度适当降低以配合更低高度 */
 .site-header::before,
 .site-header::after {
   content: "";
   position: absolute;
   top: 0; bottom: 0;
-  width: 44px;
+  width: 40px;
   pointer-events: none;
   z-index: 99;
 }
 .site-header::before { left: 0; background: linear-gradient(90deg, rgba(20,20,20,0.85), rgba(20,20,20,0)); }
 .site-header::after  { right: 0; background: linear-gradient(270deg, rgba(20,20,20,0.85), rgba(20,20,20,0)); }
 
-/* 响应式：手机上隐藏箭头，使用手势滑动或菜单按钮 */
+/* 响应式：手机上隐藏箭头 */
 @media (max-width: 720px) {
   .nav-arrow { display: none; }
-  .nav-scroll { max-width: calc(100% - 96px); }
+  .nav-scroll { max-width: calc(100% - 88px); }
   .site-header::before, .site-header::after { display: none; }
 }
 </style>
 
 <script>
-/* 箭头控制、拖拽滑动、箭头显示逻辑、键盘左右键导航（增强） */
+/* 保留增强脚本（拖拽、箭头显示、键盘） */
 (function(){
   const scroller = document.querySelector('.nav-scroll');
   const leftBtn = document.querySelector('.nav-arrow-left');
   const rightBtn = document.querySelector('.nav-arrow-right');
   if (!scroller) return;
 
-  function scrollAmount() { return Math.max(220, Math.round(scroller.clientWidth * 0.6)); }
+  function scrollAmount() { return Math.max(180, Math.round(scroller.clientWidth * 0.55)); }
 
   leftBtn && leftBtn.addEventListener('click', ()=> scroller.scrollBy({ left: -scrollAmount(), behavior: 'smooth' }));
   rightBtn && rightBtn.addEventListener('click', ()=> scroller.scrollBy({ left: scrollAmount(), behavior: 'smooth' }));
@@ -135,8 +141,8 @@
   function updateArrows(){
     if (!leftBtn || !rightBtn) return;
     const maxScroll = scroller.scrollWidth - scroller.clientWidth;
-    leftBtn.style.visibility = scroller.scrollLeft > 8 ? 'visible' : 'hidden';
-    rightBtn.style.visibility = scroller.scrollLeft < maxScroll - 8 ? 'visible' : 'hidden';
+    leftBtn.style.visibility = scroller.scrollLeft > 6 ? 'visible' : 'hidden';
+    rightBtn.style.visibility = scroller.scrollLeft < maxScroll - 6 ? 'visible' : 'hidden';
   }
   scroller.addEventListener('scroll', updateArrows);
   window.addEventListener('resize', updateArrows);
@@ -155,14 +161,14 @@
   document.addEventListener('mousemove', (e)=>{
     if(!isDown) return;
     const x = e.pageX - scroller.offsetLeft;
-    const walk = (x - startX) * 1.2;
+    const walk = (x - startX) * 1.1;
     scroller.scrollLeft = scrollLeft - walk;
   });
 
   // 键盘左右键在 nav 聚焦时滚动
   scroller.addEventListener('keydown', (e)=>{
-    if (e.key === 'ArrowRight') { scroller.scrollBy({ left: 120, behavior: 'smooth' }); e.preventDefault(); }
-    if (e.key === 'ArrowLeft')  { scroller.scrollBy({ left: -120, behavior: 'smooth' }); e.preventDefault(); }
+    if (e.key === 'ArrowRight') { scroller.scrollBy({ left: 100, behavior: 'smooth' }); e.preventDefault(); }
+    if (e.key === 'ArrowLeft')  { scroller.scrollBy({ left: -100, behavior: 'smooth' }); e.preventDefault(); }
   });
 })();
 </script>
