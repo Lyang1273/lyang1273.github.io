@@ -1,10 +1,8 @@
 <header class="site-header">
   <div class="site-title">Lyang1273</div>
 
-  <!-- 左箭头（桌面可见） -->
   <button class="nav-arrow nav-arrow-left" aria-hidden="true" tabindex="-1">‹</button>
 
-  <!-- 横向可滚动导航容器 -->
   <nav class="header-buttons nav-scroll" aria-label="主导航" tabindex="0">
     <a href="/index.html" class="header-link"><span class="header-btn">主页</span></a>
     <a href="/doc/index.html" class="header-link"><span class="header-btn">文章</span></a>
@@ -17,42 +15,39 @@
     <a href="/contact.html" class="header-link"><span class="header-btn">联系</span></a>
   </nav>
 
-  <!-- 右箭头（桌面可见） -->
   <button class="nav-arrow nav-arrow-right" aria-hidden="true" tabindex="-1">›</button>
 </header>
 
 <style>
-/* 基础布局 */
+/* 更通透的顶部栏：降低不透明度并增强毛玻璃 */
 .site-header {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   z-index: 100;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 16px;
-  background: rgba(20,20,20,0.75);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  gap: 18px;                 /* 增大标题与导航的间距 */
+  padding: 12px 18px;
+  background: rgba(20,20,20,0.42); /* 更通透（从0.75降到0.42） */
+  backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid rgba(255,255,255,0.03);
 }
 
-/* 标题 */
+/* 标题：增加右侧外边距以拉开与导航的距离 */
 .site-title {
   color: #fff;
   font-weight: 700;
-  margin-right: 6px;
+  margin-right: 12px;
   flex: 0 0 auto;
+  letter-spacing: 0.4px;
 }
 
-/* 箭头按钮 */
+/* 箭头按钮（桌面增强） */
 .nav-arrow {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 36px; height: 36px;
   border-radius: 8px;
   border: none;
   background: rgba(255,255,255,0.03);
@@ -67,20 +62,19 @@
 /* 横向滚动容器（核心） */
 .nav-scroll {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
   padding: 6px 4px;
   align-items: center;
   flex: 1 1 auto;
-  max-width: calc(100% - 220px);
+  max-width: calc(100% - 260px);
 }
 
-/* 隐藏滚动条但保留可滚动性（美观） */
-.nav-scroll::-webkit-scrollbar { height: 8px; }
-.nav-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 8px; }
-.nav-scroll { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.06) transparent; }
+/* —— 隐藏滚动条（视觉上完全隐藏） —— */
+.nav-scroll::-webkit-scrollbar { display: none; }
+.nav-scroll { -ms-overflow-style: none; scrollbar-width: none; }
 
 /* 链接样式 */
 .header-link { text-decoration: none; }
@@ -89,13 +83,14 @@
   white-space: nowrap;
   color: #E8E8E8;
   padding: 8px 12px;
-  border-radius: 8px;
-  transition: background .12s, color .12s;
+  border-radius: 10px;
+  transition: background .12s, color .12s, transform .08s;
   font-size: 0.95rem;
 }
 .header-btn:hover, .header-btn:focus {
   background: rgba(255,255,255,0.04);
   color: #fff;
+  transform: translateY(-1px);
   outline: none;
 }
 
@@ -103,18 +98,18 @@
 .nav-scroll { scroll-snap-type: x mandatory; }
 .header-btn { scroll-snap-align: start; }
 
-/* 渐变遮罩（提示更多内容） */
+/* 更柔和的遮罩提示（降低强度以配合通透感） */
 .site-header::before,
 .site-header::after {
   content: "";
   position: absolute;
   top: 0; bottom: 0;
-  width: 48px;
+  width: 44px;
   pointer-events: none;
   z-index: 99;
 }
-.site-header::before { left: 0; background: linear-gradient(90deg, rgba(20,20,20,0.95), rgba(20,20,20,0)); }
-.site-header::after  { right: 0; background: linear-gradient(270deg, rgba(20,20,20,0.95), rgba(20,20,20,0)); }
+.site-header::before { left: 0; background: linear-gradient(90deg, rgba(20,20,20,0.85), rgba(20,20,20,0)); }
+.site-header::after  { right: 0; background: linear-gradient(270deg, rgba(20,20,20,0.85), rgba(20,20,20,0)); }
 
 /* 响应式：手机上隐藏箭头，使用手势滑动或菜单按钮 */
 @media (max-width: 720px) {
@@ -125,22 +120,18 @@
 </style>
 
 <script>
-/* 可选增强：箭头控制、拖拽滑动、箭头显示逻辑、键盘左右键导航 */
+/* 箭头控制、拖拽滑动、箭头显示逻辑、键盘左右键导航（增强） */
 (function(){
   const scroller = document.querySelector('.nav-scroll');
   const leftBtn = document.querySelector('.nav-arrow-left');
   const rightBtn = document.querySelector('.nav-arrow-right');
   if (!scroller) return;
 
-  // 计算滚动量（基于容器宽度）
-  function scrollAmount() {
-    return Math.max(200, Math.round(scroller.clientWidth * 0.6));
-  }
+  function scrollAmount() { return Math.max(220, Math.round(scroller.clientWidth * 0.6)); }
 
   leftBtn && leftBtn.addEventListener('click', ()=> scroller.scrollBy({ left: -scrollAmount(), behavior: 'smooth' }));
   rightBtn && rightBtn.addEventListener('click', ()=> scroller.scrollBy({ left: scrollAmount(), behavior: 'smooth' }));
 
-  // 更新箭头可见性
   function updateArrows(){
     if (!leftBtn || !rightBtn) return;
     const maxScroll = scroller.scrollWidth - scroller.clientWidth;
