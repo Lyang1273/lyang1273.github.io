@@ -1,0 +1,161 @@
+<header class="site-header">
+  <div class="site-title">Lyang1273</div>
+
+  <button class="nav-arrow nav-arrow-left" aria-hidden="true" tabindex="-1">‹</button>
+
+  <nav class="header-buttons nav-scroll" aria-label="主导航" tabindex="0">
+    <a href="/index.html" class="header-link"><span class="header-btn">主页</span></a>
+    <a href="/doc/index.html" class="header-link"><span class="header-btn">文章</span></a>
+    <!-- <a href="/contact/index.html" class="header-link"><span class="header-btn">联系人</span></a> -->
+    <a href="/music/index.html" class="header-link"><span class="header-btn">音乐</span></a>
+    <a href="/contact.html" class="header-link"><span class="header-btn">联系</span></a>
+  </nav>
+
+  <button class="nav-arrow nav-arrow-right" aria-hidden="true" tabindex="-1">›</button>
+</header>
+
+<style>
+/* 更低高度的顶部栏 */
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* 改为两端对齐 */
+  gap: 12px;                 /* 标题与导航间距略小 */
+  padding: 8px 14px;         /* 减小上下内边距以降低高度 */
+  background: rgba(20,20,20,0.40);
+  backdrop-filter: blur(12px) saturate(130%);
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  height: 48px;              /* 固定高度，便于布局一致 */
+  box-sizing: border-box;
+}
+
+/* 标题更紧凑 */
+.site-title {
+  color: #fff;
+  font-weight: 700;
+  margin-right: 8px;
+  flex: 0 0 auto;
+  font-size: 1.2rem;        /* 略小字体 */
+  line-height: 1;
+  margin-right: auto; /* 自动占据左侧空间 */
+}
+
+/* 导航容器推到右侧 */
+.nav-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  padding: 4px 2px;          /* 减小垂直内边距 */
+  align-items: center;
+  flex: 0 1 auto; /* 改为不自动拉伸 */
+  margin-left: auto; /* 推到右侧 */
+  height: 100%;              /* 填满 header 高度 */
+}
+
+/* 箭头按钮更小 */
+.nav-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px; height: 30px; /* 缩小尺寸 */
+  border-radius: 6px;
+  border: none;
+  background: rgba(255,255,255,0.03);
+  color: #fff;
+  cursor: pointer;
+  transition: background .12s, opacity .12s;
+  opacity: 0.95;
+  flex: 0 0 auto;
+  font-size: 18px;
+}
+.nav-arrow:hover { background: rgba(255,255,255,0.06); }
+
+/* 隐藏滚动条 */
+.nav-scroll::-webkit-scrollbar { display: none; }
+.nav-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* 链接样式更紧凑 */
+.header-link { text-decoration: none; }
+.header-btn {
+  display: inline-block;
+  white-space: nowrap;
+  color: #E8E8E8;
+  padding: 6px 10px;         /* 缩小内边距 */
+  border-radius: 8px;
+  transition: background .12s, color .12s, transform .08s;
+  font-size: 0.88rem;        /* 更小字体 */
+  line-height: 1;
+}
+.header-btn:hover, .header-btn:focus {
+  background: rgba(255,255,255,0.04);
+  color: #fff;
+  transform: translateY(-1px);
+  outline: none;
+}
+
+/* scroll-snap 保持 */
+.nav-scroll { scroll-snap-type: x mandatory; }
+.header-btn { scroll-snap-align: start; }
+
+/* 响应式：手机上隐藏箭头 */
+@media (max-width: 720px) {
+  .nav-arrow { display: none; }
+  .nav-scroll { 
+    margin-left: auto; /* 保持推到右侧 */
+    max-width: calc(100% - 88px);
+  }
+}
+</style>
+
+<script>
+/* 保留增强脚本（拖拽、箭头显示、键盘） */
+(function(){
+  const scroller = document.querySelector('.nav-scroll');
+  const leftBtn = document.querySelector('.nav-arrow-left');
+  const rightBtn = document.querySelector('.nav-arrow-right');
+  if (!scroller) return;
+
+  function scrollAmount() { return Math.max(180, Math.round(scroller.clientWidth * 0.55)); }
+
+  leftBtn && leftBtn.addEventListener('click', ()=> scroller.scrollBy({ left: -scrollAmount(), behavior: 'smooth' }));
+  rightBtn && rightBtn.addEventListener('click', ()=> scroller.scrollBy({ left: scrollAmount(), behavior: 'smooth' }));
+
+  function updateArrows(){
+    if (!leftBtn || !rightBtn) return;
+    const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+    leftBtn.style.visibility = scroller.scrollLeft > 6 ? 'visible' : 'hidden';
+    rightBtn.style.visibility = scroller.scrollLeft < maxScroll - 6 ? 'visible' : 'hidden';
+  }
+  scroller.addEventListener('scroll', updateArrows);
+  window.addEventListener('resize', updateArrows);
+  updateArrows();
+
+  // 鼠标拖拽滑动（桌面增强）
+  let isDown = false, startX, scrollLeft;
+  scroller.addEventListener('mousedown', (e)=>{
+    isDown = true;
+    scroller.classList.add('dragging');
+    startX = e.pageX - scroller.offsetLeft;
+    scrollLeft = scroller.scrollLeft;
+    e.preventDefault();
+  });
+  document.addEventListener('mouseup', ()=> { isDown = false; scroller.classList.remove('dragging'); });
+  document.addEventListener('mousemove', (e)=>{
+    if(!isDown) return;
+    const x = e.pageX - scroller.offsetLeft;
+    const walk = (x - startX) * 1.1;
+    scroller.scrollLeft = scrollLeft - walk;
+  });
+
+  // 键盘左右键在 nav 聚焦时滚动
+  scroller.addEventListener('keydown', (e)=>{
+    if (e.key === 'ArrowRight') { scroller.scrollBy({ left: 100, behavior: 'smooth' }); e.preventDefault(); }
+    if (e.key === 'ArrowLeft')  { scroller.scrollBy({ left: -100, behavior: 'smooth' }); e.preventDefault(); }
+  });
+})();
+</script>
