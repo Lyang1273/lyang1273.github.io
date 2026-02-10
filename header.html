@@ -1,9 +1,177 @@
-<header>
-    <div class="site-title">Lyang1273</div>
-    <nav class="header-buttons">
-        <a href="/index.html" class="header-link"><span class="header-btn">主页</span></a>
-        <a href="/doc/index.html" class="header-link"><span class="header-btn">文章</span></a>
-        <!-- <a href="/contact/index.html" class="header-link"><span class="header-btn">联系人</span></a> !-->
-        <a href="/music/index.html" class="header-link"><span class="header-btn">音乐</span></a>
-    </nav>
+<header class="site-header">
+  <div class="site-title">Lyang1273</div>
+
+  <!-- 左箭头（桌面可见） -->
+  <button class="nav-arrow nav-arrow-left" aria-hidden="true" tabindex="-1">‹</button>
+
+  <!-- 横向可滚动导航容器 -->
+  <nav class="header-buttons nav-scroll" aria-label="主导航" tabindex="0">
+    <a href="/index.html" class="header-link"><span class="header-btn">主页</span></a>
+    <a href="/doc/index.html" class="header-link"><span class="header-btn">文章</span></a>
+    <!-- <a href="/contact/index.html" class="header-link"><span class="header-btn">联系人</span></a> -->
+    <a href="/music/index.html" class="header-link"><span class="header-btn">音乐</span></a>
+    <a href="/tags.html" class="header-link"><span class="header-btn">标签</span></a>
+    <a href="/projects.html" class="header-link"><span class="header-btn">项目</span></a>
+    <a href="/archive.html" class="header-link"><span class="header-btn">归档</span></a>
+    <a href="/about.html" class="header-link"><span class="header-btn">关于</span></a>
+    <a href="/contact.html" class="header-link"><span class="header-btn">联系</span></a>
+  </nav>
+
+  <!-- 右箭头（桌面可见） -->
+  <button class="nav-arrow nav-arrow-right" aria-hidden="true" tabindex="-1">›</button>
 </header>
+
+<style>
+/* 基础布局 */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(20,20,20,0.75);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+/* 标题 */
+.site-title {
+  color: #fff;
+  font-weight: 700;
+  margin-right: 6px;
+  flex: 0 0 auto;
+}
+
+/* 箭头按钮 */
+.nav-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255,255,255,0.03);
+  color: #fff;
+  cursor: pointer;
+  transition: background .12s, opacity .12s;
+  opacity: 0.95;
+  flex: 0 0 auto;
+}
+.nav-arrow:hover { background: rgba(255,255,255,0.06); }
+
+/* 横向滚动容器（核心） */
+.nav-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  padding: 6px 4px;
+  align-items: center;
+  flex: 1 1 auto;
+  max-width: calc(100% - 220px);
+}
+
+/* 隐藏滚动条但保留可滚动性（美观） */
+.nav-scroll::-webkit-scrollbar { height: 8px; }
+.nav-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 8px; }
+.nav-scroll { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.06) transparent; }
+
+/* 链接样式 */
+.header-link { text-decoration: none; }
+.header-btn {
+  display: inline-block;
+  white-space: nowrap;
+  color: #E8E8E8;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background .12s, color .12s;
+  font-size: 0.95rem;
+}
+.header-btn:hover, .header-btn:focus {
+  background: rgba(255,255,255,0.04);
+  color: #fff;
+  outline: none;
+}
+
+/* 可选：启用 scroll-snap（每个链接对齐） */
+.nav-scroll { scroll-snap-type: x mandatory; }
+.header-btn { scroll-snap-align: start; }
+
+/* 渐变遮罩（提示更多内容） */
+.site-header::before,
+.site-header::after {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 48px;
+  pointer-events: none;
+  z-index: 99;
+}
+.site-header::before { left: 0; background: linear-gradient(90deg, rgba(20,20,20,0.95), rgba(20,20,20,0)); }
+.site-header::after  { right: 0; background: linear-gradient(270deg, rgba(20,20,20,0.95), rgba(20,20,20,0)); }
+
+/* 响应式：手机上隐藏箭头，使用手势滑动或菜单按钮 */
+@media (max-width: 720px) {
+  .nav-arrow { display: none; }
+  .nav-scroll { max-width: calc(100% - 96px); }
+  .site-header::before, .site-header::after { display: none; }
+}
+</style>
+
+<script>
+/* 可选增强：箭头控制、拖拽滑动、箭头显示逻辑、键盘左右键导航 */
+(function(){
+  const scroller = document.querySelector('.nav-scroll');
+  const leftBtn = document.querySelector('.nav-arrow-left');
+  const rightBtn = document.querySelector('.nav-arrow-right');
+  if (!scroller) return;
+
+  // 计算滚动量（基于容器宽度）
+  function scrollAmount() {
+    return Math.max(200, Math.round(scroller.clientWidth * 0.6));
+  }
+
+  leftBtn && leftBtn.addEventListener('click', ()=> scroller.scrollBy({ left: -scrollAmount(), behavior: 'smooth' }));
+  rightBtn && rightBtn.addEventListener('click', ()=> scroller.scrollBy({ left: scrollAmount(), behavior: 'smooth' }));
+
+  // 更新箭头可见性
+  function updateArrows(){
+    if (!leftBtn || !rightBtn) return;
+    const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+    leftBtn.style.visibility = scroller.scrollLeft > 8 ? 'visible' : 'hidden';
+    rightBtn.style.visibility = scroller.scrollLeft < maxScroll - 8 ? 'visible' : 'hidden';
+  }
+  scroller.addEventListener('scroll', updateArrows);
+  window.addEventListener('resize', updateArrows);
+  updateArrows();
+
+  // 鼠标拖拽滑动（桌面增强）
+  let isDown = false, startX, scrollLeft;
+  scroller.addEventListener('mousedown', (e)=>{
+    isDown = true;
+    scroller.classList.add('dragging');
+    startX = e.pageX - scroller.offsetLeft;
+    scrollLeft = scroller.scrollLeft;
+    e.preventDefault();
+  });
+  document.addEventListener('mouseup', ()=> { isDown = false; scroller.classList.remove('dragging'); });
+  document.addEventListener('mousemove', (e)=>{
+    if(!isDown) return;
+    const x = e.pageX - scroller.offsetLeft;
+    const walk = (x - startX) * 1.2;
+    scroller.scrollLeft = scrollLeft - walk;
+  });
+
+  // 键盘左右键在 nav 聚焦时滚动
+  scroller.addEventListener('keydown', (e)=>{
+    if (e.key === 'ArrowRight') { scroller.scrollBy({ left: 120, behavior: 'smooth' }); e.preventDefault(); }
+    if (e.key === 'ArrowLeft')  { scroller.scrollBy({ left: -120, behavior: 'smooth' }); e.preventDefault(); }
+  });
+})();
+</script>
