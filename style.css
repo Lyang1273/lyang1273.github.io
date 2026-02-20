@@ -16,7 +16,7 @@ body {
     flex-direction: column; 
 }
 
-quote {
+blockquote {
     display: block;
     margin: 1.5rem 0;
     padding: 1.2rem 1.8rem;
