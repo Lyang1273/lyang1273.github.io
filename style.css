@@ -18,10 +18,10 @@ body {
 
 blockquote {
     display: block;
-    margin: 1.5rem 0;
+    margin: 0rem 0;
     padding: 1.2rem 1.8rem;
     border-left: 4px solid #4CAF50;
-    background-color: transparent;  /* 完全透明 */
+    background-color: transparent;
     font-style: italic;
     color: #E0E0E0;
 }
