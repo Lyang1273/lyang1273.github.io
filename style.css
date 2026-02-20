@@ -16,10 +16,7 @@ body {
     flex-direction: column; 
 }
 
-blockquote {
-    /* 重置所有默认样式 */
-    all: initial;
-    /* 重新定义为块级元素 */
+quote {
     display: block;
     margin: 1.5rem 0;
     padding: 1.2rem 1.8rem;
