@@ -20,7 +20,7 @@ blockquote {
     margin: 20px 0;        /* 上下外边距 */
     padding: 15px 20px;     /* 内边距 */
     border-left: 5px solid #4CAF50;  /* 左侧绿色竖线 */
-    background-color: rgba(255, 255, 255, 255); 
+    background-color: rgba(255, 255, 255, 0); 
     font-style: italic;
     /* 移除浏览器默认缩进 */
     margin-left: 0;
