@@ -16,6 +16,16 @@ body {
     flex-direction: column; 
 }
 
+blockquote {
+    margin: 20px 0;        /* 上下外边距 */
+    padding: 15px 20px;     /* 内边距 */
+    border-left: 5px solid #4CAF50;  /* 左侧绿色竖线 */
+    font-style: italic;
+    /* 移除浏览器默认缩进 */
+    margin-left: 0;
+    margin-right: 0;
+}
+
 /* --- 壁纸与背景层整合 (新增部分) --- */
 /* 壁纸样式：必须在最底层 */
 .wallpaper {
