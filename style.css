@@ -17,6 +17,10 @@ body {
 }
 
 blockquote {
+    /* 重置所有默认样式 */
+    all: initial;
+    /* 重新定义为块级元素 */
+    display: block;
     margin: 1.5rem 0;
     padding: 1.2rem 1.8rem;
     border-left: 4px solid #4CAF50;
@@ -25,7 +29,6 @@ blockquote {
     color: #E0E0E0;
 }
 
-/* --- 壁纸与背景层整合 (新增部分) --- */
 /* 壁纸样式：必须在最底层 */
 .wallpaper {
     position: fixed;
