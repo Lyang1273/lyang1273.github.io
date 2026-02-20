@@ -1,7 +1,7 @@
 <header class="site-header">
   <div class="site-title">Lyang1273</div>
 
-  <!-- 右侧固定宽度 500px 容器，包含箭头和导航 -->
+  <!-- 右侧区域：宽度为父容器的 65%，包含箭头和导航 -->
   <div class="nav-wrapper">
     <button class="nav-arrow nav-arrow-left" aria-hidden="true" tabindex="-1">‹</button>
     <nav class="header-buttons nav-scroll" aria-label="主导航" tabindex="0">
@@ -23,36 +23,39 @@
   z-index: 100;
   display: flex;
   align-items: center;
-  gap: 12px;                 /* 标题与导航间距略小 */
-  padding: 8px 14px;         /* 减小上下内边距以降低高度 */
+  gap: 12px;                 /* 标题与导航间距 */
+  padding: 8px 14px;
   background: rgba(20,20,20,0.40);
   backdrop-filter: blur(12px) saturate(130%);
   border-bottom: 1px solid rgba(255,255,255,0.03);
-  height: 48px;              /* 固定高度，便于布局一致 */
+  height: 48px;
   box-sizing: border-box;
 }
 
-/* 标题更紧凑 */
+/* 标题：允许收缩，防止过长时挤压右侧区域 */
 .site-title {
   color: #fff;
   font-weight: 700;
-  margin-right: 8px;
-  flex: 0 0 auto;
-  font-size: 1.2rem;        /* 略小字体 */
+  font-size: 1.2rem;
   line-height: 1;
+  flex: 0 1 auto;           /* 允许收缩，但不会增长 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 35%;           /* 限制最大宽度，确保右侧 65% 区域有足够空间 */
 }
 
-/* 右侧固定宽度容器：500px，靠右 */
+/* 右侧固定宽度容器：占父容器宽度的 65%，靠右 */
 .nav-wrapper {
   display: flex;
   align-items: center;
   gap: 12px;
-  width: 500px;
-  margin-left: auto;        /* 靠右 */
+  width: 65%;               /* 占据整个导航栏宽度的 65% */
+  margin-left: auto;        /* 靠右对齐 */
   flex-shrink: 0;           /* 防止被压缩 */
 }
 
-/* 箭头按钮更小，且仅作为视觉提示（不可点击） */
+/* 箭头按钮：仅作视觉提示，不可点击，默认隐藏 */
 .nav-arrow {
   display: flex;
   align-items: center;
@@ -73,17 +76,17 @@
   opacity: 0.95;
 }
 
-/* 横向滚动容器高度与内边距调整 */
+/* 横向滚动容器：填充 nav-wrapper 剩余宽度 */
 .nav-scroll {
   display: flex;
   gap: 10px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
-  padding: 4px 2px;          /* 减小垂直内边距 */
+  padding: 4px 2px;
   align-items: center;
-  flex: 1 1 auto;            /* 占满 nav-wrapper 剩余宽度 */
-  height: 100%;              /* 填满 header 高度 */
+  flex: 1 1 auto;           /* 自动占满剩余宽度 */
+  height: 100%;
   scroll-snap-type: x mandatory;
 }
 
@@ -91,16 +94,16 @@
 .nav-scroll::-webkit-scrollbar { display: none; }
 .nav-scroll { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* 链接样式更紧凑 */
+/* 链接样式 */
 .header-link { text-decoration: none; }
 .header-btn {
   display: inline-block;
   white-space: nowrap;
   color: #E8E8E8;
-  padding: 6px 10px;         /* 缩小内边距 */
+  padding: 6px 10px;
   border-radius: 8px;
   transition: background .12s, color .12s, transform .08s;
-  font-size: 0.88rem;        /* 更小字体 */
+  font-size: 0.88rem;
   line-height: 1;
   scroll-snap-align: start;
 }
@@ -111,7 +114,7 @@
   outline: none;
 }
 
-/* 响应式：手机上隐藏箭头（覆盖可见性） */
+/* 响应式：手机上隐藏箭头（覆盖 visible 类） */
 @media (max-width: 720px) {
   .nav-arrow { display: none; }
 }
@@ -127,7 +130,6 @@
   // 更新箭头可见性：当内容宽度超出容器时显示箭头，否则隐藏
   function updateArrowsVisibility() {
     const hasOverflow = scroller.scrollWidth > scroller.clientWidth;
-    // 使用 .visible 类控制透明度
     leftArrow.classList.toggle('visible', hasOverflow);
     rightArrow.classList.toggle('visible', hasOverflow);
   }
