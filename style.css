@@ -144,6 +144,8 @@ main {
 .article-item-title, .article-title { font-size: 1.4rem; margin-bottom: 0.6rem; font-weight: 700; color: #F5F5F5; }
 .excerpt { font-size: 0.95rem; opacity: 0.8; line-height: 1.7; color: #B3B3B3; }
 
+.filing-text { margin-top: auto; text-align: center; width: 100%; padding: 20px 0;}
+
 /* 手机端适配 */
 @media(max-width:480px){
     .intro-title { font-size: 3rem; }
