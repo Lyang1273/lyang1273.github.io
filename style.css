@@ -22,7 +22,7 @@ blockquote {
     padding: 0.3rem 0.3rem;
     border-left: 2px solid #4CAF50;
     background-color: rgba(0, 0, 0, 0.15);
-    font-family: "宋体", "SimSun", "Times New Roman", serif;
+    font-family: "Noto Serif SC", "Songti SC", "STSong", "华文宋体", "宋体", "SimSun", "AR PL UMing CN", "WenQuanYi Bitmap Song", serif;
     font-style: oblique;
     color: #E0E0E0;
 }
