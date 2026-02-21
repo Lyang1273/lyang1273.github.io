@@ -27,6 +27,10 @@ blockquote {
     color: #E0E0E0;
 }
 
+p {
+    padding: 0 20px;
+}
+
 /* 链接样式 */
 a {
     color: rgb(173, 216, 230);
