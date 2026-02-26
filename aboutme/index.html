@@ -6,8 +6,8 @@
     <title>Lyang1273 | 关于我……</title>
     <link rel="stylesheet" href="/style.css">
     <script type="module">
-        import dialog from '/module/dialog.js';
-        window.dialog = dialog;
+        import FluentDialog from '/module/dialog.js'; // 假设 dialog.js 默认导出 FluentDialog 类
+        window.dialog = FluentDialog; // 此时 dialog 是类，可直接调用静态方法
     </script>
     <style>
         p { padding: 0.5rem 0.5rem; }        
@@ -27,7 +27,7 @@
         <p>在读初中生，状态并非正常。</p>
         <h2>联系我</h2>
         <p>电子邮箱：2609350581@qq.com<br>QQ：2609350581</p>
-        <button onclick="dialog.alert('关于我', '一位在读初中生')">测试弹窗</button>
+        <button onclick="FluentDialog.alert('关于我', '一位在读初中生')">测试弹窗</button>
     </main>
         <div class='filing-text'>
             <a href="https://icp.gov.moe/?keyword=20261273" target="_blank">萌ICP备20261273号</a>
