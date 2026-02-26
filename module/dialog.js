@@ -42,8 +42,8 @@ const styles = `
     --text-secondary: #c8c8c8;                   /* 次要文本浅灰 */
     --border-subtle: rgba(255, 255, 255, 0.08);  /* 深色边框 */
     --button-primary-bg: #5A4AFF;                /* 深色按钮亮蓝色 */
-    --button-primary-hover: #6100FF;             /* 深色按钮悬停 */
-    --button-primary-active: #5300C8;             /* 深色按钮激活 */
+    --button-primary-hover: #6859FF;             /* 深色按钮悬停 */
+    --button-primary-active: #4C3BFF;             /* 深色按钮激活 */
   }
 }
 
@@ -123,7 +123,7 @@ const styles = `
 .dialog-content {
   padding: 0 var(--spacing-xxl) var(--spacing-lg) var(--spacing-xxl);
   color: var(--text-secondary);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.6;
   text-align: left;
   font-weight: 500;
