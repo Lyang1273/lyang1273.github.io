@@ -1,161 +1,295 @@
-<header class="site-header">
-  <div class="site-title">Lyang1273</div>
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluent 弹窗 · 加粗 · 后方飞入</title>
+    <style>
+        /* Fluent 设计令牌 */
+        :root {
+            --border-radius-dialog: 8px;
+            --border-radius-button: 4px;
+            --shadow-modal: 0 16px 32px -8px rgba(0, 0, 0, 0.3), 0 8px 16px -6px rgba(0, 0, 0, 0.2);
+            --bg-overlay: rgba(0, 0, 0, 0.4);
+            --bg-dialog: rgba(255, 255, 255, 0.85);
+            --bg-dialog-backdrop: rgba(255, 255, 255, 0.5);
+            --bg-footer: rgba(0, 0, 0, 0.03);
+            --text-primary: #1e1e1e;
+            --text-secondary: #484848;
+            --border-subtle: rgba(0, 0, 0, 0.08);
+            --button-primary-bg: #0078d4;
+            --button-primary-hover: #106ebe;
+            --button-primary-active: #005a9e;
+            --spacing-sm: 8px;
+            --spacing-md: 12px;
+            --spacing-lg: 16px;
+            --spacing-xl: 20px;
+            --spacing-xxl: 24px;
+        }
 
-  <button class="nav-arrow nav-arrow-left" aria-hidden="true" tabindex="-1">‹</button>
+        /* 深色模式 */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-overlay: rgba(0, 0, 0, 0.6);
+                --bg-dialog: rgba(32, 32, 32, 0.9);
+                --bg-dialog-backdrop: rgba(32, 32, 32, 0.7);
+                --bg-footer: rgba(255, 255, 255, 0.03);
+                --text-primary: #ffffff;
+                --text-secondary: #c8c8c8;
+                --border-subtle: rgba(255, 255, 255, 0.08);
+                --button-primary-bg: #4cc2ff;
+                --button-primary-hover: #6acdff;
+                --button-primary-active: #1c9ae8;
+            }
+        }
 
-  <nav class="header-buttons nav-scroll" aria-label="主导航" tabindex="0">
-    <a href="/index.html" class="header-link"><span class="header-btn">主页</span></a>
-    <a href="/doc/index.html" class="header-link"><span class="header-btn">文章</span></a>
-    <!-- <a href="/contact/index.html" class="header-link"><span class="header-btn">联系人</span></a> -->
-    <a href="/music/index.html" class="header-link"><span class="header-btn">音乐</span></a>
-    <a href="/contact.html" class="header-link"><span class="header-btn">联系</span></a>
-  </nav>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  <button class="nav-arrow nav-arrow-right" aria-hidden="true" tabindex="-1">›</button>
-</header>
+        body {
+            font-family: 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
-<style>
-/* 更低高度的顶部栏 */
-.site-header {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: space-between; /* 改为两端对齐 */
-  gap: 12px;                 /* 标题与导航间距略小 */
-  padding: 8px 14px;         /* 减小上下内边距以降低高度 */
-  background: rgba(20,20,20,0.40);
-  backdrop-filter: blur(12px) saturate(130%);
-  border-bottom: 1px solid rgba(255,255,255,0.03);
-  height: 48px;              /* 固定高度，便于布局一致 */
-  box-sizing: border-box;
-}
+        .demo-button {
+            background: var(--button-primary-bg);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--border-radius-button);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.15s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .demo-button:hover {
+            background: var(--button-primary-hover);
+            transform: scale(1.02);
+        }
+        .demo-button:focus-visible {
+            outline: 2px solid var(--button-primary-bg);
+            outline-offset: 2px;
+        }
 
-/* 标题更紧凑 */
-.site-title {
-  color: #fff;
-  font-weight: 700;
-  margin-right: 8px;
-  flex: 0 0 auto;
-  font-size: 1.2rem;        /* 略小字体 */
-  line-height: 1;
-  margin-right: auto; /* 自动占据左侧空间 */
-}
+        /* ===== 弹窗组件 ===== */
+        .fluent-dialog {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .fluent-dialog.show {
+            display: flex;
+        }
 
-/* 导航容器推到右侧 */
-.nav-scroll {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
-  padding: 4px 2px;          /* 减小垂直内边距 */
-  align-items: center;
-  flex: 0 1 auto; /* 改为不自动拉伸 */
-  margin-left: auto; /* 推到右侧 */
-  height: 100%;              /* 填满 header 高度 */
-}
+        .dialog-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--bg-overlay);
+            backdrop-filter: blur(2px);
+            animation: fadeIn 0.15s ease-out;
+        }
 
-/* 箭头按钮更小 */
-.nav-arrow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px; height: 30px; /* 缩小尺寸 */
-  border-radius: 6px;
-  border: none;
-  background: rgba(255,255,255,0.03);
-  color: #fff;
-  cursor: pointer;
-  transition: background .12s, opacity .12s;
-  opacity: 0.95;
-  flex: 0 0 auto;
-  font-size: 18px;
-}
-.nav-arrow:hover { background: rgba(255,255,255,0.06); }
+        .dialog-container {
+            position: relative;
+            width: 420px;
+            max-width: 90vw;
+            background: var(--bg-dialog);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border-radius: var(--border-radius-dialog);
+            box-shadow: var(--shadow-modal);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            animation: scaleIn 0.15s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+            display: flex;
+            flex-direction: column;
+            will-change: transform, opacity;
+        }
 
-/* 隐藏滚动条 */
-.nav-scroll::-webkit-scrollbar { display: none; }
-.nav-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        .dialog-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-dialog-backdrop);
+            border-radius: var(--border-radius-dialog);
+            z-index: -1;
+        }
 
-/* 链接样式更紧凑 */
-.header-link { text-decoration: none; }
-.header-btn {
-  display: inline-block;
-  white-space: nowrap;
-  color: #E8E8E8;
-  padding: 6px 10px;         /* 缩小内边距 */
-  border-radius: 8px;
-  transition: background .12s, color .12s, transform .08s;
-  font-size: 0.88rem;        /* 更小字体 */
-  line-height: 1;
-}
-.header-btn:hover, .header-btn:focus {
-  background: rgba(255,255,255,0.04);
-  color: #fff;
-  transform: translateY(-1px);
-  outline: none;
-}
+        /* 头部 - 左对齐，标题加粗至700 */
+        .dialog-header {
+            padding: var(--spacing-xl) var(--spacing-xxl) 0 var(--spacing-xxl);  /* 底部内边距归零 */
+            margin-bottom: 15px;  /* 正文与标题距离15px */
+        }
+        .dialog-header h3 {
+            font-size: 18px;
+            font-weight: 1000;  /* 标题保持加粗 */
+            color: var(--text-primary);
+            margin: 0;
+            text-align: left;
+        }
 
-/* scroll-snap 保持 */
-.nav-scroll { scroll-snap-type: x mandatory; }
-.header-btn { scroll-snap-align: start; }
+        /* 内容区 - 左对齐，正文加粗至500 */
+        .dialog-content {
+            padding: 0 var(--spacing-xxl) var(--spacing-lg) var(--spacing-xxl);  /* 顶部内边距归零 */
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+            text-align: left;
+            font-weight: 500;  /* 正文加粗至 medium */
+        }
 
-/* 响应式：手机上隐藏箭头 */
-@media (max-width: 720px) {
-  .nav-arrow { display: none; }
-  .nav-scroll { 
-    margin-left: auto; /* 保持推到右侧 */
-    max-width: calc(100% - 88px);
-  }
-}
-</style>
+        /* 底部区域 - 较暗背景 */
+        .dialog-footer {
+            padding: var(--spacing-lg) var(--spacing-xxl) var(--spacing-xl) var(--spacing-xxl);
+            display: flex;
+            justify-content: center;
+            border-top: 1px solid var(--border-subtle);
+            background: var(--bg-footer);
+            border-bottom-left-radius: var(--border-radius-dialog);
+            border-bottom-right-radius: var(--border-radius-dialog);
+        }
 
-<script>
-/* 保留增强脚本（拖拽、箭头显示、键盘） */
-(function(){
-  const scroller = document.querySelector('.nav-scroll');
-  const leftBtn = document.querySelector('.nav-arrow-left');
-  const rightBtn = document.querySelector('.nav-arrow-right');
-  if (!scroller) return;
+        /* 加长按钮 + 移除点击高亮 */
+        .fluent-button.primary {
+            padding: 8px 48px;
+            border-radius: var(--border-radius-button);
+            border: none;
+            background: var(--button-primary-bg);
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 120, 212, 0.3);
+            transition: all 0.15s ease;
+            min-width: 140px;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+        }
+        .fluent-button.primary:hover {
+            background: var(--button-primary-hover);
+            transform: scale(1.02);
+        }
+        .fluent-button.primary:active {
+            background: var(--button-primary-active);
+            transform: scale(0.98);
+        }
+        .fluent-button.primary:focus-visible {
+            outline: 2px solid var(--button-primary-bg);
+            outline-offset: 2px;
+        }
 
-  function scrollAmount() { return Math.max(180, Math.round(scroller.clientWidth * 0.55)); }
+        /* 动画 - 0.15秒，从后方飞入/飞出（缩放起点更小，强化深度） */
+        @keyframes scaleIn {
+            0% { opacity: 0; transform: scale(1.075); }  /* 从更小开始，仿佛从远处 */
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes scaleOut {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(1.075); }  /* 飞回远处 */
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-  leftBtn && leftBtn.addEventListener('click', ()=> scroller.scrollBy({ left: -scrollAmount(), behavior: 'smooth' }));
-  rightBtn && rightBtn.addEventListener('click', ()=> scroller.scrollBy({ left: scrollAmount(), behavior: 'smooth' }));
+        .fluent-dialog.closing .dialog-overlay {
+            animation: fadeIn 0.1s ease-out reverse;
+        }
+        .fluent-dialog.closing .dialog-container {
+            animation: scaleOut 0.15s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+<body>
+    <button class="demo-button" id="openDialogBtn">打开弹窗</button>
 
-  function updateArrows(){
-    if (!leftBtn || !rightBtn) return;
-    const maxScroll = scroller.scrollWidth - scroller.clientWidth;
-    leftBtn.style.visibility = scroller.scrollLeft > 6 ? 'visible' : 'hidden';
-    rightBtn.style.visibility = scroller.scrollLeft < maxScroll - 6 ? 'visible' : 'hidden';
-  }
-  scroller.addEventListener('scroll', updateArrows);
-  window.addEventListener('resize', updateArrows);
-  updateArrows();
+    <!-- 弹窗 - 遮罩点击无效，仅按钮关闭 -->
+    <div class="fluent-dialog" id="fluentDialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle" aria-describedby="dialogDesc">
+        <div class="dialog-overlay" id="dialogOverlay"></div>
+        <div class="dialog-container">
+            <div class="dialog-header">
+                <h3 id="dialogTitle">删除文件</h3>
+            </div>
+            <div class="dialog-content" id="dialogDesc">
+                <p>确定要将“设计稿.fig”移动到回收站吗？</p>
+            </div>
+            <div class="dialog-footer">
+                <button class="fluent-button primary" id="confirmBtn">确定</button>
+            </div>
+        </div>
+    </div>
 
-  // 鼠标拖拽滑动（桌面增强）
-  let isDown = false, startX, scrollLeft;
-  scroller.addEventListener('mousedown', (e)=>{
-    isDown = true;
-    scroller.classList.add('dragging');
-    startX = e.pageX - scroller.offsetLeft;
-    scrollLeft = scroller.scrollLeft;
-    e.preventDefault();
-  });
-  document.addEventListener('mouseup', ()=> { isDown = false; scroller.classList.remove('dragging'); });
-  document.addEventListener('mousemove', (e)=>{
-    if(!isDown) return;
-    const x = e.pageX - scroller.offsetLeft;
-    const walk = (x - startX) * 1.1;
-    scroller.scrollLeft = scrollLeft - walk;
-  });
+    <script>
+        class FluentDialog {
+            constructor(options = {}) {
+                this.dialog = document.getElementById('fluentDialog');
+                this.overlay = document.getElementById('dialogOverlay');
+                this.confirmBtn = document.getElementById('confirmBtn');
+                this.openBtn = document.getElementById('openDialogBtn');
 
-  // 键盘左右键在 nav 聚焦时滚动
-  scroller.addEventListener('keydown', (e)=>{
-    if (e.key === 'ArrowRight') { scroller.scrollBy({ left: 100, behavior: 'smooth' }); e.preventDefault(); }
-    if (e.key === 'ArrowLeft')  { scroller.scrollBy({ left: -100, behavior: 'smooth' }); e.preventDefault(); }
-  });
-})();
-</script>
+                this.onConfirm = options.onConfirm || (() => {});
+                this.onClose = options.onClose || (() => {});
+
+                this.initEvents();
+            }
+
+            initEvents() {
+                this.openBtn.addEventListener('click', () => this.open());
+
+                this.confirmBtn.addEventListener('click', () => {
+                    this.onConfirm();
+                    this.close();
+                });
+
+                // 遮罩点击事件已移除，不会关闭弹窗
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && this.dialog.classList.contains('show')) {
+                        this.close();
+                    }
+                });
+
+                this.dialog.querySelector('.dialog-container').addEventListener('click', (e) => e.stopPropagation());
+            }
+
+            open() {
+                this.dialog.classList.remove('closing');
+                this.dialog.classList.add('show');
+                this.confirmBtn.focus();
+                document.body.style.overflow = 'hidden';
+            }
+
+            close() {
+                this.dialog.classList.add('closing');
+                setTimeout(() => {
+                    this.dialog.classList.remove('show', 'closing');
+                    document.body.style.overflow = '';
+                    this.openBtn.focus();
+                    this.onClose();
+                }, 140); // 略小于动画时长150ms
+            }
+
+            setContent(html) {
+                this.dialog.querySelector('.dialog-content').innerHTML = html;
+            }
+            setTitle(title) {
+                this.dialog.querySelector('#dialogTitle').textContent = title;
+            }
+        }
+
+        const dialog = new FluentDialog({
+            onConfirm: () => console.log('用户点击了确定'),
+            onClose: () => console.log('弹窗已关闭')
+        });
+    </script>
+</body>
+</html>
