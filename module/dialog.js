@@ -142,7 +142,7 @@ const styles = `
 
 /* ---------- 主要按钮样式 ---------- */
 .fluent-button.primary {
-  padding: 4px 48px;
+  padding: 9px 48px;
   border-radius: var(--border-radius-button);
   border: none;
   background: var(--button-primary-bg);
