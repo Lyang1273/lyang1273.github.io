@@ -24,6 +24,10 @@ const styles = `
   --spacing-lg: 16px;                    /* 大间距 */
   --spacing-xl: 20px;                     /* 加大间距 */
   --spacing-xxl: 24px;                    /* 最大间距 */
+
+  /* ----- 新增动画幅度变量（默认手机幅度 1.075） ----- */
+  --dialog-scale-in: 1.075;
+  --dialog-scale-out: 1.075;
 }
 
 /* ---------- 深色模式变量覆盖（跟随系统） ---------- */
@@ -166,16 +170,16 @@ const styles = `
   outline-offset: 2px;
 }
 
-/* ---------- 动画定义 ---------- */
+/* ---------- 动画定义（使用变量，支持动态调整幅度） ---------- */
 /* 弹窗缩放入场：从稍微放大到原始大小 */
 @keyframes scaleIn {
-  0% { opacity: 0; transform: scale(1.075); }
+  0% { opacity: 0; transform: scale(var(--dialog-scale-in, 1.075)); }
   100% { opacity: 1; transform: scale(1); }
 }
 /* 弹窗缩放出场：从原始大小到稍微放大并淡出 */
 @keyframes scaleOut {
   0% { opacity: 1; transform: scale(1); }
-  100% { opacity: 0; transform: scale(1.075); }
+  100% { opacity: 0; transform: scale(var(--dialog-scale-out, 1.075)); }
 }
 /* 遮罩淡入 */
 @keyframes fadeIn {
@@ -220,6 +224,15 @@ export class FluentDialog {
       styleEl.id = 'fluent-dialog-styles';
       styleEl.textContent = styles;
       document.head.appendChild(styleEl);
+
+      // ----- 根据 UA 调整动画幅度（手机保持 1.075，电脑改为 1.2）-----
+      // 匹配手机 UA（排除 iPad，因为 iPad 通常屏幕较大，归为电脑）
+      const isMobile = /Mobi|Android|iPhone|iPod/i.test(navigator.userAgent);
+      if (!isMobile) {
+        // 电脑端设置更大的缩放幅度
+        document.documentElement.style.setProperty('--dialog-scale-in', '1.2');
+        document.documentElement.style.setProperty('--dialog-scale-out', '1.2');
+      }
     }
 
     // 创建弹窗 DOM
