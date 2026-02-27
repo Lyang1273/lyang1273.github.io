@@ -1,9 +1,4 @@
 /**
- * FluentDialog 模块
- * 一个基于 Windows 11 Fluent Design 风格的模态弹窗组件。
- * 支持深色模式自适应、毛玻璃效果、自定义标题/内容/回调，仅通过“确定”按钮关闭。
- * 提供便捷静态方法：alert()、confirm()
- *
  * @module FluentDialog
  */
 
@@ -78,8 +73,10 @@ const styles = `
 /* ---------- 弹窗主体卡片 ---------- */
 .dialog-container {
   position: relative;
-  width: 420px;
-  max-width: 90vw;              /* 移动端适配 */
+  /* 宽度根据内容自动调整，受最小/最大宽度约束 */
+  width: fit-content;
+  min-width: min(450px, 90vw);      /* 最小450px，但在小屏幕上不超过视口宽度 */
+  max-width: min(800px, 90vw);      /* 最大800px，同时保证移动端有边距 */
   background: var(--bg-dialog);
   backdrop-filter: blur(25px) saturate(180%);  /* 毛玻璃效果 */
   -webkit-backdrop-filter: blur(25px) saturate(180%);
