@@ -66,7 +66,7 @@ const styles = `
   width: 100%;
   height: 100%;
   background-color: var(--bg-overlay);
-  backdrop-filter: blur(20px);   /* 轻微模糊背景 */
+  backdrop-filter: blur(15px);   /* 轻微模糊背景 */
   animation: fadeIn 0.15s ease-out; /* 淡入动画 */
 }
 
