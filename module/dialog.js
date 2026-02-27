@@ -90,7 +90,7 @@ const styles = `
   animation: scaleIn 0.15s cubic-bezier(0.2, 0.9, 0.3, 1) forwards; /* 缩放入场动画 */
   display: flex;
   flex-direction: column;
-  will-change: transform, opacity; /* 优化动画性能 */
+  /* will-change: transform, opacity;*/ /* 优化动画性能 */
 }
 
 /* 弹窗背景加强层（用于增强毛玻璃效果下的不透明度） */
