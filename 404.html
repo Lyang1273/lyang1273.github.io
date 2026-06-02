@@ -3,26 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lyang1273 | 页面不存在</title>
-    <link rel="stylesheet" href="/style.css">
+    <title>页面找不到</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #000000;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        h1 {
+            color: #ffffff;
+            font-size: 2rem;
+            font-weight: 300;
+            text-align: center;
+            line-height: 1.3;
+            max-width: 800px;
+            margin-bottom: 1.2rem;
+        }
+        
+        p {
+            color: #bbbbbb;
+            font-size: 0.85rem;
+            text-align: center;
+            font-family: monospace;
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 560px) {
+            h1 { font-size: 1.5rem; }
+            p { font-size: 0.7rem; }
+        }
+    </style>
 </head>
 <body>
-    <div class="bg-container"></div>
-    <div class="bg-overlay"></div>
-
-    <div w3-include-html="/header.html"></div>
-    <div w3-include-html="/wallpaper.html"></div>
-
-    <main>
-        <section class="intro-section">
-            <h1 class="intro-title">唔？你怎么会出现在这里？<br>How the fuck did you get here?</h1>
-            <p class="intro-subtitle">404 Not Found</p>
-        </section>
-    </main>
-    <div class='filing-text'>
-        <a href="https://icp.gov.moe/?keyword=20261273" target="_blank">萌ICP备20261273号</a>
-    </div>
-
-    <script src="/include.js"></script>
+    <h1>当前访问的页面遇到问题，需要重启。</h1>
+    <h1>已完成 0%</h1>
+    <p>终止代码: PAGES_NOT_FOUND</p>
 </body>
 </html>
