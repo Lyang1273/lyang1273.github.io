@@ -5,6 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lyang1273 | 音乐</title>
     <link rel="stylesheet" href="/style.css">
+    <script type="module">
+        import { FluentDialog } from '/module/dialog.js';
+        window.dialog = FluentDialog;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            dialog.alert(
+            '此页面正在改造，在此期间无法访问此页面。<br>点击“确定”后将返回首页',
+            '禁止访问当前页面',
+            () => {
+                window.location.href = '/';
+            }
+            );
+        });
+    </script>
     <style>
         /* 页面专属布局优化 */
         main { display: flex; flex-direction: column; align-items: center; padding-bottom: 8rem; }
