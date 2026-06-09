@@ -5,6 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lyang1273 | 文章</title>
     <link rel="stylesheet" href="/style.css">
+    <script type="module">
+        import { FluentDialog } from '/module/dialog.js';
+        window.dialog = FluentDialog;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            dialog.alert(
+            '此页面正在改造，在此期间无法访问此页面。<br>点击“确定”后将返回首页',
+            '当前页面暂时不支持访问',
+            () => {
+                window.location.href = '/';
+            }
+            );
+        });
+    </script>
     <style>
         /* 针对文章列表页的精细调整 */
         main { 
