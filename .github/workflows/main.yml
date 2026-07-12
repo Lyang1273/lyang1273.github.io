@@ -65,23 +65,35 @@ jobs:
           )
 
           TOTAL=${#NUMBERS[@]}
+          PICK_COUNT=10
 
-          # 使用 shuf 打乱后取前10个
-          SELECTED=$(printf "%s\n" "${NUMBERS[@]}" | shuf -n 10)
-
+          # 使用 shuf 打乱后取前 PICK_COUNT 个
+          SELECTED=$(printf "%s\n" "${NUMBERS[@]}" | shuf -n $PICK_COUNT)
+          
           # 转为逗号分隔的字符串
           SELECTED_STR=$(echo "$SELECTED" | tr '\n' ',' | sed 's/,$//')
 
           # 转为JSON数组
-          SELECTED_JSON=$(echo "$SELECTED" | jq -Rsn '
-            [inputs | select(length>0)] 
-          ')
+          SELECTED_JSON=$(echo "$SELECTED" | jq -R '.' | jq -s '.')
 
           # 导出给后续步骤
-          echo "selected=$SELECTED" >> $GITHUB_OUTPUT"
+          echo "selected<<EOF" >> $GITHUB_OUTPUT
+          echo "$SELECTED" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          
           echo "selected_str=$SELECTED_STR" >> $GITHUB_OUTPUT
           echo "selected_json=$SELECTED_JSON" >> $GITHUB_OUTPUT
+          echo "total=$TOTAL" >> $GITHUB_OUTPUT
+          echo "pick_count=$PICK_COUNT" >> $GITHUB_OUTPUT
+          
+          # 显示调试信息（使用变量）
+          echo "从 ${TOTAL} 个号码中抽取了 ${PICK_COUNT} 个"
 
       - name: 显示抽取结果
         run: |
+          echo "从 ${{ steps.pick.outputs.total }} 个号码中抽取了 ${{ steps.pick.outputs.pick_count }} 个"
+          echo ""
           echo "随机号码：${{ steps.pick.outputs.selected_str }}"
+          echo ""
+          echo "详细列表："
+          echo "${{ steps.pick.outputs.selected }}"
