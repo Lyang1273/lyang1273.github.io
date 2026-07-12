@@ -73,20 +73,14 @@ jobs:
           # 转为逗号分隔的字符串
           SELECTED_STR=$(echo "$SELECTED" | tr '\n' ',' | sed 's/,$//')
 
-          # 转为JSON数组
-          SELECTED_JSON=$(echo "$SELECTED" | jq -R '.' | jq -s '.')
-
-          # 导出给后续步骤
           echo "selected<<EOF" >> $GITHUB_OUTPUT
           echo "$SELECTED" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
           
           echo "selected_str=$SELECTED_STR" >> $GITHUB_OUTPUT
-          echo "selected_json=$SELECTED_JSON" >> $GITHUB_OUTPUT
           echo "total=$TOTAL" >> $GITHUB_OUTPUT
           echo "pick_count=$PICK_COUNT" >> $GITHUB_OUTPUT
           
-          # 显示调试信息（使用变量）
           echo "从 ${TOTAL} 个号码中抽取了 ${PICK_COUNT} 个"
 
       - name: 显示抽取结果
