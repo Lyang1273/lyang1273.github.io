@@ -23,7 +23,7 @@ jobs:
           )
 
           TOTAL=${#NUMBERS[@]}
-          PICK_COUNT=10
+          PICK_COUNT=2
 
           # 使用 shuf 打乱后取前 PICK_COUNT 个
           SELECTED=$(printf "%s\n" "${NUMBERS[@]}" | shuf -n $PICK_COUNT)
