@@ -2,6 +2,8 @@ name: 随机抽取
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '7 9 * * *'
 
 jobs:
   RandomPick:
