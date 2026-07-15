@@ -1,4 +1,4 @@
-name: 随机抽取号码
+name: 随机抽取
 
 on:
   workflow_dispatch:
@@ -19,55 +19,60 @@ jobs:
       - name: 随机抽号
         id: pick
         run: |
-          # 号码列表（每行一个）
-          NUMBERS=$(cat << 'EOF'
-          abcdefg
-          121efsf
-          ？？
-          Lyang1273
-          yang L
-          sfsdfsdf
-          啊哈哈哈
-          热狗
-          EOF
-          )
+          # 从 list.txt 读取名单
+          if [ ! -f list.txt ]; then
+            echo "list.txt 不存在"
+            exit 1
+          fi
+          
+          mapfile -t raw_list < list.txt
+          raw_list=($(printf "%s\n" "${raw_list[@]}" | grep -v '^[[:space:]]*$'))
+          
+          total_count=${#raw_list[@]}
+          
+          if [ $total_count -eq 0 ]; then
+            echo "list.txt 为空"
+            exit 1
+          fi
+          
+          # 人数
+          pick_count=10
+          if [ "$pick_count" -gt "$total_count" ]; then
+            pick_count=$total_count
+          fi
 
-          # 用 mapfile 读取每一行，保留空格
-          mapfile -t ARRAY <<< "$NUMBERS"
-          TOTAL=${#ARRAY[@]}
-          PICK_COUNT=2
-
-          # 打乱后取前 PICK_COUNT 个
-          SELECTED=$(printf "%s\n" "${ARRAY[@]}" | shuf -n $PICK_COUNT)
-
-          # 转为顿号分隔（保留空格）
-          SELECTED_STR=$(echo "$SELECTED" | while IFS= read -r line; do
-            echo -n "$line、"
-          done | sed 's/、$//')
+          selected=$(printf "%s\n" "${raw_list[@]}" | shuf -n $pick_count)
 
           echo "selected<<EOF" >> $GITHUB_OUTPUT
-          echo "$SELECTED" >> $GITHUB_OUTPUT
+          echo "$selected" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
           
-          echo "selected_str=$SELECTED_STR" >> $GITHUB_OUTPUT
-          echo "total=$TOTAL" >> $GITHUB_OUTPUT
-          echo "pick_count=$PICK_COUNT" >> $GITHUB_OUTPUT
+          echo "total=$total_count" >> $GITHUB_OUTPUT
+          echo "pick_count=$pick_count" >> $GITHUB_OUTPUT
           
-          echo "从 ${TOTAL} 个号码中抽取了 ${PICK_COUNT} 个"
+          echo "从 ${total_count} 个候选人中抽取了 ${pick_count} 个"
 
       - name: 更新 README.md
         run: |
-          # 获取日期和 Actions 编号
-          DATE=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
-          RUN_ID="${{ github.run_id }}"
-          SELECTED="${{ steps.pick.outputs.selected_str }}"
+          # 获取时间
+          time=$(TZ='Asia/Shanghai' date +"%Y-%m-%dT%H:%M:%S.000Z")
           
-          # 直接覆盖写入 README.md
+          run_id="${{ github.run_id }}"
+          total="${{ steps.pick.outputs.total }}"
+          pick_count="${{ steps.pick.outputs.pick_count }}"
+          selected="${{ steps.pick.outputs.selected }}"
+          
           cat > README.md << EOF
-          # 随机抽取记录
+          # 名单
 
-          ${DATE} ${RUN_ID}
-          ${SELECTED}
+          ## 抽取结果
+
+          数据来源：.github/raffle/pool.txt
+          候选人数：${total}
+          抽取人数：${pick_count}
+          生成时间：${time}
+
+          ${selected}
           EOF
           
           echo "README.md 已更新"
@@ -80,20 +85,18 @@ jobs:
           git add README.md
           
           if git diff --staged --quiet; then
-            echo "README.md 没有变化，跳过提交"
+            echo "README.md 无变化，跳过提交"
           else
-            git commit -m "更新随机抽取记录 (run #${{ github.run_id }})"
+            git commit -m "更新抽取结果 (run #${{ github.run_id }})"
             git push
             echo "已推送到仓库"
           fi
 
       - name: 显示抽取结果
         run: |
-          echo "从 ${{ steps.pick.outputs.total }} 个号码中抽取了 ${{ steps.pick.outputs.pick_count }} 个"
+          echo "从 ${{ steps.pick.outputs.total }} 个候选人中抽取了 ${{ steps.pick.outputs.pick_count }} 人"
           echo ""
-          echo "随机号码：${{ steps.pick.outputs.selected_str }}"
-          echo ""
-          echo "详细列表："
+          echo "中奖名单："
           echo "${{ steps.pick.outputs.selected }}"
           echo ""
-          echo "结果已覆盖写入 README.md"
+          echo "结果已写入 README.md"
