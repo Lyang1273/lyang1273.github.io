@@ -16,10 +16,10 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 随机抽号
+      - name: 随机抽取
         id: pick
         run: |
-          # 从 list.txt 读取名单
+          # 读取名单
           if [ ! -f list.txt ]; then
             echo "list.txt 不存在"
             exit 1
@@ -35,14 +35,14 @@ jobs:
             exit 1
           fi
           
-          # 人数
+          # 抽取人数
           pick_count=10
           if [ "$pick_count" -gt "$total_count" ]; then
             pick_count=$total_count
           fi
-
+          
           selected=$(printf "%s\n" "${raw_list[@]}" | shuf -n $pick_count)
-
+          
           echo "selected<<EOF" >> $GITHUB_OUTPUT
           echo "$selected" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -72,6 +72,7 @@ jobs:
           抽取人数：${pick_count}
           生成时间：${time}
 
+          ## 本次抽中名单
           ${selected}
           EOF
           
@@ -96,7 +97,7 @@ jobs:
         run: |
           echo "从 ${{ steps.pick.outputs.total }} 个候选人中抽取了 ${{ steps.pick.outputs.pick_count }} 人"
           echo ""
-          echo "中奖名单："
+          echo "本次抽中名单："
           echo "${{ steps.pick.outputs.selected }}"
           echo ""
           echo "结果已写入 README.md"
