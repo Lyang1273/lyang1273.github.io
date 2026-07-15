@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  random-pick:
+  RandomPick:
     runs-on: ubuntu-latest
     
     permissions:
@@ -26,7 +26,14 @@ jobs:
           fi
           
           mapfile -t raw_list < list.txt
-          raw_list=($(printf "%s\n" "${raw_list[@]}" | grep -v '^[[:space:]]*$'))
+          
+          filtered_list=()
+          for name in "${raw_list[@]}"; do
+            if [[ -n "$name" && "$name" =~ [^[:space:]] ]]; then
+              filtered_list+=("$name")
+            fi
+          done
+          raw_list=("${filtered_list[@]}")
           
           total_count=${#raw_list[@]}
           
@@ -41,6 +48,7 @@ jobs:
             pick_count=$total_count
           fi
           
+          # 从名单中不重复抽取
           selected=$(printf "%s\n" "${raw_list[@]}" | shuf -n $pick_count)
           
           echo "selected<<EOF" >> $GITHUB_OUTPUT
