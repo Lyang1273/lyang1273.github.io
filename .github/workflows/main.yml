@@ -75,13 +75,13 @@ jobs:
 
           ## 抽取结果
 
-          数据来源：.github/raffle/pool.txt
-          候选人数：${total}
-          抽取人数：${pick_count}
-          生成时间：${time}
+          数据来源：.github/raffle/pool.txt  
+          候选人数：${total}  
+          抽取人数：${pick_count}  
+          生成时间：${time}  
 
           ## 本次抽中名单
-          ${selected}
+          ${selected}  
           EOF
           
           echo "README.md 已更新"
