@@ -68,7 +68,7 @@ jobs:
       - name: 更新 README.md
         run: |
           # 获取时间
-          time=$(TZ='Asia/Shanghai' date +"%Y-%m-%dT%H:%M:%S.000Z")
+          time=$(TZ='Asia/Shanghai' date +"%Y-%m-%d  %H:%M:%S.000")
           
           run_id="${{ github.run_id }}"
           total="${{ steps.pick.outputs.total }}"
