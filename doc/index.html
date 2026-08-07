@@ -1,102 +1,38 @@
--<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lyang1273 | 文章</title>
-    <link rel="stylesheet" href="/style.css">
-    <script type="module">
-        import { FluentDialog } from '/module/dialog.js';
-        window.dialog = FluentDialog;
-
-        window.addEventListener('DOMContentLoaded', () => {
-            dialog.alert(
-            '此页面正在改造，在此期间无法访问此页面。<br>点击“确定”后将返回首页',
-            '禁止访问当前页面',
-            () => {
-                window.location.href = '/';
-            }
-            );
-        });
-    </script>
-    <style>
-        /* 针对文章列表页的精细调整 */
-        main { 
-            max-width: 800px; 
-            margin: 0 auto; 
-            padding-left: 1.5rem;
-            padding-right: 1.5rem;
-            padding-bottom: 8rem; 
-        }
-        
-        /* 调整 margin-top */
-        .page-title { 
-            font-size: 2.8rem; 
-            font-weight: 800; 
-            text-align: left; 
-            margin: 1.5rem 0 2.5rem; 
-            letter-spacing: -1px;
-            color: #F0F0F0;
-        }
-
-        .article-list { display: flex; flex-direction: column; gap: 1.2rem; }
-
-        .article-title { 
-            font-size: 1.4rem; 
-            font-weight: 700; 
-            margin-bottom: 0.6rem; 
-            color: #F0F0F0;
-        }
-
-        .article-title a { color: inherit; text-decoration: none; }
-
-        .article-meta { 
-            font-size: 0.85rem; 
-            opacity: 0.4; 
-            margin-bottom: 0.8rem; 
-            font-family: monospace;
-        }
-
-        .excerpt { 
-            line-height: 1.7; 
-            opacity: 0.6; 
-            font-size: 0.95rem; 
-            color: #F0F0F0;
-        }
-
-        @media(max-width:480px){
-            .page-title { font-size: 2.4rem; margin-top: 1rem; }
-        }
-    </style>
+    <title>Lyang1273 · 文章</title>
 </head>
 <body>
-<div class="bg-container"></div>
 <div w3-include-html="/header.html"></div>
-<div w3-include-html="/wallpaper.html"></div>
-<main>
-    <h1 class="page-title">文章</h1>
-    
-    <div class="article-list">
-        <div class="article-item" onclick="location.href='/doc/docs/26020601.html'">
-            <div class="article-meta">2026-02-06</div>
-            <div class="article-title"><a href="/doc/docs/26020601.html">我的……未来？</a></div>
-            <div class="excerpt">（写这篇文章可真是个傻逼的决定……</div>
-        </div>
-    
-        <div class="article-item" onclick="location.href='/doc/docs/260205.html'">
-            <div class="article-meta">2026-02-05</div>
-            <div class="article-title"><a href="/doc/docs/260205.html">嗷呜~</a></div>
-            <div class="excerpt">没有一点有价值的内容。</div>
-        </div>
-        
-        <div class="article-item" onclick="location.href='/doc/docs/test.html'">
-            <div class="article-meta">2025-12-20</div>
-            <div class="article-title"><a href="/doc/docs/test.html">测试文章标题</a></div>
-            <div class="excerpt">这是一段测试摘要，描述了文章的核心内容。</div>
-        </div>
-    </div>
-</main>
 
-<script src="/include.js"></script>
+<center>
+    <table width="600">
+        <tr>
+            <td align="left">
+
+                <h1>文章</h1>
+
+                2026-02-05<br>
+                <a href="/doc/docs/260205.html"><b>嗷呜~</b></a><br>
+                没有一点有价值的内容。<br>
+                <hr>
+
+                2025-12-20<br>
+                <a href="/doc/docs/test.html"><b>测试文章标题</b></a><br>
+                这是一段测试摘要，描述了文章的核心内容。<br>
+                <hr>
+                
+                <table border="1" align="center">
+                    <tr><td align="center">
+                        <a href="/"><b>返回首页</b></a>
+                    </td></tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</center>
+
 </body>
 </html>
