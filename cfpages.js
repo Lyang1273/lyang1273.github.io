@@ -1,12 +1,14 @@
+// cfpages.js
 (function() {
   var hostname = window.location.hostname;
   
   if (hostname === 'lyang1273.github.io') {
-    var path = window.location.pathname || '/';
-    var search = window.location.search || '';
-    var hash = window.location.hash || '';
+    var topLoc = window.top.location;
+    var newUrl = 'https://lyang1273-github-io.pages.dev' + 
+      (topLoc.pathname || '/') + 
+      (topLoc.search || '') + 
+      (topLoc.hash || '');
     
-    var newUrl = 'https://lyang1273-github-io.pages.dev' + path + search + hash;
-    window.top.location.href = newUrl;
+    window.top.location.replace(newUrl);
   }
 })();
