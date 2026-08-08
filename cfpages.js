@@ -7,6 +7,6 @@
     var hash = window.location.hash || '';
     
     var newUrl = 'https://lyang1273-github-io.pages.dev' + path + search + hash;
-    window.location.href = newUrl;
+    window.top.location.href = newUrl;
   }
 })();
