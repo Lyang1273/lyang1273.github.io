@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /doc/docs/26020601.html
+Disallow: /doc/docd/26022101.html
+Disallow: /img/
+Disallow: /Contact/
+Disallow: /aboutme/
